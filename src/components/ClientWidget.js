@@ -126,7 +126,7 @@ function ClientWidget({ title, clientData }) {
         <div className="stat-row">
           <span className="stat-label">Latency:</span>
           <span className="stat-value">
-            {(statistics.round_trip_latency * 1000).toFixed(2)} ms
+            {(statistics.round_trip_latency).toFixed(2)} us
           </span>
         </div>
         <div className="stat-row">
