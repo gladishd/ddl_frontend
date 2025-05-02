@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import { useMacMiniContext } from "@/context/MacMiniContext";
 import { Button } from "@/components/ui/button";
-import { Layout, Grid, List } from "lucide-react";
+import { Layout, LayoutList, GitFork } from "lucide-react";
 import FloatingPanel from "@/components/FloatingPanel";
-import TreeView from "@/components/views/TreeView";
+import TreeView from "@/components/views/tree/TreeView";
+import RawView from "./views/raw/RawView";
+import DAGView from "./views/dag/DAGView";
 
 const ViewSwitcher = () => {
   const { activeView, setActiveView } = useMacMiniContext();
@@ -21,20 +23,20 @@ const ViewSwitcher = () => {
         Tree
       </Button>
       <Button 
-        variant={activeView === "grid" ? "default" : "outline"} 
+        variant={activeView === "raw" ? "default" : "outline"} 
         size="sm"
-        onClick={() => setActiveView("grid")}
+        onClick={() => setActiveView("raw")}
       >
-        <Grid className="w-4 h-4 mr-1" />
-        Grid
+        <LayoutList className="w-4 h-4 mr-1" />
+        Raw
       </Button>
       <Button 
-        variant={activeView === "list" ? "default" : "outline"} 
+        variant={activeView === "dag" ? "default" : "outline"} 
         size="sm"
-        onClick={() => setActiveView("list")}
+        onClick={() => setActiveView("dag")}
       >
-        <List className="w-4 h-4 mr-1" />
-        List
+        <GitFork className="w-4 h-4 mr-1" />
+        DAG
       </Button>
     </div>
   );
@@ -48,10 +50,10 @@ const DashboardContent = () => {
     switch (activeView) {
       case "tree":
         return <TreeView />;
-      case "grid":
-        return <TreeView />;
-      case "list":
-        return <TreeView />;
+      case "raw":
+        return <RawView />;
+      case "dag":
+        return <DAGView />;
       default:
         return <TreeView />;
     }
