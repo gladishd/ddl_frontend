@@ -11,7 +11,7 @@ import React, {
 } from "react";
 import { MacMini } from "@/types/MacMini";
 
-export type ViewType = "tree" | "raw" | "dag";
+export type ViewType = "tree" | "raw" | "dag" | "analysis";
 
 interface MacMiniContextState {
   macMinis: MacMini[];
