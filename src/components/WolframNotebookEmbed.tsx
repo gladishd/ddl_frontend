@@ -8,7 +8,7 @@ import React from 'react';
 // emulators and models to interact with and understand complex systems,
 // moving beyond the limitations of conventional network thinking.
 const WolframNotebookEmbed = () => {
-  const notebookUrl = "https://www.wolframcloud.com/obj/gladishdean/Published/wolfram%20cloud%20for%20sahas.nb";
+  const notebookUrl = "https://www.wolframcloud.com/obj/gladishdean/Published/wolfram%20cloud%20for%20sahas2.nb";
 
   return (
     <section className="bg-gray-50 p-6">
