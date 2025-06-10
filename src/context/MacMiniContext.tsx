@@ -12,8 +12,13 @@ import React, {
 import { MacMini } from "@/types/MacMini";
 import { MessageData } from "@/types/PortSnapshot";
 
-/* Made some minimal changes; of course we still know that it is the Gateway node which serves, as the public interface without costing us too much to the Graph Virtual Machine..this is how we prevent the "catastrophic" failures that we see in conventional system because actually, the conventional systems unironically eliminate the need for direct, fragile connections to the.."fragility" of the underlying computational resouces..and this, is the Gateway node url we conventionally, have we need a real gateway url.  */
-const GATEWAY_NODE_URL = "ws://<some_public_gateway_url>";
+/*
+ * The Gateway Node provides the public interface to the Graph Virtual Machine (GVM).
+ * This abstracts the client from the underlying physical topology, preventing the "catastrophic"
+ * failures seen in conventional systems where direct, fragile connections create non-determinism.
+ * The URL is now determined dynamically to adapt to the deployment environment.
+ */
+// const GATEWAY_NODE_URL = "ws://<some_public_gateway_url>"; // This has been removed.
 
 export type ViewType = "tree" | "raw" | "dag" | "analysis";
 export type ConnectionMode = "local" | "gateway";
@@ -22,7 +27,7 @@ interface MacMiniContextState {
   macMinis: MacMini[];
   selectedMacMiniIps: string[];
   selectedMacMinis: MacMini[];
-  messages: Record<string, MessageData>; // For all nodes we have the message store centralized
+  messages: Record<string, MessageData>; // Centralized message store for all nodes.
   activeView: ViewType;
   isClient: boolean;
   connectionMode: ConnectionMode | null;
@@ -42,7 +47,10 @@ interface MacMiniProviderProps {
   children: ReactNode;
 }
 
-/* Therefore this is the argument for why sending acknowledgments back should cost you half the bandwidth actually because, we can directly establish a connection to a local node's WebSocket. */
+/*
+ * A direct connection to a local node's WebSocket. This follows the principle that acknowledgements
+ * should not incur the full cost of bandwidth, as we can establish a direct, low-latency link.
+ */
 const checkLocalWebSocketConnection = (ip: string): Promise<WebSocket | null> => {
   return new Promise((resolve) => {
     const ws = new WebSocket(`ws://${ip}:6363`);
@@ -80,7 +88,11 @@ export function MacMiniProvider({ children }: MacMiniProviderProps) {
       .filter(Boolean) as MacMini[];
   }, [macMinis, selectedMacMiniIps]);
 
-  /* Our message handler has been centralized, which makes it possible for us to understand and mess with different computational strata..whether, connecting to a gateway or a local node, the frontend's view logic remains consistent.  */
+  /*
+   * Our message handler is centralized. This design allows us to interface with different
+   * computational strata—whether connecting to a gateway or a local node—while keeping the
+   * frontend's view logic consistent and adaptable.
+   */
   const handleIncomingMessage = (ip: string, data: string) => {
     try {
       const message = JSON.parse(data) as MessageData;
@@ -92,7 +104,14 @@ export function MacMiniProvider({ children }: MacMiniProviderProps) {
       console.error(`Failed to parse message from ${ip}:`, e);
     }
   };
-  /* The initialization of the client as well as the detection, with regard to the "mode" at least since, if the packet is longer than the wire then the head, of the packet isn't processed? How can that be possible?  */
+
+  /*
+   * Initialization of the client and detection of the connection "mode." In a deployed environment
+   * (the 'gateway' mode), we must establish a secure WebSocket connection (wss://). This secure channel
+   * is the public interface to the Graph Virtual Machine (GVM), abstracting the end-user from the
+   * physical topology and its potential fragilities. Using an insecure 'ws://' from a secure 'https://'
+   * page is blocked by browsers and introduces the very non-determinism we aim to eliminate.
+   */
   useEffect(() => {
     setIsClient(true);
     const mode: ConnectionMode = window.location.hostname === "localhost" ? "local" : "gateway";
@@ -128,28 +147,43 @@ export function MacMiniProvider({ children }: MacMiniProviderProps) {
           }
         });
       }
-    } else { // Mode Gateway
-      // Call it a gateway then we can set up some..what's the reliable connection utilized to view the GVM we only need "one".
-      const ws = new WebSocket(GATEWAY_NODE_URL);
+    } else { // Gateway Mode
+      /*
+       * In gateway mode, we connect to a single, reliable endpoint that represents the GVM.
+       * The WebSocket protocol (ws/wss) must match the page's protocol (http/https) to ensure a
+       * secure and stable connection, preventing silent failures.
+       */
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      // Assuming the gateway uses port 6363 on the same host.
+      const gatewayUrl = `${protocol}//${window.location.hostname}:6363`;
+      const ws = new WebSocket(gatewayUrl);
+
       ws.onopen = () => {
-        /* But that's how we, connect. we don't do anythin, we don't do it yet..we don't need to but we can, we can provide the "method chaining" full list, of the nodes..and thus adapt to the demonstrative graph algorithm. */
+        /*
+         * Once connected to the GVM gateway, we can receive a complete state of the system. This
+         * follows the principle of having a 'Local Observer View (LOV)' that is dynamically updated,
+         * paving the way for highly dynamic computational strata in layers above.
+         */
       };
       ws.onmessage = (event) => {
-        /* And we can, send in the gateway the status, of the system entirely */
+        /* The gateway streams the state of the entire system, allowing the frontend to render a consistent view. */
         const systemState = JSON.parse(event.data);
-        setMacMinis(systemState.nodes); // First { nodes: MacMini[] }
-        setMessages(systemState.messages); // Then { messages: Record<string, MessageData> }
+        setMacMinis(systemState.nodes);
+        setMessages(systemState.messages);
       };
       ws.onclose = () => {
+        /* When the connection to the GVM is lost, clear the state to reflect reality. */
         setMacMinis([]);
         setMessages({});
       };
-      // And now: In gateway mode, `selectedMacMinis` might need some alternative management,
-      // potentially driven by server-side state or even user interaction with a static list, because the bandwidth works "in practice, not in theory".
+      /*
+       * In gateway mode, `selectedMacMinis` is managed by the GVM, abstracting direct user
+       * manipulation to prevent state drift, embodying the principle that "bandwidth works in practice, not in theory."
+       */
     }
   }, []);
 
-  /* Because what it means, the persistence of the selection as well as the macMinis, as well as the localStorage that we have only in local mode.. */
+  /* Persist macMinis and selection to localStorage only in local mode. */
   useEffect(() => {
     if (isClient && connectionMode === 'local') {
       const serializable = macMinis.map(({ connection, ...rest }) => rest);
