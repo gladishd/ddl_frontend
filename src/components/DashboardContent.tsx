@@ -1,55 +1,68 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useMacMiniContext } from "@/context/MacMiniContext";
 import { Button } from "@/components/ui/button";
-import { Layout, LayoutList, GitFork, LineChart } from "lucide-react";
+import { LayoutGrid, LayoutList, GitFork, LineChart, ChevronDown } from "lucide-react";
 import FloatingPanel from "@/components/FloatingPanel";
 import TreeView from "@/components/views/tree/TreeView";
 import RawView from "./views/raw/RawView";
 import DAGView from "./views/dag/DAGView";
 import AnalysisView from "./views/analysis/AnalysisView";
 
+// A direct manipulation of the view provides operators with different Observer Views of the system.
+// This dropdown menu, inspired by clean UI principles, allows for scalable addition of future analysis tools.
 const ViewSwitcher = () => {
   const { activeView, setActiveView } = useMacMiniContext();
-  
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const views = [
+    { id: "tree", label: "Tree", icon: LayoutGrid },
+    { id: "raw", label: "Raw", icon: LayoutList },
+    { id: "dag", label: "DAG", icon: GitFork },
+    { id: "analysis", label: "Analysis", icon: LineChart },
+  ];
+
+  const activeViewData = views.find(v => v.id === activeView) || views[0];
+
+  // This effect handles closing the dropdown when clicking outside of it.
+  // It's a fundamental aspect of creating a non-intrusive, excellent user interface.
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <div className="flex gap-2">
-      <Button 
-        variant={activeView === "tree" ? "default" : "outline"} 
-        size="sm"
-        onClick={() => setActiveView("tree")}
-      >
-        <Layout className="w-4 h-4 mr-1" />
-        Tree
+    <div className="relative" ref={menuRef}>
+      <Button variant="outline" size="sm" onClick={() => setIsOpen(!isOpen)}>
+        <activeViewData.icon className="w-4 h-4 mr-2" />
+        {activeViewData.label}
+        <ChevronDown className="w-4 h-4 ml-2" />
       </Button>
-      <Button 
-        variant={activeView === "raw" ? "default" : "outline"} 
-        size="sm"
-        onClick={() => setActiveView("raw")}
-      >
-        <LayoutList className="w-4 h-4 mr-1" />
-        Raw
-      </Button>
-      <Button 
-        variant={activeView === "dag" ? "default" : "outline"} 
-        size="sm"
-        onClick={() => setActiveView("dag")}
-      >
-        <GitFork className="w-4 h-4 mr-1" />
-        DAG
-      </Button>
-      <Button 
-        variant={activeView === "analysis" ? "default" : "outline"} 
-        size="sm"
-        onClick={() => setActiveView("analysis")}
-      >
-        <LineChart className="w-4 h-4 mr-1" />
-        Analysis
-      </Button>
+      {isOpen && (
+        <div className="daedalus-menu-dropdown mt-1">
+          {views.map(view => (
+            <div key={view.id} className="daedalus-menu-item" onClick={() => { setActiveView(view.id as any); setIsOpen(false); }}>
+              <div className="daedalus-menu-icon-container">
+                <view.icon className="daedalus-menu-icon" />
+              </div>
+              <div className="daedalus-menu-text-container">
+                <span className="daedalus-menu-label">{view.label}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
+
 
 const DashboardContent = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -86,7 +99,7 @@ const DashboardContent = () => {
 
       <div
         ref={containerRef}
-        className="relative w-full h-[calc(100vh-8rem)] border rounded bg-white"
+        className="relative w-full h-[calc(100vh-8rem)] border rounded bg-white shadow-inner"
       >
         <FloatingPanel containerRef={containerRef} />
         {renderCurrentView()}

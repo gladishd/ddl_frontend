@@ -1,20 +1,16 @@
-import React, { useState } from "react";
-import { Plus, RefreshCw, X } from "lucide-react";
+import React, { useState, useMemo } from "react";
+import { Plus, RefreshCw, X, Search } from "lucide-react";
 import { useMacMiniContext } from "@/context/MacMiniContext";
 
-interface MacMiniConfiguratorProps {
-  multiSelect?: boolean;
-}
-
-const MacMiniConfigurator = ({ multiSelect = false }: MacMiniConfiguratorProps) => {
+const MacMiniConfigurator = () => {
   const [ip, setIp] = useState("");
-  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const {
     macMinis,
     selectedMacMinis,
     isClient,
-    connectionMode, // From the context we check the connection mode and all else follows, but that's not all
+    connectionMode,
     addMacMini,
     removeMacMini,
     refreshConnection,
@@ -31,7 +27,6 @@ const MacMiniConfigurator = ({ multiSelect = false }: MacMiniConfiguratorProps) 
 
   const handleToggleSelect = (ip: string, connected: boolean) => {
     if (!connected) return;
-
     if (selectedMacMinis.some(m => m.ip === ip)) {
       deselectMacMini(ip);
     } else {
@@ -39,7 +34,10 @@ const MacMiniConfigurator = ({ multiSelect = false }: MacMiniConfiguratorProps) 
     }
   };
 
-  /* In the gateway mode, the calculation of efficiency is inaccurate--the good resource is the one that reinvents the liability, the GVM Is what manages, the nodes, the direct manipulation being disabled..prevents, the non-determinism that arises from conflicting local and global states..reinventing the liability, the node id sahas being in configuration. */
+  // The direct manipulation of individual nodes is a deviation from the ideal GVM management philosophy.
+  // In a mature system, node lifecycle is managed by the Graph Virtual Machine itself.
+  // This interface is provided for emulation and direct observation, but is disabled in Gateway mode
+  // to prevent the non-determinism that arises from conflicting local and global state instructions.
   if (!isClient || connectionMode === 'gateway') {
     return (
       <div className="p-2 text-center text-sm text-gray-500">
@@ -48,60 +46,63 @@ const MacMiniConfigurator = ({ multiSelect = false }: MacMiniConfiguratorProps) 
     );
   }
 
-  return (
-    <div>
-      <ul>
-        {macMinis.map((macMini, index) => (
-          <li
-            key={index}
-            style={{
-              color: macMini.isConnected ? "green" : "gray",
-              position: "relative",
-              padding: "10px",
-              borderBottom: "1px solid #ccc",
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              cursor: macMini.isConnected ? "pointer" : "not-allowed",
-              backgroundColor: selectedMacMinis.some(m => m.ip === macMini.ip) ? "#f0f0f0" : "transparent",
-            }}
-            onClick={() => handleToggleSelect(macMini.ip, macMini.isConnected)}
-            onMouseEnter={() => setHoveredItem(index)}
-            onMouseLeave={() => setHoveredItem(null)}
-          >
-            <span style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-              {macMini.ip} - {macMini.isConnected ? "Connected" : "Disconnected"}
-            </span>
+  const filteredMacMinis = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return macMinis;
+    return macMinis.filter(m => m.ip.toLowerCase().includes(query));
+  }, [macMinis, searchQuery]);
 
-            {hoveredItem === index && (
-              <div className="absolute right-2 flex gap-2">
-                <button
-                  onClick={(e) => { e.stopPropagation(); refreshConnection(macMini.ip); }}
-                  className="p-1 bg-transparent border-none cursor-pointer"
-                >
-                  <RefreshCw className="w-5 h-5 text-gray-600 hover:text-green-500" />
-                </button>
-                <button
-                  onClick={(e) => { e.stopPropagation(); removeMacMini(macMini.ip); }}
-                  className="p-1 bg-transparent border-none cursor-pointer"
-                >
-                  <X className="w-5 h-5 text-gray-600 hover:text-red-500" />
-                </button>
-              </div>
+  return (
+    <div className="actions-dropdown">
+      <div className="actions-header">
+        <h2>Select Nodes</h2>
+      </div>
+
+      <div className="p-2 border-b border-border">
+        <div className="relative">
+          <Search className="absolute right-2 top-1/2 -translate-y-3/4 h-4 w-4 text-muted-foreground" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search by IP Address..."
+            className="actions-search-input w-full pl-8"
+          />
+        </div>
+      </div>
+
+      {filteredMacMinis.map((macMini) => (
+        <div
+          key={macMini.ip}
+          onClick={() => handleToggleSelect(macMini.ip, macMini.isConnected)}
+          className={`actions-item ${!macMini.isConnected ? 'opacity-50 cursor-not-allowed' : ''}`}
+        >
+          <div className="actions-icon-container">
+            <span className={`h-2.5 w-2.5 rounded-full ${macMini.isConnected ? 'bg-green-500' : 'bg-gray-400'}`}></span>
+          </div>
+          <div className="actions-text-container">
+            <p className="actions-message">{macMini.ip}</p>
+          </div>
+          {selectedMacMinis.some(m => m.ip === macMini.ip) && (
+            <div className="w-2 h-2 rounded-full bg-primary ml-auto"></div>
             )}
-          </li>
+        </div>
         ))}
-      </ul>
-      <div className="flex items-center gap-2 p-[10px] border-b border-[#ccc]">
+      {filteredMacMinis.length === 0 && (
+        <div className="p-4 text-center text-sm text-muted-foreground">No nodes found.</div>
+      )}
+
+      <div className="flex items-center gap-2 p-2 border-t border-border">
         <input
           type="text"
           value={ip}
           onChange={(e) => setIp(e.target.value)}
-          placeholder="Enter Mac Mini IP"
-          className="flex-1"
+          placeholder="Enter IP to add..."
+          className="actions-search-input flex-1"
+          onKeyPress={(e) => e.key === 'Enter' && handleAddMacMini()}
         />
-        <button onClick={handleAddMacMini} className="cursor-pointer p-[5px] bg-transparent border-none">
-          <Plus className="w-5 h-5 text-gray-600 hover:text-green-500" />
+        <button onClick={handleAddMacMini} className="p-2 rounded-md hover:bg-accent">
+          <Plus className="w-4 h-4" />
         </button>
       </div>
     </div>

@@ -8,7 +8,7 @@ interface PacketEvent {
   payload: any;
 }
 
-// Helpers to fabricate packet traces -------------------------------------------------------------
+// Helpers to fabricate packet traces
 const makeTrace = (ltp: number): PacketEvent[] => [
   { direction: "OUT", type: "LIVENESS", payload: {} },
   { direction: "IN", type: "LIVENESS", payload: {} },
@@ -25,14 +25,13 @@ const makeErrorTrace = (ltp: number): PacketEvent[] => [
   { direction: "OUT", type: "2PC", payload: { phase: 2, data: "ERROR##" } },
   { direction: "IN", type: "2PC", payload: { phase: 2, data: "NACK##" } },
 ];
-// -----------------------------------------------------------------------------------------------
 
 const AnalysisView: React.FC = () => {
   const { selectedMacMinis, messages, deselectMacMini } = useMacMiniContext();
   const macMini = selectedMacMinis[0];
   const message: MessageData | undefined = macMini ? messages[macMini.ip] : undefined;
 
-  // Enforce single‑selection
+  // Enforce single‑selection for this view
   useEffect(() => {
     if (selectedMacMinis.length > 1) {
       selectedMacMinis.slice(1).forEach((m) => deselectMacMini(m.ip));
@@ -65,8 +64,20 @@ const AnalysisView: React.FC = () => {
     setTimeout(() => setTracing(false), seq.length * 300 + 200);
   }, [selectedPort, nextLtp]);
 
+  // Set the first available port as default when component loads or message changes
+  useEffect(() => {
+    if (message?.port_paths && Object.keys(message.port_paths).length > 0) {
+      if (!selectedPort || !message.port_paths[selectedPort]) {
+        setSelectedPort(Object.keys(message.port_paths)[0]);
+      }
+    } else {
+      setSelectedPort("");
+    }
+  }, [message?.port_paths]);
+
+
   if (!macMini) {
-    return <div className="p-4 text-gray-500">Select a Mac Mini to analyse.</div>;
+    return <div className="p-4 text-gray-500">Select a Mac Mini to analyse.</div>;
   }
 
   return (
@@ -77,21 +88,23 @@ const AnalysisView: React.FC = () => {
         {/* Controls */}
         <div className="border rounded p-4">
           <h3 className="font-semibold mb-4">Port Controls</h3>
-          <label className="block text-sm mb-2">Select Port</label>
-          <select
-            className="w-full border rounded p-2 mb-4"
-            value={selectedPort}
-            onChange={(e) => setSelectedPort(e.target.value)}
-          >
-            <option value="">—</option>
-            {message?.port_paths &&
-              Object.keys(message.port_paths).map((p) => (
-                <option key={p}>{p}</option>
+          <div className="mb-4">
+            <label className="block text-sm mb-2">Select Port</label>
+            <div className="daedalus-tabs-bar">
+              {message?.port_paths && Object.keys(message.port_paths).map(portId => (
+                <button
+                  key={portId}
+                  onClick={() => setSelectedPort(portId)}
+                  className={`daedalus-tab ${selectedPort === portId ? 'active' : ''}`}
+                >
+                  {portId}
+                </button>
               ))}
-          </select>
+            </div>
+          </div>
 
           <button
-            className="w-full bg-blue-500 text-white py-2 rounded disabled:opacity-50"
+            className="w-full bg-primary text-primary-foreground py-2 rounded disabled:opacity-50 hover:bg-primary-hover transition-colors"
             onClick={startTrace}
             disabled={!selectedPort || tracing}
           >
