@@ -2,7 +2,11 @@ import React, { useState, useMemo } from "react";
 import { Plus, RefreshCw, X, Search } from "lucide-react";
 import { useMacMiniContext } from "@/context/MacMiniContext";
 
-const MacMiniConfigurator = () => {
+type MacMiniConfiguratorProps = {
+  multiSelect?: boolean;
+};
+
+export default function MacMiniConfigurator({ multiSelect }: MacMiniConfiguratorProps) {
   const [ip, setIp] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -10,17 +14,12 @@ const MacMiniConfigurator = () => {
     macMinis,
     selectedMacMinis,
     isClient,
-    connectionMode,
-    addMacMini,
-    removeMacMini,
-    refreshConnection,
     selectMacMini,
     deselectMacMini
   } = useMacMiniContext();
 
   const handleAddMacMini = () => {
     if (ip) {
-      addMacMini(ip);
       setIp("");
     }
   };
@@ -38,7 +37,7 @@ const MacMiniConfigurator = () => {
   // In a mature system, node lifecycle is managed by the Graph Virtual Machine itself.
   // This interface is provided for emulation and direct observation, but is disabled in Gateway mode
   // to prevent the non-determinism that arises from conflicting local and global state instructions.
-  if (!isClient || connectionMode === 'gateway') {
+  if (!isClient) {
     return (
       <div className="p-2 text-center text-sm text-gray-500">
         Node management is disabled in Gateway Mode.
@@ -108,5 +107,3 @@ const MacMiniConfigurator = () => {
     </div>
   );
 };
-
-export default MacMiniConfigurator;

@@ -151,25 +151,16 @@ const DAGView: React.FC = () => {
         {/* Canvas */}
         <div className="relative" style={{ height: 420 }} onMouseMove={handleMove}>
           <ForceGraph2D
-            ref={fgRef}
             graphData={data}
             nodeCanvasObject={drawNode}
-            nodePointerAreaPaint={pointerArea}
             nodeLabel="id"
             linkDirectionalArrowLength={4}
             linkDirectionalArrowRelPos={1}
             linkDirectionalParticles={4}
             linkDirectionalParticleWidth={2}
-            linkDirectionalParticleSpeed={0.004}
-            backgroundColor="#ffffff"
-            d3VelocityDecay={0.35}
             cooldownTicks={120}
             /* Re-centre when the physics engine finishes */
             onEngineStop={() => fgRef.current?.zoomToFit(300, 40)}
-            onNodeHover={(n) => {
-              setHoverNode(n);
-              if (!n) setTip(null);
-            }}
             onNodeClick={() => fgRef.current?.zoomToFit(300, 40)}
           />
 

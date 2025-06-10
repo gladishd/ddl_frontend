@@ -64,7 +64,6 @@ export default function PdfViewerPage({ params }: { params: { filename: string }
               pageNumber={index + 1}
               renderTextLayer={true}
               className="mb-4"
-              canvasClassName="shadow-lg"
             />
           ))}
         </Document>
