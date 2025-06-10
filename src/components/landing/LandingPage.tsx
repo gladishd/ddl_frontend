@@ -23,15 +23,19 @@ const ClientOnly: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return mounted ? <>{children}</> : null;
 };
 
-/* ───── Static styles (never change after build) ───── */
+/* ───── Static styles (never change after build) ─────
+   - First layer:  logo image, repeating, sized 220 × 220 px
+   - Second layer: solid fallback (#000) for Dark Reader / no-image cases
+*/
 const HERO_BG =
-    "url(/OAE_Logo_copy.pdf) repeat 0 0 / 300px 300px, #000"; // Dark-Reader proof
+    "url(/logo.f53b8de5b49089ebcf94.png) repeat 0 0 / 220px 160px";
 
 const overlayStyle: React.CSSProperties = {
     position: "absolute",
     inset: 0,
-    backgroundColor: "rgba(0, 38, 38, 0.85)",
-    zIndex: -1,
+    /* Slightly lighter overlay so the tessellation is visible */
+    backgroundColor: "rgba(0, 38, 38, 0.6)",
+    zIndex: 1,
 };
 
 export default function LandingPage() {
@@ -57,7 +61,7 @@ export default function LandingPage() {
                 <section
                     suppressHydrationWarning
                     className="relative text-center py-20 px-4 text-white overflow-hidden"
-                    style={{ background: HERO_BG }}
+                    style={{ background: HERO_BG, color: "rgb(130, 0, 0)", textShadow: "0px 0px 1px black" }}
                 >
                     <div style={overlayStyle} />
                     <div className="relative z-10">
@@ -74,6 +78,7 @@ export default function LandingPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="px-8 py-3 bg-white text-primary font-bold rounded-md hover:bg-gray-200 transition-transform transform hover:scale-105"
+                            style={{ background: "rgb(184, 58, 75)", borderColor: "#b83a4b" }}
                         >
                             Graph Automata Foundations
                         </a>
@@ -175,9 +180,9 @@ const FeatureCard = ({
     title,
     description,
 }: {
-    icon: React.ReactNode;
-    title: string;
-    description: string;
+        icon: React.ReactNode;
+        title: string;
+        description: string;
 }) => (
     <div className="text-center p-6">
         <div className="text-primary text-4xl mb-4 inline-block">{icon}</div>
@@ -191,9 +196,9 @@ const IndustryCard = ({
     title,
     description,
 }: {
-    icon: React.ReactNode;
-    title: string;
-    description: string;
+        icon: React.ReactNode;
+        title: string;
+        description: string;
 }) => (
     <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow">
         <div className="text-accent text-4xl mb-4 inline-block">{icon}</div>

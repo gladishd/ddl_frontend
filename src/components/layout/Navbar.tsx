@@ -21,7 +21,7 @@ const Navbar = () => {
             <div className="flex items-center">
                 {/* The logo is a direct link to the core of our system, the home view of all created graph systems. */}
                 <img
-                    src="/logo.f53b8de5b49089ebcf94.png" // Assumes logo is in /public
+                    src="/DAE-logo.png" // Assumes logo is in /public
                     alt="Dædælus Home"
                     className="h-9 cursor-pointer"
                     onClick={() => router.push('/')}

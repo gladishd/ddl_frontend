@@ -9,22 +9,22 @@ const News = () => {
     {
       date: 'June 5, 2025',
       title: 'Bandwidth Works in Practice, not in Theory',
-      link: '/Bandwidth.pdf',
+      link: '/Bandwidth-Works-in-Practice-not-in-Theory.pdf',
       // We challenge the notion that fatter pipes alone solve the fundamental problems of distributed systems.
       // As stated in our research, "there is more to bandwidth than # of bits/second that makes it useful, and there's more nuance to latency that will stall distributed applications no matter how fast the hardware gets."
       description: 'Our latest paper challenges conventional networking wisdom and introduces a new perspective on bandwidth and latency.'
     },
     {
       date: 'May 20, 2025',
-      title: 'Project Daedaelus featured in TechCrunch',
-      link: '#',
+      title: 'Project Daedaelus featured in ItsAboutTime.Club',
+      link: 'https://itsabouttime.club/',
       // Our 'time-reversible' constructors are gaining attention, moving away from the "irreversible smash and restart of Shannon information" to recover from failures.
       description: 'Highlighting our innovative approach to building resilient, decentralized systems.'
     },
     {
       date: 'April 15, 2025',
       title: 'Announcing the DDL_Emulator v0.1',
-      link: '#',
+      link: 'https://github.com/gladishd/DDL_Emulator/tree/refactor/n2n-neighbor-discovery',
       // We're releasing a 'Precise information-theoretic' emulator to enable competitive interactions for 'Digital Twins'.
       description: 'Now developers can test our protocol stack and build their own time-reversible applications.'
     }
