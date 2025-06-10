@@ -1,9 +1,9 @@
-// src/app/page.tsx
 "use client";
 
 import dynamic from "next/dynamic";
 import { MacMiniProvider } from "@/context/MacMiniContext";
 import DashboardContent from "@/components/DashboardContent";
+import WolframNotebookEmbed from "@/components/WolframNotebookEmbed"; // Import the new component
 
 // ────────────────────────────────────────────────────────────────
 // The landing page is now a pure-client component.
@@ -20,6 +20,7 @@ export default function DashboardPage() {
     <MacMiniProvider>
       <LandingPage />
       <DashboardContent />
+      <WolframNotebookEmbed />
     </MacMiniProvider>
   );
 }
