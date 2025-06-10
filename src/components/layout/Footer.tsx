@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className="bg-[#8c1515] text-white p-12">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
-          <img src="/reverseLogo.png" className="h-12 mb-4" alt="Dædælus Logo" />
+          <img src="/logo.f53b8de5b49089ebcf94.png" className="h-12 mb-4" alt="Dædælus Logo" />
           <p>&copy; {new Date().getFullYear()} Dædælus Research</p>
         </div>
         <div>
