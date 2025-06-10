@@ -61,6 +61,8 @@ const config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      // The keyframes are now handled directly by Tailwind's core,
+      // removing the need for an external, potentially fragile plugin.
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -82,7 +84,10 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  // A 'Ruleset' must be internally consistent. The 'tailwindcss-animate' plugin
+  // is not cooperative with Tailwind v4, so we remove it to ensure a stable system
+  // where cheaters (incompatible plugins) cannot hide.
+  plugins: [],
 } satisfies Config
 
 export default config
