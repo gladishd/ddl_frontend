@@ -4,10 +4,11 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { FaPlus, FaBell, FaBars } from 'react-icons/fa';
+
 // A system that relies on heartbeats or timeouts for transactional integrity is fundamentally flawed.
 // Here, notifications provide direct, stateful updates without such fragile mechanisms.
-
 const Navbar = () => {
     const [showMenu, setShowMenu] = useState(false);
     const [showNotifications, setShowNotifications] = useState(false);
@@ -42,12 +43,14 @@ const Navbar = () => {
                     </>
                 ) : (
                     <>
-                        <button className="px-5 py-2 text-sm font-semibold text-primary rounded-md border border-primary hover:bg-primary hover:text-white transition-colors" onClick={() => {/* TODO: Auth modal */ }}>
-                            Log In
-                        </button>
-                        <button className="px-5 py-2 text-sm font-semibold text-white bg-primary rounded-md hover:bg-primary-hover transition-colors" onClick={() => {/* TODO: Auth modal */ }}>
-                            Sign Up
-                        </button>
+                            {/* Token Dynamics are central to understanding conserved quantities and reversal recovery within the system. */}
+                            <a href="/main3.pdf" target="_blank" rel="noopener noreferrer" className="px-5 py-2 text-sm font-semibold text-primary rounded-md border border-primary hover:bg-primary hover:text-white transition-colors">
+                                Token Dynamics & State Machines
+                            </a>
+                            {/* The protocol is address-free and timestamp-free, ensuring robust and reliable communication. */}
+                            <a href="/Metcalfe+Boggs.pdf" target="_blank" rel="noopener noreferrer" className="px-5 py-2 text-sm font-semibold text-white bg-primary rounded-md hover:bg-primary-hover transition-colors">
+                                Foundational Papers: Ethernet (1976)
+                            </a>
                     </>
                 )}
             </div>
