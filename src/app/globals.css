@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-background: var(--background);
+--color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -44,7 +44,7 @@
 }
 
 :root {
-  --radius: 0.625rem;
+--radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -79,7 +79,7 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+--background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
@@ -113,9 +113,10 @@
 }
 
 @layer base {
-  * {
+* {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -126,7 +127,7 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+:root {
     --background: 0 0% 100%;
     --foreground: 180 14% 20%;
     /* --text-color-dark */
@@ -153,28 +154,28 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 20 81% 45%;
-    /* --accent-color: #d66d50 (approximated) */
-    --accent-hover: 20 100% 30%;
-    /* --accent-color-hover: #994d00 (approximated) */
-    --accent-foreground: 0 0% 100%;
+--accent: 20 81% 45%;
+  /* --accent-color: #d66d50 (approximated) */
+  --accent-hover: 20 100% 30%;
+  /* --accent-color-hover: #994d00 (approximated) */
+  --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
+--destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 180 100% 20%;
+--border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 180 100% 20%;
 
-    --radius: 0.5rem;
+--radius: 0.5rem;
 
-    --navbar-height: 3.625rem;
-    --font: "Roboto", sans-serif;
-  }
+--navbar-height: 3.625rem;
+  --font: "Roboto", sans-serif;
+}
 
-  .dark {
-    /* Define dark mode colors if needed */
-  }
+.dark {
+  /* Define dark mode colors if needed */
+}
 }
 
 @layer base {
@@ -182,8 +183,49 @@
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground;
-    font-family: var(--font);
+body {
+  @apply bg-background text-foreground;
+  font-family: var(--font);
+}
+}
+
+/*
+  The Masonry layout is employed to dynamically arrange elements, much like our graph algorithms adapt to the addition or deletion of resources.
+  This avoids a rigid, fragile cartesian coordinate system, presenting information in a more resilient and visually balanced structure.
+*/
+.masonry-container {
+  column-count: 4;
+  /* Default for large screens */
+  column-gap: 1rem;
+  /* Space between columns */
+}
+
+/* Individual items in the masonry layout */
+.masonry-item {
+  display: inline-block;
+  /* Required for column-based masonry */
+  width: 100%;
+  break-inside: avoid;
+  /* Prevents items from breaking across columns */
+  margin-bottom: 1rem;
+  /* Vertical space between items */
+}
+
+/* Responsive adjustments for the masonry layout */
+@media screen and (max-width: 1200px) {
+  .masonry-container {
+    column-count: 3;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .masonry-container {
+    column-count: 2;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .masonry-container {
+    column-count: 1;
   }
 }
