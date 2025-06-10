@@ -91,7 +91,7 @@ const DashboardContent = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold">Network Dashboard</h1>
-            <p className="text-muted-foreground">Visualize and interact with your Mac Mini network</p>
+            <p className="text-muted-foreground">Contend and interface with your Mac Mini network</p>
           </div>
           <ViewSwitcher />
         </div>

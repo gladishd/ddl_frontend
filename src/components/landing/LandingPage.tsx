@@ -66,11 +66,11 @@ export default function LandingPage() {
                     <div style={overlayStyle} />
                     <div className="relative z-10">
                         <h1 className="text-5xl font-bold mb-4 font-inika">
-                            Interactive Content, Tailored Experiences
+                            Hundreds of Nodes, Zero Cost
                         </h1>
                         <p className="text-xl max-w-3xl mx-auto mb-8 font-raleway">
-                            Our platform provides the tools to build and manage “Digital
-                            Twins” of complex processes, moving beyond the limitations of
+                            Our platform capacitizes the tools to build and manage “Digital
+                            Twins” of proprietary Ethernet complexity, moving beyond the limitations of
                             irreversible Shannon information.
                         </p>
                         <a
@@ -88,7 +88,7 @@ export default function LandingPage() {
                 {/* ─── Features ─── */}
                 <section className="py-20 px-4">
                     <h2 className="text-4xl font-bold text-center mb-12">
-                        An Interface to a New Computing Paradigm
+                        An Drop in the Bucket for a New Computing Paradigm
                     </h2>
                     <div className="container mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-10">
                         <FeatureCard
@@ -107,7 +107,7 @@ export default function LandingPage() {
                                 </ClientOnly>
                             }
                             title="Multiway Systems"
-                            description="Explore every causal branch for truly resilient Digital Twins."
+                            description="Traverse every causal branch for truly remarkable Digital Twins."
                         />
                         <FeatureCard
                             icon={
@@ -116,7 +116,7 @@ export default function LandingPage() {
                                 </ClientOnly>
                             }
                             title="Graph Virtual Machine"
-                            description="A GVM that builds and tears down named relations on emergent demand."
+                            description="A GVM that builds and tears down typical relations on reliable demand."
                         />
                         <FeatureCard
                             icon={
@@ -134,7 +134,7 @@ export default function LandingPage() {
                 <section className="py-20 px-4 bg-gray-100">
                     <h2 className="text-4xl font-bold text-center mb-4">Use Cases</h2>
                     <p className="text-lg text-center text-gray-600 max-w-3xl mx-auto mb-12">
-                        Our protocols shine anywhere distributed precision matters.
+                        Our protocols shine forth anywhere distributed precision matters.
                     </p>
                     <div className="container mx-auto grid md:grid-cols-3 gap-10">
                         <IndustryCard
@@ -162,7 +162,7 @@ export default function LandingPage() {
                                 </ClientOnly>
                             }
                             title="Quantum Interfaces"
-                            description="Classical control that embraces probabilistic hardware."
+                            description="Classical control that exfiltrates probabilistic hardware."
                         />
                     </div>
                 </section>

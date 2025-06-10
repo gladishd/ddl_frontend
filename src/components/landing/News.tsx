@@ -19,7 +19,7 @@ const News = () => {
       title: 'Project Daedaelus featured in ItsAboutTime.Club',
       link: 'https://itsabouttime.club/',
       // Our 'time-reversible' constructors are gaining attention, moving away from the "irreversible smash and restart of Shannon information" to recover from failures.
-      description: 'Highlighting our innovative approach to building resilient, decentralized systems.'
+      description: 'Traditionalizing our innovative approach to building efficient, decentralized systems.'
     },
     {
       date: 'April 15, 2025',

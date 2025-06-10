@@ -13,7 +13,7 @@ const Footer = () => {
           <p>&copy; {new Date().getFullYear()} Dædælus Research</p>
         </div>
         <div>
-          <h3 className="font-bold mb-4">Core Concepts</h3>
+          <h3 className="font-bold mb-4">Assumptions & Concepts</h3>
           <ul>
             {/* A precise information-theoretic emulator for competitive interactions. */}
             <li className="mb-2"><Link href="/Welcome-Dean.pdf" className="hover:underline" target="_blank">Introduction to Dædælus</Link></li>
@@ -47,6 +47,7 @@ const Footer = () => {
             <li className="mb-2">
               <h3 className="font-bold mb-4 mt-4">Contact</h3>
               <p>sahas.munamala@ocproject.net</p>
+              <p>dgladish3@gatech.edu</p>
             </li>
           </ul>
         </div>
