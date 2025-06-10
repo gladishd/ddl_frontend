@@ -120,3 +120,70 @@
     @apply bg-background text-foreground;
   }
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 180 14% 20%;
+    /* --text-color-dark */
+
+    --card: 0 0% 100%;
+    --card-foreground: 180 14% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 180 14% 20%;
+
+    --primary: 180 100% 20%;
+    /* --primary-color: #006666 */
+    --primary-hover: 180 100% 30%;
+    /* --primary-color-hover: #009999 */
+    --primary-foreground: 0 0% 100%;
+    /* --text-color-light: white */
+
+    --secondary: 180 25% 78%;
+    /* --secondary-color: #b2d8d8 */
+    --secondary-hover: 174 25% 82%;
+    /* --secondary-color-hover: #c1e0dc */
+    --secondary-foreground: 180 14% 20%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 20 81% 45%;
+    /* --accent-color: #d66d50 (approximated) */
+    --accent-hover: 20 100% 30%;
+    /* --accent-color-hover: #994d00 (approximated) */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 180 100% 20%;
+
+    --radius: 0.5rem;
+
+    --navbar-height: 3.625rem;
+    --font: "Roboto", sans-serif;
+  }
+
+  .dark {
+    /* Define dark mode colors if needed */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font);
+  }
+}
