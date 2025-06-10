@@ -1,329 +1,135 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useMacMiniContext } from '@/context/MacMiniContext';
-import { MessageData } from '@/types/PortSnapshot';
+import React, { useState, useCallback, useEffect, useRef } from "react";
+import { useMacMiniContext } from "@/context/MacMiniContext";
+import { MessageData } from "@/types/PortSnapshot";
 
 interface PacketEvent {
-  direction: 'IN' | 'OUT';
-  type: 'LIVENESS' | '2PC';
+  direction: "IN" | "OUT";
+  type: "LIVENESS" | "2PC";
   payload: any;
 }
 
-// Create a function to generate a trace with increasing LTP numbers
-const generateTrace = (startLtp: number): PacketEvent[] => {
-  return [
-    { direction: 'OUT', type: 'LIVENESS', payload: { status: 'HEALTHY' } },
-    { direction: 'IN', type: 'LIVENESS', payload: { status: 'HEALTHY' } },
-    { direction: 'OUT', type: '2PC', payload: { phase: 0, data: `DATA##LTP ${startLtp}` } },
-    { direction: 'IN', type: '2PC', payload: { phase: 1, data: 'ACK##' } },
-    { direction: 'OUT', type: '2PC', payload: { phase: 2, data: 'ACK##' } },
-    { direction: 'IN', type: 'LIVENESS', payload: { status: 'HEALTHY' } },
-  ];
-};
-
-// Create a function to generate a trace with error recovery
-const generateErrorTrace = (startLtp: number): PacketEvent[] => {
-  return [
-    { direction: 'OUT', type: 'LIVENESS', payload: { status: 'HEALTHY' } },
-    { direction: 'IN', type: 'LIVENESS', payload: { status: 'HEALTHY' } },
-    { direction: 'OUT', type: '2PC', payload: { phase: 0, data: `DATA##LTP ${startLtp}` } },
-    { direction: 'IN', type: '2PC', payload: { phase: 1, data: 'ACK##' } },
-    { direction: 'OUT', type: '2PC', payload: { phase: 2, data: 'ERROR##' } },
-    { direction: 'IN', type: '2PC', payload: { phase: 2, data: 'NACK##' } },
-    { direction: 'OUT', type: '2PC', payload: { phase: 1, data: 'NACK##' } },
-    { direction: 'IN', type: '2PC', payload: { phase: 0, data: 'NACK##' } },
-  ];
-};
-
-// Pre-written packet traces
-const PACKET_TRACES: PacketEvent[][] = [
-  // Normal operation trace
-  [
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-  ],
-  [
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: '2PC', payload: {phase: 0, data: 'DATA##LTP 181'} },
-    { direction: 'IN', type: '2PC', payload: {phase: 1, data: 'ACK##'} },
-    { direction: 'OUT', type: '2PC', payload: {phase: 2, data: 'ACK##'} },
-    { direction: 'IN', type: 'LIVENESS', payload: {phase: 3, data: 'ACK##'} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: '2PC', payload: {phase: 0, data: 'DATA##LTP 181'} },
-    { direction: 'IN', type: '2PC', payload: {phase: 1, data: 'ACK##'} },
-    { direction: 'OUT', type: '2PC', payload: {phase: 2, data: 'ACK##'} },
-    { direction: 'IN', type: 'LIVENESS', payload: {phase: 3, data: 'ACK##'} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: '2PC', payload: {phase: 0, data: 'DATA##LTP 181'} },
-    { direction: 'IN', type: '2PC', payload: {phase: 1, data: 'ACK##'} },
-    { direction: 'OUT', type: '2PC', payload: {phase: 2, data: 'ACK##'} },
-    { direction: 'IN', type: 'LIVENESS', payload: {phase: 3, data: 'ACK##'} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: '2PC', payload: {phase: 0, data: 'DATA##LTP 181'} },
-    { direction: 'IN', type: '2PC', payload: {phase: 1, data: 'ACK##'} },
-    { direction: 'OUT', type: '2PC', payload: {phase: 2, data: 'ACK##'} },
-    { direction: 'IN', type: 'LIVENESS', payload: {phase: 3, data: 'ACK##'} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: '2PC', payload: {phase: 0, data: 'DATA##LTP 181'} },
-    { direction: 'IN', type: '2PC', payload: {phase: 1, data: 'ACK##'} },
-    { direction: 'OUT', type: '2PC', payload: {phase: 2, data: 'ACK##'} },
-    { direction: 'IN', type: 'LIVENESS', payload: {phase: 3, data: 'ACK##'} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: '2PC', payload: {phase: 0, data: 'DATA##LTP 181'} },
-    { direction: 'IN', type: '2PC', payload: {phase: 1, data: 'ACK##'} },
-    { direction: 'OUT', type: '2PC', payload: {phase: 2, data: 'ACK##'} },
-    { direction: 'IN', type: 'LIVENESS', payload: {phase: 3, data: 'ACK##'} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: '2PC', payload: {phase: 0, data: 'DATA##LTP 181'} },
-    { direction: 'IN', type: '2PC', payload: {phase: 1, data: 'ACK##'} },
-    { direction: 'OUT', type: '2PC', payload: {phase: 2, data: 'ACK##'} },
-    { direction: 'IN', type: 'LIVENESS', payload: {phase: 3, data: 'ACK##'} },
-    { direction: 'OUT', type: 'LIVENESS', payload: {} },
-    { direction: 'IN', type: 'LIVENESS', payload: {} },
-    { direction: 'OUT', type: '2PC', payload: {phase: 0, data: 'DATA##LTP 181'} },
-  ],
+// Helpers to fabricate packet traces -------------------------------------------------------------
+const makeTrace = (ltp: number): PacketEvent[] => [
+  { direction: "OUT", type: "LIVENESS", payload: {} },
+  { direction: "IN", type: "LIVENESS", payload: {} },
+  { direction: "OUT", type: "2PC", payload: { phase: 0, data: `DATA##LTP ${ltp}` } },
+  { direction: "IN", type: "2PC", payload: { phase: 1, data: "ACK##" } },
+  { direction: "OUT", type: "2PC", payload: { phase: 2, data: "ACK##" } },
 ];
 
+const makeErrorTrace = (ltp: number): PacketEvent[] => [
+  { direction: "OUT", type: "LIVENESS", payload: {} },
+  { direction: "IN", type: "LIVENESS", payload: {} },
+  { direction: "OUT", type: "2PC", payload: { phase: 0, data: `DATA##LTP ${ltp}` } },
+  { direction: "IN", type: "2PC", payload: { phase: 1, data: "ACK##" } },
+  { direction: "OUT", type: "2PC", payload: { phase: 2, data: "ERROR##" } },
+  { direction: "IN", type: "2PC", payload: { phase: 2, data: "NACK##" } },
+];
+// -----------------------------------------------------------------------------------------------
+
 const AnalysisView: React.FC = () => {
-  const { selectedMacMinis, selectMacMini, deselectMacMini } = useMacMiniContext();
-  const [message, setMessage] = useState<MessageData | null>(null);
-  const [packetEvents, setPacketEvents] = useState<PacketEvent[]>([]);
-  const [isTracing, setIsTracing] = useState(false);
-  const [selectedPort, setSelectedPort] = useState<string | null>(null);
-  const connectionRef = useRef<WebSocket | null>(null);
-  const messageHandler = useRef<((event: MessageEvent) => void) | null>(null);
-  const mountTimeRef = useRef(Date.now());
-  const baseLtpRef = useRef(100); // Starting LTP number
+  const { selectedMacMinis, messages, deselectMacMini } = useMacMiniContext();
+  const macMini = selectedMacMinis[0];
+  const message: MessageData | undefined = macMini ? messages[macMini.ip] : undefined;
 
-  // Function to get current LTP number based on elapsed time
-  const getCurrentLtp = useCallback(() => {
-    const elapsedMs = Date.now() - mountTimeRef.current;
-    const elapsedSeconds = elapsedMs / 1000;
-    const ltpIncrement = Math.floor(elapsedSeconds * 1000); // 1000 LTPs per second
-    return baseLtpRef.current + ltpIncrement;
-  }, []);
-
-  // Ensure only one Mac Mini is selected
+  // Enforce single‑selection
   useEffect(() => {
     if (selectedMacMinis.length > 1) {
-      // Keep only the first selected Mac Mini
-      const firstMacMini = selectedMacMinis[0];
-      selectedMacMinis.forEach(macMini => {
-        if (macMini.ip !== firstMacMini.ip) {
-          deselectMacMini(macMini.ip);
-        }
-      });
+      selectedMacMinis.slice(1).forEach((m) => deselectMacMini(m.ip));
     }
   }, [selectedMacMinis, deselectMacMini]);
 
-  useEffect(() => {
-    const macMini = selectedMacMinis[0];
-    if (!macMini?.connection) return;
+  const [selectedPort, setSelectedPort] = useState<string | "">("");
+  const [events, setEvents] = useState<PacketEvent[]>([]);
+  const [tracing, setTracing] = useState(false);
+  const mountRef = useRef(Date.now());
 
-    // Clean up previous connection
-    if (connectionRef.current && messageHandler.current) {
-      connectionRef.current.removeEventListener('message', messageHandler.current);
-    }
-
-    // Set up new connection
-    const handler = (event: MessageEvent) => {
-      try {
-        const data = JSON.parse(event.data);
-        setMessage(data);
-      } catch (e) {
-        console.error('Failed to parse message:', e);
-      }
-    };
-
-    macMini.connection.addEventListener('message', handler);
-    connectionRef.current = macMini.connection;
-    messageHandler.current = handler;
-
-    return () => {
-      if (connectionRef.current && messageHandler.current) {
-        connectionRef.current.removeEventListener('message', messageHandler.current);
-      }
-    };
-  }, [selectedMacMinis]);
-
-  const startPacketTrace = useCallback(() => {
-    if (!selectedPort) return;
-    
-    setIsTracing(true);
-    setPacketEvents([]);
-    
-    // Generate 5 traces alternating between normal and error scenarios
-    const traces = Array.from({ length: 5 }, (_, index) => {
-      const currentLtp = getCurrentLtp();
-      const trace = index % 2 === 0 
-        ? generateTrace(currentLtp)
-        : generateErrorTrace(currentLtp);
-      return trace;
-    });
-    
-    // Simulate packet trace events with delays
-    traces.forEach((trace, index) => {
-      setTimeout(() => {
-        setPacketEvents(prev => [...prev, ...trace]);
-      }, index * 1000); // Add each trace with a 1-second delay
-    });
-
-    // Reset tracing state after all traces are shown
-    setTimeout(() => {
-      setIsTracing(false);
-    }, traces.length * 1000);
-  }, [selectedPort, getCurrentLtp]);
-
-  const injectFailure = useCallback((source: string, target: string) => {
-    if (!connectionRef.current) return;
-    
-    // Send inject failure command
-    connectionRef.current.send(JSON.stringify({
-      command: 'inject_failure',
-      source,
-      target
-    }));
+  const nextLtp = useCallback(() => {
+    const diffSec = (Date.now() - mountRef.current) / 1000;
+    return 100 + Math.floor(diffSec * 400); // 400 LTP/s just to make numbers fun
   }, []);
 
-  if (!selectedMacMinis.length) {
-    return (
-      <div className="p-4">
-        <p>Please select a Mac Mini to analyze</p>
-      </div>
-    );
-  }
+  const startTrace = useCallback(() => {
+    if (!selectedPort) return;
+    setTracing(true);
+    setEvents([]);
 
-  const macMini = selectedMacMinis[0];
+    const seq = Array.from({ length: 6 }, (_, i) =>
+      i % 2 === 0 ? makeTrace(nextLtp()) : makeErrorTrace(nextLtp())
+    ).flat();
+
+    seq.forEach((e, idx) =>
+      setTimeout(() => setEvents((prev) => [...prev, e]), idx * 300)
+    );
+
+    setTimeout(() => setTracing(false), seq.length * 300 + 200);
+  }, [selectedPort, nextLtp]);
+
+  if (!macMini) {
+    return <div className="p-4 text-gray-500">Select a Mac Mini to analyse.</div>;
+  }
 
   return (
     <div className="p-4 overflow-y-auto max-h-[calc(100vh-8rem)]">
-      <h2 className="text-lg font-bold mb-4">Analysis View - {macMini.ip}</h2>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Port Selection and Controls */}
-        <div className="border rounded p-4">
-          <h3 className="text-md font-semibold mb-4">Port Controls</h3>
-          
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Select Port</label>
-            <select 
-              className="w-full p-2 border rounded"
-              value={selectedPort || ''}
-              onChange={(e) => setSelectedPort(e.target.value)}
-            >
-              <option value="">Select a port...</option>
-              {message?.port_paths && Object.keys(message.port_paths).map(portId => (
-                <option key={portId} value={portId}>{portId}</option>
-              ))}
-            </select>
-          </div>
+      <h2 className="text-lg font-bold mb-4">Analysis View — {macMini.ip}</h2>
 
-          <div className="space-y-2">
-            <button
-              className="w-full bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
-              onClick={startPacketTrace}
-              disabled={!selectedPort || isTracing}
-            >
-              {isTracing ? 'Tracing...' : 'Start Packet Trace'}
-            </button>
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Controls */}
+        <div className="border rounded p-4">
+          <h3 className="font-semibold mb-4">Port Controls</h3>
+          <label className="block text-sm mb-2">Select Port</label>
+          <select
+            className="w-full border rounded p-2 mb-4"
+            value={selectedPort}
+            onChange={(e) => setSelectedPort(e.target.value)}
+          >
+            <option value="">—</option>
+            {message?.port_paths &&
+              Object.keys(message.port_paths).map((p) => (
+                <option key={p}>{p}</option>
+              ))}
+          </select>
+
+          <button
+            className="w-full bg-blue-500 text-white py-2 rounded disabled:opacity-50"
+            onClick={startTrace}
+            disabled={!selectedPort || tracing}
+          >
+            {tracing ? "Tracing…" : "Start Packet Trace"}
+          </button>
         </div>
 
-        {/* Packet Trace Display */}
+        {/* Trace display */}
         <div className="border rounded p-4">
-          <h3 className="text-md font-semibold mb-4">Packet Trace</h3>
+          <h3 className="font-semibold mb-4">Packet Trace</h3>
           <div className="h-[400px] overflow-y-auto bg-gray-50 p-2 rounded">
-            {packetEvents.length === 0 ? (
-              <p className="text-gray-500">No packet events recorded yet</p>
+            {events.length === 0 ? (
+              <p className="text-gray-500">No events yet.</p>
             ) : (
-              <div className="flex flex-col space-y-2">
-                {packetEvents.map((event, index) => (
-                  <div key={index} className={`bg-white p-2 rounded shadow-sm border-l-4 ${
-                    event.direction === 'IN' ? 'border-blue-500' : 'border-green-500'
-                  } flex items-center`}>
-                    <div className={`text-xs font-medium w-12 text-center ${
-                      event.direction === 'IN' ? 'text-blue-500' : 'text-green-500'
-                    }`}>
-                      {event.direction}
-                    </div>
-                    <div className="font-mono text-sm w-24 text-center border-r border-gray-200 pr-4">
-                      {event.type}
-                    </div>
-                    <pre className="text-xs bg-gray-50 p-1 rounded flex-1 overflow-x-auto ml-4">
-                      {JSON.stringify(event.payload, null, 2)}
-                    </pre>
+                events.map((ev, i) => (
+                  <div
+                    key={i}
+                    className={`flex items-center p-2 mb-1 rounded border-l-4 ${ev.direction === "IN" ? "border-blue-500" : "border-green-500"
+                      } bg-white shadow-sm`}
+                  >
+                    <span
+                      className={`w-12 text-xs font-medium text-center ${ev.direction === "IN" ? "text-blue-600" : "text-green-600"
+                        }`}
+                    >
+                      {ev.direction}
+                    </span>
+                    <span className="w-24 text-center text-sm font-mono border-r pr-3 mr-3">
+                      {ev.type}
+                    </span>
+                    <pre className="text-xs overflow-x-auto">{JSON.stringify(ev.payload)}</pre>
                   </div>
-                ))}
-              </div>
+                ))
             )}
           </div>
         </div>
-
-        {/* Port Graph with Failure Injection */}
-        {message?.port_paths && selectedPort && (
-          <div className="border rounded p-4 md:col-span-2">
-            <h3 className="text-md font-semibold mb-4">Port Graph - {selectedPort}</h3>
-            <div className="h-[400px] bg-white rounded relative">
-              {/* Add your graph visualization here */}
-              <div className="absolute inset-0">
-                {/* Graph component will go here */}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
 };
 
-export default AnalysisView; 
+export default AnalysisView;

@@ -5,275 +5,192 @@ import React, {
   useContext,
   useState,
   useEffect,
-  useCallback,
   useMemo,
   ReactNode,
 } from "react";
+
 import { MacMini } from "@/types/MacMini";
-import { MessageData } from "@/types/PortSnapshot";
+import {
+  MessageData,
+  PortSnapshot,
+  ConnectionDetails,
+  TreeNodeData,
+  PortPath,
+  Edge,
+} from "@/types/PortSnapshot";
 
 /*
- * The Gateway Node provides the public interface to the Graph Virtual Machine (GVM).
- * This abstracts the client from the underlying physical topology, preventing the "catastrophic"
- * failures seen in conventional systems where direct, fragile connections create non-determinism.
- * The URL is now determined dynamically to adapt to the deployment environment.
- */
-// const GATEWAY_NODE_URL = "ws://<some_public_gateway_url>"; // This has been removed.
+─────────────────────────────────────────────────────────────────────────────
+ Demo‑mode Network Generator 2.0
+─────────────────────────────────────────────────────────────────────────────
+This version spins up eight imaginary Mac‑Minis, each with 2‑5 interfaces
+(en0‑en4, bridge0, eth0).  Every 2 s it refreshes statistics, randomly drops
+/ restores links, shuffles peerings, and tweaks tree & DAG structures so all
+four views (Tree, Raw, DAG, Analysis) stay lively.
+*/
 
 export type ViewType = "tree" | "raw" | "dag" | "analysis";
-export type ConnectionMode = "local" | "gateway";
 
 interface MacMiniContextState {
   macMinis: MacMini[];
   selectedMacMiniIps: string[];
   selectedMacMinis: MacMini[];
-  messages: Record<string, MessageData>; // Centralized message store for all nodes.
+  messages: Record<string, MessageData>;
   activeView: ViewType;
   isClient: boolean;
-  connectionMode: ConnectionMode | null;
-  setMacMinis: (macMinis: MacMini[]) => void;
+  setActiveView: (v: ViewType) => void;
   selectMacMini: (ip: string) => void;
   deselectMacMini: (ip: string) => void;
-  setActiveView: (view: ViewType) => void;
-  addMacMini: (ip: string) => void;
-  removeMacMini: (ip: string) => void;
-  refreshConnection: (ip: string) => Promise<void>;
-  checkAllConnections: () => Promise<void>;
 }
 
-const MacMiniContext = createContext<MacMiniContextState>({} as MacMiniContextState);
+const Ctx = createContext<MacMiniContextState>({} as MacMiniContextState);
 
-interface MacMiniProviderProps {
-  children: ReactNode;
-}
+interface ProviderProps { children: ReactNode }
 
-/*
- * A direct connection to a local node's WebSocket. This follows the principle that acknowledgements
- * should not incur the full cost of bandwidth, as we can establish a direct, low-latency link.
- */
-const checkLocalWebSocketConnection = (ip: string): Promise<WebSocket | null> => {
-  return new Promise((resolve) => {
-    const ws = new WebSocket(`ws://${ip}:6363`);
-    const timeout = setTimeout(() => {
-      ws.close();
-      resolve(null);
-    }, 10000);
+// ─── Constants ────────────────────────────────────────────────────────────
+const IPS = Array.from({ length: 8 }, (_, i) => `192.168.1.1${(i + 1).toString().padStart(2, "0")}`);
+const PORTS = ["en0", "en1", "en2", "en3", "en4", "bridge0", "eth0"];
+const PROTOCOLS = ["ethernet", "wifi", "thunderbolt"];
 
-    ws.onopen = () => {
-      clearTimeout(timeout);
-      resolve(ws);
+const rnd = (max: number) => Math.floor(Math.random() * max);
+const sample = <T,>(arr: T[]) => arr[rnd(arr.length)];
+
+// ─── Generators ───────────────────────────────────────────────────────────
+const genStats = (): Record<string, number> => ({
+  rx_bytes: rnd(50_000),
+  tx_bytes: rnd(50_000),
+  errors: rnd(20),
+  dropped: rnd(10),
+});
+
+const genSnapshot = (selfIp: string, portName: string): PortSnapshot => {
+  const connected = Math.random() > 0.15; // 85 % chance up
+  let connection: ConnectionDetails | undefined = undefined;
+  if (connected) {
+    const peerIp = sample(IPS.filter((ip) => ip !== selfIp));
+    const peerPort = sample(PORTS);
+    connection = {
+      local_address: `${selfIp}%${portName}`,
+      neighbor_address: `${peerIp}%${peerPort}`,
+      neighbor_portid: peerPort,
+      is_client: Math.random() > 0.5,
     };
-
-    const onFail = () => {
-      clearTimeout(timeout);
-      resolve(null);
-    };
-
-    ws.onerror = onFail;
-    ws.onclose = onFail;
-  });
+  }
+  return {
+    name: portName,
+    connection,
+    link: {
+      protocol: sample(PROTOCOLS),
+      status: connected ? "connected" : "disconnected",
+      statistics: connected ? genStats() : undefined,
+    },
+  };
 };
 
-export function MacMiniProvider({ children }: MacMiniProviderProps) {
+const genSnapshots = (ip: string): Record<string, PortSnapshot> => {
+  const howMany = 2 + rnd(4); // 2‑5 ports
+  const chosen = [...PORTS].sort(() => 0.5 - Math.random()).slice(0, howMany);
+  return Object.fromEntries(chosen.map((p) => [p, genSnapshot(ip, p)]));
+};
+
+const genTrees = (ip: string): Record<string, TreeNodeData> => {
+  const entries = 1 + rnd(3); // 1‑3 tree nodes
+  const targets = [...IPS.filter((i) => i !== ip)].sort(() => 0.5 - Math.random()).slice(0, entries);
+  return Object.fromEntries(
+    targets.map((t) => [t, {
+      rootward_portid: sample(PORTS),
+      hops: 1 + rnd(3),
+      tree_instance_id: crypto.randomUUID?.() ?? Math.random().toString(16).slice(2),
+    }])
+  );
+};
+
+const genPortPathForPort = (selfId: string): PortPath => {
+  const length = 3 + rnd(3); // 3‑5 nodes
+  const nodes: string[] = [selfId];
+  for (let i = 1; i < length; i++) {
+    const ip = sample(IPS);
+    const port = sample(PORTS);
+    nodes.push(`${ip.replace(/\./g, "-")}:${port}`);
+  }
+  const edges: Edge[] = nodes.slice(1).map((n, idx) => ({ source: nodes[idx], target: n }));
+  return { nodes, edges };
+};
+
+const genPortPaths = (ip: string, portNames: string[]): Record<string, PortPath> => {
+  return Object.fromEntries(
+    portNames.map((p) => {
+      const selfId = `${ip.replace(/\./g, "-")}:${p}`;
+      return [p, genPortPathForPort(selfId)];
+    })
+  );
+};
+
+const genMessage = (ip: string): MessageData => {
+  const snapshots = genSnapshots(ip);
+  const ports = Object.keys(snapshots);
+  return {
+    type: "snapshot",
+    node_id: `${ip.replace(/\./g, "-")}:bridge0`,
+    snapshots,
+    trees_dict: genTrees(ip),
+    port_paths: genPortPaths(ip, ports),
+  };
+};
+
+// ─── Provider ─────────────────────────────────────────────────────────────
+export function MacMiniProvider({ children }: ProviderProps) {
   const [macMinis, setMacMinis] = useState<MacMini[]>([]);
-  const [selectedMacMiniIps, setSelectedMacMiniIps] = useState<string[]>([]);
+  const [selectedIps, setSelectedIps] = useState<string[]>([]);
   const [messages, setMessages] = useState<Record<string, MessageData>>({});
   const [activeView, setActiveView] = useState<ViewType>("tree");
   const [isClient, setIsClient] = useState(false);
-  const [connectionMode, setConnectionMode] = useState<ConnectionMode | null>(null);
 
-  const selectedMacMinis = useMemo(() => {
-    return selectedMacMiniIps
-      .map(ip => macMinis.find(m => m.ip === ip && m.isConnected))
-      .filter(Boolean) as MacMini[];
-  }, [macMinis, selectedMacMiniIps]);
-
-  /*
-   * Our message handler is centralized. This design allows us to interface with different
-   * computational strata—whether connecting to a gateway or a local node—while keeping the
-   * frontend's view logic consistent and adaptable.
-   */
-  const handleIncomingMessage = (ip: string, data: string) => {
-    try {
-      const message = JSON.parse(data) as MessageData;
-      setMessages(prev => ({
-        ...prev,
-        [ip]: message
-      }));
-    } catch (e) {
-      console.error(`Failed to parse message from ${ip}:`, e);
-    }
-  };
-
-  /*
-   * Initialization of the client and detection of the connection "mode." In a deployed environment
-   * (the 'gateway' mode), we must establish a secure WebSocket connection (wss://). This secure channel
-   * is the public interface to the Graph Virtual Machine (GVM), abstracting the end-user from the
-   * physical topology and its potential fragilities. Using an insecure 'ws://' from a secure 'https://'
-   * page is blocked by browsers and introduces the very non-determinism we aim to eliminate.
-   */
+  // Initial load
   useEffect(() => {
     setIsClient(true);
-    const mode: ConnectionMode = window.location.hostname === "localhost" ? "local" : "gateway";
-    setConnectionMode(mode);
-
-    if (mode === 'local') {
-      const stored = localStorage.getItem("macMinis");
-      const storedSelection = localStorage.getItem("selectedMacMiniIps");
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        Promise.all(
-          parsed.map(async (mini: MacMini) => {
-            const connection = await checkLocalWebSocketConnection(mini.ip);
-            if (connection) {
-              connection.onmessage = (event) => handleIncomingMessage(mini.ip, event.data);
-            }
-            return {
-              ...mini,
-              isConnected: !!connection,
-              connection: connection || undefined,
-            };
-          })
-        ).then(updatedMacMinis => {
-          setMacMinis(updatedMacMinis);
-          if (storedSelection) {
-            try {
-              const selectedIps = JSON.parse(storedSelection);
-              const validIps = selectedIps.filter((ip: string) =>
-                updatedMacMinis.some(m => m.ip === ip && m.isConnected)
-              );
-              setSelectedMacMiniIps(validIps);
-            } catch { }
-          }
-        });
-      }
-    } else { // Gateway Mode
-      /*
-       * In gateway mode, we connect to a single, reliable endpoint that represents the GVM.
-       * The WebSocket protocol (ws/wss) must match the page's protocol (http/https) to ensure a
-       * secure and stable connection, preventing silent failures.
-       */
-      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-      // Assuming the gateway uses port 6363 on the same host.
-      const gatewayUrl = `${protocol}//${window.location.hostname}:6363`;
-      const ws = new WebSocket(gatewayUrl);
-
-      ws.onopen = () => {
-        /*
-         * Once connected to the GVM gateway, we can receive a complete state of the system. This
-         * follows the principle of having a 'Local Observer View (LOV)' that is dynamically updated,
-         * paving the way for highly dynamic computational strata in layers above.
-         */
-      };
-      ws.onmessage = (event) => {
-        /* The gateway streams the state of the entire system, allowing the frontend to render a consistent view. */
-        const systemState = JSON.parse(event.data);
-        setMacMinis(systemState.nodes);
-        setMessages(systemState.messages);
-      };
-      ws.onclose = () => {
-        /* When the connection to the GVM is lost, clear the state to reflect reality. */
-        setMacMinis([]);
-        setMessages({});
-      };
-      /*
-       * In gateway mode, `selectedMacMinis` is managed by the GVM, abstracting direct user
-       * manipulation to prevent state drift, embodying the principle that "bandwidth works in practice, not in theory."
-       */
-    }
+    const minis = IPS.map((ip) => ({ ip, name: `mac-mini@${ip}`, isConnected: true }));
+    setMacMinis(minis);
+    setSelectedIps([minis[0].ip]);
+    const seed: Record<string, MessageData> = {};
+    minis.forEach((m) => (seed[m.ip] = genMessage(m.ip)));
+    setMessages(seed);
   }, []);
 
-  /* Persist macMinis and selection to localStorage only in local mode. */
+  // Live mutation every 2 s
   useEffect(() => {
-    if (isClient && connectionMode === 'local') {
-      const serializable = macMinis.map(({ connection, ...rest }) => rest);
-      localStorage.setItem("macMinis", JSON.stringify(serializable));
-      localStorage.setItem("selectedMacMiniIps", JSON.stringify(selectedMacMiniIps));
-    }
-  }, [macMinis, selectedMacMiniIps, isClient, connectionMode]);
+    if (!isClient) return;
+    const id = setInterval(() => {
+      setMessages((prev) => {
+        const next: typeof prev = {};
+        Object.keys(prev).forEach((ip) => (next[ip] = genMessage(ip)));
+        return next;
+      });
+    }, 2_000);
+    return () => clearInterval(id);
+  }, [isClient]);
 
-  const addMacMini = (ip: string) => {
-    if (connectionMode !== 'local') return;
-    if (!ip || macMinis.some(m => m.ip === ip)) return;
-    setMacMinis([...macMinis, { ip, name: ip, isConnected: false }]);
-  };
+  const selected = useMemo(
+    () => selectedIps.map((ip) => macMinis.find((m) => m.ip === ip)).filter(Boolean) as MacMini[],
+    [macMinis, selectedIps]
+  );
 
-  const removeMacMini = (ip: string) => {
-    if (connectionMode !== 'local') return;
-    const toRemove = macMinis.find(m => m.ip === ip);
-    toRemove?.connection?.close();
-    setMacMinis(macMinis.filter(m => m.ip !== ip));
-    setSelectedMacMiniIps(prev => prev.filter(selectedIp => selectedIp !== ip));
-  };
+  const selectMacMini = (ip: string) => setSelectedIps((p) => (p.includes(ip) ? p : [...p, ip]));
+  const deselectMacMini = (ip: string) => setSelectedIps((p) => p.filter((x) => x !== ip));
 
-  const refreshConnection = async (ip: string) => {
-    if (connectionMode !== 'local' || !isClient) return;
-    const index = macMinis.findIndex(m => m.ip === ip);
-    if (index === -1) return;
-    if (macMinis[index].connection) macMinis[index].connection.close();
-    const connection = await checkLocalWebSocketConnection(ip);
-    if (connection) {
-      connection.onmessage = (event) => handleIncomingMessage(ip, event.data);
-    }
-    const updated = [...macMinis];
-    updated[index] = { ...updated[index], isConnected: !!connection, connection: connection || undefined };
-    setMacMinis(updated);
-    if (!connection) {
-      setSelectedMacMiniIps(prev => prev.filter(selectedIp => selectedIp !== ip));
-    }
-  };
-
-  const checkAllConnections = useCallback(async () => {
-    if (connectionMode !== 'local' || !isClient) return;
-    const updated = await Promise.all(
-      macMinis.map(async (mini) => {
-        if (mini.connection) mini.connection.close();
-        const connection = await checkLocalWebSocketConnection(mini.ip);
-        if (connection) {
-          connection.onmessage = (event) => handleIncomingMessage(mini.ip, event.data);
-        }
-        return { ...mini, isConnected: !!connection, connection: connection || undefined };
-      })
-    );
-    setMacMinis(updated);
-    setSelectedMacMiniIps(prev => prev.filter(ip => updated.some(m => m.ip === ip && m.isConnected)));
-  }, [isClient, macMinis, connectionMode]);
-
-  const selectMacMini = (ip: string) => {
-    const target = macMinis.find(m => m.ip === ip && m.isConnected);
-    if (!target) return;
-    setSelectedMacMiniIps(prev => prev.includes(ip) ? prev : [...prev, ip]);
-  };
-
-  const deselectMacMini = (ip: string) => {
-    setSelectedMacMiniIps(prev => prev.filter(selectedIp => selectedIp !== ip));
-  };
-
-  const contextValue: MacMiniContextState = {
+  const value: MacMiniContextState = {
     macMinis,
-    selectedMacMiniIps,
-    selectedMacMinis,
+    selectedMacMiniIps: selectedIps,
+    selectedMacMinis: selected,
     messages,
     activeView,
     isClient,
-    connectionMode,
-    setMacMinis,
+    setActiveView,
     selectMacMini,
     deselectMacMini,
-    setActiveView,
-    addMacMini,
-    removeMacMini,
-    refreshConnection,
-    checkAllConnections,
   };
 
-  return (
-    <MacMiniContext.Provider value={contextValue}>
-      {children}
-    </MacMiniContext.Provider>
-  );
+  return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 
-export function useMacMiniContext() {
-  return useContext(MacMiniContext);
-}
+export const useMacMiniContext = () => useContext(Ctx);
