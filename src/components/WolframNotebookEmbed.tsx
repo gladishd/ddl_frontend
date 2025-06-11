@@ -34,7 +34,7 @@ const WolframNotebookEmbed = () => {
 
         {/* This second embed provides a complementary 'precise information-theoretic' emulator, */}
         {/* critical for modeling the complex, competitive interactions inherent in 'Digital Twin' environments.  */}
-        <div className="relative w-full h-[80vh] border rounded bg-white shadow-inner overflow-hidden mt-8">
+        {/* <div className="relative w-full h-[80vh] border rounded bg-white shadow-inner overflow-hidden mt-8">
           <iframe
             src={notebookUrl2}
             title="Wolfram Cloud Notebook 2"
@@ -42,7 +42,7 @@ const WolframNotebookEmbed = () => {
             // This allows the iframe to go fullscreen, a necessary feature for complex visualizations.
             allowFullScreen
           />
-        </div>
+        </div> */}
       </div>
     </section>
   );
