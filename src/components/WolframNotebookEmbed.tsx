@@ -1,35 +1,44 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
-// This component provides a direct interface to a Wolfram Notebook,
-// embedding a live computational document within our application.
-// It exemplifies our principle of using 'precise information-theoretic'
-// emulators and models to interact with and understand complex systems,
-// moving beyond the limitations of conventional network thinking.
-const WolframNotebookEmbed = () => {
-  const notebookUrl = "https://www.wolframcloud.com/obj/gladishdean/Published/wolfram%20cloud%20for%20sahas2.nb";
+// Declare the WolframCloud object to satisfy TypeScript
+declare const WolframCloud: any;
+
+interface WolframNotebookEmbedProps {
+  notebookUrl: string;
+}
+
+const WolframNotebookEmbed: React.FC<WolframNotebookEmbedProps> = ({ notebookUrl }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const scriptLoaded = useRef(false);
+
+  useEffect(() => {
+    const loadWolframScript = () => {
+      const script = document.createElement('script');
+      script.src = 'https://www.wolframcloud.com/static/embedded.js';
+      script.onload = () => {
+        if (containerRef.current) {
+          WolframCloud.embed(notebookUrl, containerRef.current);
+        }
+      };
+      document.head.appendChild(script);
+      scriptLoaded.current = true;
+    };
+
+    if (typeof WolframCloud === 'undefined') {
+      if (!scriptLoaded.current) {
+        loadWolframScript();
+      }
+    } else if (containerRef.current) {
+      WolframCloud.embed(notebookUrl, containerRef.current);
+    }
+  }, [notebookUrl]);
 
   return (
-    <section className="bg-gray-50 p-6">
-      <div className="container mx-auto">
-        <header className="mb-4">
-          <h2 className="text-2xl font-bold">Live Computational Model</h2>
-          <p className="text-muted-foreground">
-            An embedded Wolfram Cloud notebook for live analysis and modeling.
-          </p>
-        </header>
-        <div className="relative w-full h-[80vh] border rounded bg-white shadow-inner overflow-hidden">
-          <iframe
-            src={notebookUrl}
-            title="Wolfram Cloud Notebook"
-            className="w-full h-full border-0"
-            // This allows the iframe to go fullscreen, a necessary feature for complex visualizations.
-            allowFullScreen
-          />
-        </div>
-      </div>
-    </section>
+    <div ref={containerRef} className="wolfram-notebook-container w-full my-4" style={{ minHeight: '600px' }}>
+      {/* The Wolfram Notebook will be embedded here */}
+    </div>
   );
 };
 
