@@ -1,5 +1,5 @@
 declare module 'react-force-graph-2d' {
-  import { FC } from 'react';
+  import { FC, ForwardRefExoticComponent, RefAttributes } from 'react';
 
   interface GraphData {
     nodes: Array<{
@@ -30,10 +30,14 @@ declare module 'react-force-graph-2d' {
     linkWidth?: number;
     linkDirectionalArrowLength?: number;
     linkDirectionalArrowRelPos?: number;
+    linkLineDash?: any; // Added to support this prop
     cooldownTicks?: number;
     onEngineStop?: () => void;
   }
 
-  const ForceGraph2D: FC<ForceGraph2DProps>;
+  // The component is defined as a ForwardRefExoticComponent to correctly handle the 'ref' prop.
+  // This aligns our type system with the reality of the library's implementation, ensuring that
+  // we can create a stable, non-fragile interface to the underlying graph engine.
+  const ForceGraph2D: ForwardRefExoticComponent<ForceGraph2DProps & RefAttributes<any>>;
   export default ForceGraph2D;
-} 
+}
