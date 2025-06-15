@@ -1,18 +1,14 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Heart, Eye, Tag, Share2, ImageOff } from 'lucide-react';
+import { Heart, Eye, Tag, Share2, ImageOff, X as CloseIcon } from 'lucide-react';
 import { pdfjs } from 'react-pdf';
 import type { DocumentRecord } from '@/types/Document';
 import { Button } from '@/components/ui/button';
 
-/* ------------------------------------------------------------------ */
-/*  Configure pdf.js – point the worker to the CDN                    */
-/* ------------------------------------------------------------------ */
 if (typeof window !== 'undefined' && !pdfjs.GlobalWorkerOptions.workerSrc) {
-  /* one-liner that works in dev + prod ------------------------------- */
   pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.min.mjs',   // 👈 switch to .mjs
+    'pdfjs-dist/build/pdf.worker.min.mjs',
     import.meta.url,
   ).toString();
 }
@@ -20,21 +16,16 @@ if (typeof window !== 'undefined' && !pdfjs.GlobalWorkerOptions.workerSrc) {
 type Props = { doc: DocumentRecord };
 
 export default function DocumentCard({ doc }: Props) {
-  /* -------------------------------------------------------------- */
-  /*  State                                                         */
-  /* -------------------------------------------------------------- */
   const [likes, setLikes] = useState<number>(doc.likes);
   const [views, setViews] = useState<number>(doc.views);
+  const [tags, setTags] = useState<string[]>(doc.tags);
   const [tagsOpen, setTagsOpen] = useState<boolean>(false);
-  const [tagDraft, setTagDraft] = useState<string>(doc.tags.join(', '));
+  const [newTag, setNewTag] = useState<string>('');
 
-  // thumbnail
-  const [thumbUrl, setThumbUrl] = useState<string | null>(null); // null = loading, undefined = error
+  const [thumbUrl, setThumbUrl] = useState<string | null>(null);
   const hookRef = useRef<HTMLDivElement>(null);
+  const tagsInputRef = useRef<HTMLInputElement>(null);
 
-  /* -------------------------------------------------------------- */
-  /*  Lazy-generate thumbnail when card scrolls into view           */
-  /* -------------------------------------------------------------- */
   useEffect(() => {
     const el = hookRef.current;
     if (!el) return;
@@ -60,7 +51,7 @@ export default function DocumentCard({ doc }: Props) {
           setThumbUrl(canvas.toDataURL('image/png'));
         } catch (err) {
           console.warn('Thumbnail generation failed:', err);
-          setThumbUrl(undefined);     // so we show the fallback icon
+          setThumbUrl(undefined);
         }
       },
       { rootMargin: '200px' }
@@ -70,9 +61,6 @@ export default function DocumentCard({ doc }: Props) {
     return () => io.disconnect();
   }, [doc.href]);
 
-  /* -------------------------------------------------------------- */
-  /*  Event handlers                                                */
-  /* -------------------------------------------------------------- */
   const like = async () => { setLikes(v => v + 1); await fetch(`/api/documents/${doc.id}/like`, { method: 'POST' }); };
   const viewed = () => { setViews(v => v + 1); fetch(`/api/documents/${doc.id}/view`, { method: 'POST' }); };
   const share = () => {
@@ -80,29 +68,34 @@ export default function DocumentCard({ doc }: Props) {
       .writeText(`${location.origin}${doc.href.startsWith('/') ? '' : '/'}${doc.href}`)
       .then(() => alert('Link copied to clipboard!'));
   };
-  const saveTags = async () => {
-    const cleaned = tagDraft.split(',').map(t => t.trim()).filter(Boolean);
+
+  const handleAddTag = async (tagToAdd: string) => {
+    const cleaned = tagToAdd.trim();
+    if (cleaned && !tags.includes(cleaned)) {
+      const newTags = [...tags, cleaned];
+      setTags(newTags);
+      setNewTag('');
+      await saveTags(newTags);
+    }
+  };
+
+  const handleRemoveTag = async (tagToRemove: string) => {
+    const newTags = tags.filter(t => t !== tagToRemove);
+    setTags(newTags);
+    await saveTags(newTags);
+  };
+
+  const saveTags = async (tagsToSave: string[]) => {
     await fetch(`/api/documents/${doc.id}/tags`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tags: cleaned }),
+      body: JSON.stringify({ tags: tagsToSave }),
     });
-    setTagsOpen(false);
   };
 
-  /* -------------------------------------------------------------- */
-  /*  Render                                                        */
-  /* -------------------------------------------------------------- */
   return (
     <div className="graph-system-card">
-      {/* ---------- thumbnail + link ---------- */}
-      <a
-        href={doc.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={viewed}
-        className="graph-system-card-link"
-      >
+      <a href={doc.href} target="_blank" rel="noopener noreferrer" onClick={viewed} className="graph-system-card-link">
         <div className="card-image-container" ref={hookRef}>
           {thumbUrl ? (
             <img src={thumbUrl} alt={doc.title} className="card-image" />
@@ -116,40 +109,40 @@ export default function DocumentCard({ doc }: Props) {
         </div>
       </a>
 
-      {/* ---------- text & controls ---------- */}
       <div className="card-content-container space-y-3">
         <h2 className="card-title">{doc.title}</h2>
         {doc.description && <p className="card-description">{doc.description}</p>}
 
         <div className="flex flex-wrap items-center gap-3 text-sm">
-          <Button size="sm" variant="ghost" onClick={like}>
-            <Heart className="w-4 h-4 mr-1" /> {likes}
-          </Button>
-
-          <span className="flex items-center">
-            <Eye className="w-4 h-4 mr-1" /> {views}
-          </span>
-
-          <Button size="sm" variant="ghost" onClick={share}>
-            <Share2 className="w-4 h-4 mr-1" /> Share
-          </Button>
-
-          <Button size="sm" variant="ghost" onClick={() => setTagsOpen(o => !o)}>
-            <Tag className="w-4 h-4 mr-1" /> Tags
-          </Button>
+          <Button size="sm" variant="ghost" onClick={like}><Heart className="w-4 h-4 mr-1" /> {likes}</Button>
+          <span className="flex items-center"><Eye className="w-4 h-4 mr-1" /> {views}</span>
+          <Button size="sm" variant="ghost" onClick={share}><Share2 className="w-4 h-4 mr-1" /> Share</Button>
+          <Button size="sm" variant="ghost" onClick={() => setTagsOpen(o => !o)}><Tag className="w-4 h-4 mr-1" /> Tags</Button>
         </div>
 
         {tagsOpen && (
-          <div className="space-y-2 pt-2">
-            <input
-              value={tagDraft}
-              onChange={e => setTagDraft(e.target.value)}
-              className="w-full border rounded px-2 py-1 text-sm"
-              placeholder="comma,separated,tags"
-            />
-            <Button size="sm" className="w-full" onClick={saveTags}>
-              Save Tags
-            </Button>
+          <div className="tag-editor-container" onClick={() => tagsInputRef.current?.focus()}>
+            <div className="tag-pill-container">
+              {tags.map(tag => (
+                <div key={tag} className="tag-pill">
+                  <span>{tag}</span>
+                  <button onClick={() => handleRemoveTag(tag)} className="tag-pill-remove"><CloseIcon size={12} /></button>
+                </div>
+              ))}
+              <input
+                ref={tagsInputRef}
+                value={newTag}
+                onChange={e => setNewTag(e.target.value)}
+                onKeyDown={e => {
+                  if (e.key === ',' || e.key === 'Enter') {
+                    e.preventDefault();
+                    handleAddTag(newTag);
+                  }
+                }}
+                className="tag-input"
+                placeholder="Add a tag..."
+              />
+            </div>
           </div>
         )}
       </div>
