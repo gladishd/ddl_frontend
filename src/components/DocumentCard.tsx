@@ -51,7 +51,7 @@ export default function DocumentCard({ doc }: Props) {
           setThumbUrl(canvas.toDataURL('image/png'));
         } catch (err) {
           console.warn('Thumbnail generation failed:', err);
-          setThumbUrl(undefined);
+          setThumbUrl(null);
         }
       },
       { rootMargin: '200px' }
