@@ -62,9 +62,7 @@ export default function EthernetSimulator({
   packetLength,
   isSimulating,
 }: Props) {
-  // `ForceGraph2D` is a **function component**, not a class, so we can’t
-  // use `InstanceType<typeof ForceGraph2D>`.  A plain `any` keeps the
-  // ref 100 % runtime-safe and unblocks the build.
+  // `ForceGraph2D` is a function component, not a class, so `any` is fine here.
   const fgRef = useRef<any>(null);
 
   const [graphData, setGraphData] = useState<GraphData>({
@@ -183,7 +181,7 @@ export default function EthernetSimulator({
   }, [isSimulating, simStep]);
 
   /* -------------------------------------------------------- */
-  /*  Node painter                                            */
+  /*  Node painter (build-error fix is here)                  */
   /* -------------------------------------------------------- */
   const nodeCanvasObject = useCallback(
     (node: any, ctx: CanvasRenderingContext2D) => {
@@ -192,16 +190,16 @@ export default function EthernetSimulator({
       const r = 6;
       ctx.beginPath();
       ctx.arc(node.x, node.y, r, 0, 2 * Math.PI);
-      ctx.fillStyle =
-        (
-          {
-            idle: "#6b7280",
-            deferring: "#f59e0b",
-            waiting: "#3b82f6",
-            transmitting: "#22c55e",
-            collided: "#ef4444",
-          } as const
-        )[node.state] || "#6b7280";
+
+      // ✅ EXPLICIT INDEX SIGNATURE → no TS error
+      const colorMap: Record<string, string> = {
+        idle: "#6b7280",
+        deferring: "#f59e0b",
+        waiting: "#3b82f6",
+        transmitting: "#22c55e",
+        collided: "#ef4444",
+      };
+      ctx.fillStyle = colorMap[node.state] ?? "#6b7280";
       ctx.fill();
 
       ctx.font = "5px Raleway";
@@ -230,9 +228,7 @@ export default function EthernetSimulator({
         linkWidth={1.5}
         linkColor={(l) => (l.state === "collision" ? "#ef4444" : "#22c55e")}
         linkLineDash={(l) => (l.state === "collision" ? [2, 1] : [])}
-        linkDirectionalParticles={(l) =>
-          l.state === "transmission" ? 2 : 0
-        }
+        linkDirectionalParticles={(l) => (l.state === "transmission" ? 2 : 0)}
         linkDirectionalParticleWidth={2}
         cooldownTicks={0}
       />
