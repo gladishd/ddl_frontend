@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 import { incLike } from "@/lib/db";
 
 export async function POST(
-  _request: Request,
-  { params }: { params: { id: string } }
+  request: Request,
+  context: { params: Promise<{ id: string }> }   // 👈 updated type
 ) {
-  // Atomic sub-transaction: increment the like counter
-  await incLike(Number(params.id));
+  const { id } = await context.params;           // 👈 await the promise
+  await incLike(Number(id));
   return NextResponse.json({ ok: true });
 }

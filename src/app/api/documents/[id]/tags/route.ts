@@ -3,18 +3,15 @@ import { setTags } from "@/lib/db";
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params;
   const { tags } = await request.json();
 
   if (!Array.isArray(tags)) {
-    return NextResponse.json(
-      { error: "tags must be array" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "tags must be array" }, { status: 400 });
   }
 
-  // Build / tear down the named graph relationships
-  await setTags(Number(params.id), tags);
+  await setTags(Number(id), tags);
   return NextResponse.json({ ok: true });
 }
