@@ -5,7 +5,6 @@ import React, {
   useEffect,
   useRef,
   useCallback,
-  useMemo,
 } from "react";
 import dynamic from "next/dynamic";
 
@@ -38,7 +37,9 @@ interface GraphData {
 const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), {
   ssr: false,
   loading: () => (
-    <div className="graph-loading-placeholder">Loading Simulation Canvas…</div>
+    <div className="graph-loading-placeholder">
+      Loading Simulation Canvas…
+    </div>
   ),
 });
 
@@ -61,10 +62,15 @@ export default function EthernetSimulator({
   packetLength,
   isSimulating,
 }: Props) {
-  /* The ref now has an initial value `null` – fixes TS error */
-  const fgRef = useRef<InstanceType<typeof ForceGraph2D> | null>(null);
+  // `ForceGraph2D` is a **function component**, not a class, so we can’t
+  // use `InstanceType<typeof ForceGraph2D>`.  A plain `any` keeps the
+  // ref 100 % runtime-safe and unblocks the build.
+  const fgRef = useRef<any>(null);
 
-  const [graphData, setGraphData] = useState<GraphData>({ nodes: [], links: [] });
+  const [graphData, setGraphData] = useState<GraphData>({
+    nodes: [],
+    links: [],
+  });
   const [metrics, setMetrics] = useState({
     successfulPackets: 0,
     totalCollisions: 0,
@@ -72,26 +78,37 @@ export default function EthernetSimulator({
   });
 
   /* -------------------------------------------------------- */
-  /*  Build initial topology whenever numStations changes     */
+  /*  Build initial topology whenever `numStations` changes   */
   /* -------------------------------------------------------- */
   useEffect(() => {
-    const r = 150;
+    const radius = 150;
     const nodes: StationNode[] = [
-      { id: "ether", name: "Ether", fx: 0, fy: 0, packetQueue: 0, backoff: 0, collisions: 0, state: "idle" },
+      {
+        id: "ether",
+        name: "Ether",
+        fx: 0,
+        fy: 0,
+        packetQueue: 0,
+        backoff: 0,
+        collisions: 0,
+        state: "idle",
+      },
     ];
+
     for (let i = 0; i < numStations; i++) {
-      const θ = (i / numStations) * 2 * Math.PI;
+      const theta = (i / numStations) * 2 * Math.PI;
       nodes.push({
         id: `st-${i}`,
         name: `Station ${i}`,
-        fx: r * Math.cos(θ),
-        fy: r * Math.sin(θ),
+        fx: radius * Math.cos(theta),
+        fy: radius * Math.sin(theta),
         packetQueue: 1,
         backoff: 0,
         collisions: 0,
         state: "idle",
       });
     }
+
     setGraphData({ nodes, links: [] });
     setMetrics({ successfulPackets: 0, totalCollisions: 0, time: 0 });
   }, [numStations]);
@@ -100,18 +117,18 @@ export default function EthernetSimulator({
   /*  One simulation tick                                     */
   /* -------------------------------------------------------- */
   const simStep = useCallback(() => {
-    setGraphData(prev => {
-      const stations = prev.nodes.filter(n => n.id !== "ether");
+    setGraphData((prev) => {
+      const stations = prev.nodes.filter((n) => n.id !== "ether");
       const txCandidates: StationNode[] = [];
 
       /* Phase 1 – decide who tries to send */
-      stations.forEach(s => {
+      stations.forEach((s) => {
         if (s.backoff > 0) {
           s.backoff = Math.max(0, s.backoff - SLOT_TIME);
           s.state = "waiting";
         }
         if (s.packetQueue > 0 && s.backoff === 0) {
-          if (prev.links.some(l => l.state !== "idle")) {
+          if (prev.links.some((l) => l.state !== "idle")) {
             s.state = "deferring";
           } else {
             txCandidates.push(s);
@@ -123,18 +140,18 @@ export default function EthernetSimulator({
 
       /* Phase 2 – medium access / collision handling */
       if (txCandidates.length > 1) {
-        links = txCandidates.map(s => ({
+        links = txCandidates.map((s) => ({
           source: s.id,
           target: "ether",
           state: "collision",
         }));
-        txCandidates.forEach(s => {
+        txCandidates.forEach((s) => {
           s.state = "collided";
           s.collisions += 1;
           const k = Math.pow(2, Math.min(s.collisions, 10)) - 1;
           s.backoff = Math.floor(Math.random() * (k + 1)) * SLOT_TIME;
         });
-        setMetrics(m => ({
+        setMetrics((m) => ({
           ...m,
           totalCollisions: m.totalCollisions + txCandidates.length,
         }));
@@ -144,11 +161,14 @@ export default function EthernetSimulator({
         s.state = "transmitting";
         s.packetQueue = 0;
         s.collisions = 0;
-        setMetrics(m => ({ ...m, successfulPackets: m.successfulPackets + 1 }));
+        setMetrics((m) => ({
+          ...m,
+          successfulPackets: m.successfulPackets + 1,
+        }));
       }
 
       /* Advance virtual time */
-      setMetrics(m => ({ ...m, time: m.time + SLOT_TIME }));
+      setMetrics((m) => ({ ...m, time: m.time + SLOT_TIME }));
       return { nodes: [prev.nodes[0], ...stations], links };
     });
   }, []);
@@ -172,15 +192,16 @@ export default function EthernetSimulator({
       const r = 6;
       ctx.beginPath();
       ctx.arc(node.x, node.y, r, 0, 2 * Math.PI);
-      ctx.fillStyle = (
-        {
-          idle: "#6b7280",
-          deferring: "#f59e0b",
-          waiting: "#3b82f6",
-          transmitting: "#22c55e",
-          collided: "#ef4444",
-        } as const
-      )[node.state];
+      ctx.fillStyle =
+        (
+          {
+            idle: "#6b7280",
+            deferring: "#f59e0b",
+            waiting: "#3b82f6",
+            transmitting: "#22c55e",
+            collided: "#ef4444",
+          } as const
+        )[node.state] || "#6b7280";
       ctx.fill();
 
       ctx.font = "5px Raleway";
@@ -207,9 +228,11 @@ export default function EthernetSimulator({
         graphData={graphData}
         nodeCanvasObject={nodeCanvasObject}
         linkWidth={1.5}
-        linkColor={l => (l.state === "collision" ? "#ef4444" : "#22c55e")}
-        linkLineDash={l => (l.state === "collision" ? [2, 1] : [])}
-        linkDirectionalParticles={l => (l.state === "transmission" ? 2 : 0)}
+        linkColor={(l) => (l.state === "collision" ? "#ef4444" : "#22c55e")}
+        linkLineDash={(l) => (l.state === "collision" ? [2, 1] : [])}
+        linkDirectionalParticles={(l) =>
+          l.state === "transmission" ? 2 : 0
+        }
         linkDirectionalParticleWidth={2}
         cooldownTicks={0}
       />
