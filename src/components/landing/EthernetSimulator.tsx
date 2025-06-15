@@ -8,11 +8,16 @@ import React, {
 import dynamic from "next/dynamic";
 
 /* ─────────── Types ─────────── */
+// This interface defines the state of each station contending for the Ether.
+// It includes properties for the force-directed graph layout (x, y, fx, fy)
+// and the state-machine logic of the CSMA/CD protocol.
 interface StationNode {
   id: string;
   name: string;
   fx?: number;
   fy?: number;
+  x?: number;
+  y?: number;
   packetQueue: number;
   backoff: number;
   collisions: number;
@@ -187,7 +192,7 @@ export default function EthernetSimulator({
   /* ── Node painter ── */
   const nodeCanvasObject = useCallback(
     (node: StationNode, ctx: CanvasRenderingContext2D) => {
-    // The Ether itself is a passive medium, not a station, so we don't draw it.
+      // The Ether itself is a logically passive medium, not a station, so we don't draw it as one.
       if (node.id === "ether") return;
 
       const radius = 6;
