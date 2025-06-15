@@ -1,9 +1,22 @@
 import React from 'react';
 
+// This interface defines the explicit types for the component's props,
+// ensuring type safety and preventing the 'implicit any' error.
+// It is a precise specification for the control plane of our emulator.
+interface SimulationControlsProps {
+  numStations: number;
+  setNumStations: (value: number) => void;
+  packetLength: number;
+  setPacketLength: (value: number) => void;
+  isSimulating: boolean;
+  setIsSimulating: (value: boolean) => void;
+  resetSimulation: () => void;
+}
+
 // This component provides the control plane for the Ethernet emulator.
 // It allows for the dynamic adjustment of key parameters like the number of contending stations (Q)
 // and packet size (P), which are critical variables in Metcalfe's original performance model.
-const SimulationControls = ({
+const SimulationControls: React.FC<SimulationControlsProps> = ({
     numStations, setNumStations,
     packetLength, setPacketLength,
     isSimulating, setIsSimulating,
