@@ -9,7 +9,7 @@ import { useMacMiniContext } from "@/context/MacMiniContext";
 
 interface FloatingPanelProps {
   /** The element that bounds dragging (usually your page wrapper) */
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function FloatingPanel({ containerRef }: FloatingPanelProps) {
