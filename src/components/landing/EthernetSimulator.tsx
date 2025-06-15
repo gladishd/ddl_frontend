@@ -8,9 +8,7 @@ import React, {
 } from "react";
 import dynamic from "next/dynamic";
 
-/* ------------------------------------------------------------------ */
-/*  Types                                                             */
-/* ------------------------------------------------------------------ */
+/* ─────────── Types ─────────── */
 interface StationNode {
   id: string;
   name: string;
@@ -31,24 +29,20 @@ interface GraphData {
   links: EtherLink[];
 }
 
-/* ------------------------------------------------------------------ */
-/*  Dynamic import (SSR‑safe)                                         */
-/* ------------------------------------------------------------------ */
+/* ─────────── Lazy-load canvas ─────────── */
 const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), {
   ssr: false,
   loading: () => (
-    <div className="graph-loading-placeholder">Loading Simulation Canvas…</div>
+    <div className="graph-loading-placeholder">
+      Loading Simulation Canvas…
+    </div>
   ),
 });
 
-/* ------------------------------------------------------------------ */
-/*  Constants                                                         */
-/* ------------------------------------------------------------------ */
-const SLOT_TIME = 51.2; // 512 bit‑times on 10 Mb/s Ethernet
+/* ─────────── Constants ─────────── */
+const SLOT_TIME = 51.2;           // 512 bit-times @ 10 Mb s⁻¹
 
-/* ------------------------------------------------------------------ */
-/*  Component                                                         */
-/* ------------------------------------------------------------------ */
+/* ─────────── Component ─────────── */
 type Props = {
   numStations: number;
   packetLength: number;
@@ -60,7 +54,6 @@ export default function EthernetSimulator({
   packetLength,
   isSimulating,
 }: Props) {
-  // `ForceGraph2D` is a function component, not a class, so `any` is fine here.
   const fgRef = useRef<any>(null);
 
   const [graphData, setGraphData] = useState<GraphData>({
@@ -73,9 +66,7 @@ export default function EthernetSimulator({
     time: 0,
   });
 
-  /* -------------------------------------------------------- */
-  /*  Build initial topology whenever `numStations` changes   */
-  /* -------------------------------------------------------- */
+  /* ── Build topology whenever `numStations` changes ── */
   useEffect(() => {
     const radius = 150;
     const nodes: StationNode[] = [
@@ -92,12 +83,12 @@ export default function EthernetSimulator({
     ];
 
     for (let i = 0; i < numStations; i++) {
-      const theta = (i / numStations) * 2 * Math.PI;
+      const θ = (i / numStations) * 2 * Math.PI;
       nodes.push({
         id: `st-${i}`,
         name: `Station ${i}`,
-        fx: radius * Math.cos(theta),
-        fy: radius * Math.sin(theta),
+        fx: radius * Math.cos(θ),
+        fy: radius * Math.sin(θ),
         packetQueue: 1,
         backoff: 0,
         collisions: 0,
@@ -109,94 +100,96 @@ export default function EthernetSimulator({
     setMetrics({ successfulPackets: 0, totalCollisions: 0, time: 0 });
   }, [numStations]);
 
-  /* -------------------------------------------------------- */
-  /*  One simulation tick                                     */
-  /* -------------------------------------------------------- */
+  /* ── One simulation tick ── */
   const simStep = useCallback(() => {
-    setGraphData((prev) => {
-      const stations = prev.nodes.filter((n) => n.id !== "ether");
-      const txCandidates: StationNode[] = [];
+    setGraphData(prev => {
+      const stations = prev.nodes.filter(n => n.id !== "ether");
+      const tx: StationNode[] = [];
 
-      /* Phase 1 – decide who tries to send */
-      stations.forEach((s) => {
+      /* phase 1 – contend */
+      stations.forEach(s => {
         if (s.backoff > 0) {
           s.backoff = Math.max(0, s.backoff - SLOT_TIME);
           s.state = "waiting";
         }
         if (s.packetQueue > 0 && s.backoff === 0) {
-          if (prev.links.some((l) => l.state !== "idle")) {
+          if (prev.links.some(l => l.state !== "idle")) {
             s.state = "deferring";
           } else {
-            txCandidates.push(s);
+            tx.push(s);
           }
         }
       });
 
       let links: EtherLink[] = [];
 
-      /* Phase 2 – medium access / collision handling */
-      if (txCandidates.length > 1) {
-        links = txCandidates.map((s) => ({
+      /* phase 2 – handle medium / collisions */
+      if (tx.length > 1) {
+        links = tx.map(s => ({
           source: s.id,
           target: "ether",
           state: "collision",
         }));
-        txCandidates.forEach((s) => {
+        tx.forEach(s => {
           s.state = "collided";
           s.collisions += 1;
-          const k = Math.pow(2, Math.min(s.collisions, 10)) - 1;
+          const k = 2 ** Math.min(s.collisions, 10) - 1;
           s.backoff = Math.floor(Math.random() * (k + 1)) * SLOT_TIME;
         });
-        setMetrics((m) => ({
+        setMetrics(m => ({
           ...m,
-          totalCollisions: m.totalCollisions + txCandidates.length,
+          totalCollisions: m.totalCollisions + tx.length,
         }));
-      } else if (txCandidates.length === 1) {
-        const s = txCandidates[0];
+      } else if (tx.length === 1) {
+        const s = tx[0];
         links = [{ source: s.id, target: "ether", state: "transmission" }];
         s.state = "transmitting";
         s.packetQueue = 0;
         s.collisions = 0;
-        setMetrics((m) => ({
+        setMetrics(m => ({
           ...m,
           successfulPackets: m.successfulPackets + 1,
         }));
       }
 
-      /* Advance virtual time */
-      setMetrics((m) => ({ ...m, time: m.time + SLOT_TIME }));
+      setMetrics(m => ({ ...m, time: m.time + SLOT_TIME }));
       return { nodes: [prev.nodes[0], ...stations], links };
     });
   }, []);
 
-  /* -------------------------------------------------------- */
-  /*  Run / stop interval                                     */
-  /* -------------------------------------------------------- */
+  /* ── Start / stop loop ── */
   useEffect(() => {
     if (!isSimulating) return;
     const id = setInterval(simStep, 200);
     return () => clearInterval(id);
   }, [isSimulating, simStep]);
 
-  /* -------------------------------------------------------- */
-  /*  Node painter                                            */
-  /* -------------------------------------------------------- */
+  /* ── Re-apply link particle accessors whenever links change ── */
+  useEffect(() => {
+    if (!fgRef.current) return;
+    fgRef.current
+      .linkDirectionalParticles((l: EtherLink) =>
+        l.state === "transmission" ? 2 : 0
+      )
+      .linkDirectionalParticleWidth(2);
+  }, [graphData.links]);
+
+  /* ── Node painter ── */
   const nodeCanvasObject = useCallback(
     (node: any, ctx: CanvasRenderingContext2D) => {
       if (node.id === "ether") return;
-
       const r = 6;
       ctx.beginPath();
       ctx.arc(node.x, node.y, r, 0, 2 * Math.PI);
 
-      const colorMap: Record<string, string> = {
+      const palette: Record<StationNode["state"], string> = {
         idle: "#6b7280",
         deferring: "#f59e0b",
         waiting: "#3b82f6",
         transmitting: "#22c55e",
         collided: "#ef4444",
       };
-      ctx.fillStyle = colorMap[node.state] ?? "#6b7280";
+      ctx.fillStyle = palette[node.state];
       ctx.fill();
 
       ctx.font = "5px Raleway";
@@ -213,9 +206,7 @@ export default function EthernetSimulator({
       ? 0
       : ((metrics.successfulPackets * packetLength) / metrics.time) * 100;
 
-  /* -------------------------------------------------------- */
-  /*  Render                                                  */
-  /* -------------------------------------------------------- */
+  /* ── Render ── */
   return (
     <div className="relative w-full h-full">
       <ForceGraph2D
@@ -223,32 +214,18 @@ export default function EthernetSimulator({
         graphData={graphData}
         nodeCanvasObject={nodeCanvasObject}
         linkWidth={1.5}
-        /* explicit typing fixes the build error */
         linkColor={(l: EtherLink) =>
           l.state === "collision" ? "#ef4444" : "#22c55e"
         }
         linkLineDash={(l: EtherLink) => (l.state === "collision" ? [2, 1] : [])}
-        linkDirectionalParticles={(l: EtherLink) =>
-          l.state === "transmission" ? 2 : 0
-        }
-        linkDirectionalParticleWidth={2}
         cooldownTicks={0}
       />
 
-      {/* Metrics overlay */}
+      {/* overlay */}
       <div className="simulation-metrics-overlay">
-        <div>
-          Efficiency:&nbsp;
-          <span>{efficiency.toFixed(2)}%</span>
-        </div>
-        <div>
-          Collisions:&nbsp;
-          <span>{metrics.totalCollisions}</span>
-        </div>
-        <div>
-          Time (slots):&nbsp;
-          <span>{(metrics.time / SLOT_TIME).toFixed(0)}</span>
-        </div>
+        <div>Efficiency:&nbsp;<span>{efficiency.toFixed(2)}%</span></div>
+        <div>Collisions:&nbsp;<span>{metrics.totalCollisions}</span></div>
+        <div>Time&nbsp;(slots):&nbsp;<span>{(metrics.time / SLOT_TIME).toFixed(0)}</span></div>
       </div>
     </div>
   );
