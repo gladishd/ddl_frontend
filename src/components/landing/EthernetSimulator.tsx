@@ -49,7 +49,7 @@ const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), {
 // In our model, a slot is the fundamental unit of time, representing the end-to-end propagation delay.
 // This is the maximum time between starting a transmission and detecting a collision, as described
 // in Metcalfe's original analysis of the broadcast queue.
-const SLOT_TIME = 51.2;           // 512 bit-times @ 10 Mb s⁻¹
+const SLOT_TIME = 51.2;          // 512 bit-times @ 10 Mb s⁻¹
 
 /* ─────────── Component ─────────── */
 type Props = {
@@ -179,16 +179,6 @@ export default function EthernetSimulator({
     return () => clearInterval(intervalId);
   }, [isSimulating, simStep]);
 
-  /* ── Re-apply link particle accessors whenever links change ── */
-  useEffect(() => {
-    if (!fgRef.current) return;
-    fgRef.current
-      .linkDirectionalParticles((l: EtherLink) =>
-        l.state === "transmission" ? 2 : 0
-      )
-      .linkDirectionalParticleWidth(2);
-  }, [graphData.links]);
-
   /* ── Node painter ── */
   const nodeCanvasObject = useCallback(
     (node: StationNode, ctx: CanvasRenderingContext2D) => {
@@ -236,6 +226,10 @@ export default function EthernetSimulator({
           (l as EtherLink).state === "collision" ? "#ef4444" : "#22c55e"
         }
         linkLineDash={(l: any) => ((l as EtherLink).state === "collision" ? [2, 1] : [])}
+        // This moves the dynamic particle logic to a declarative prop, fixing the error.
+        // It's a direct implementation of Token Dynamics visualization: particles flow only during a successful transmission.
+        linkDirectionalParticles={(l: any) => (l as EtherLink).state === "transmission" ? 2 : 0}
+        linkDirectionalParticleWidth={2}
         cooldownTicks={0}
       />
       {/* overlay */}

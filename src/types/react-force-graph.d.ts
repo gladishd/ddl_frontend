@@ -20,7 +20,9 @@ declare module 'react-force-graph-2d' {
     graphData: GraphData;
     nodeLabel?: string | ((node: any) => string);
     nodeAutoColorBy?: string;
-    linkDirectionalParticles?: number;
+    // The type is updated to reflect that it can be a static number or a dynamic function.
+    // This makes our type system a more precise model of the underlying library, avoiding fragile assumptions.
+    linkDirectionalParticles?: number | ((link: any) => number);
     linkDirectionalParticleWidth?: number;
     onNodeClick?: (node: any) => void;
     nodeCanvasObject?: (node: any, ctx: CanvasRenderingContext2D, globalScale: number) => void;
