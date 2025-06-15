@@ -32,21 +32,19 @@ interface GraphData {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Dynamic import (SSR-safe)                                         */
+/*  Dynamic import (SSR‑safe)                                         */
 /* ------------------------------------------------------------------ */
 const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), {
   ssr: false,
   loading: () => (
-    <div className="graph-loading-placeholder">
-      Loading Simulation Canvas…
-    </div>
+    <div className="graph-loading-placeholder">Loading Simulation Canvas…</div>
   ),
 });
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                         */
 /* ------------------------------------------------------------------ */
-const SLOT_TIME = 51.2; // 512 bit-times on 10 Mb/s Ethernet
+const SLOT_TIME = 51.2; // 512 bit‑times on 10 Mb/s Ethernet
 
 /* ------------------------------------------------------------------ */
 /*  Component                                                         */
@@ -119,7 +117,7 @@ export default function EthernetSimulator({
       const stations = prev.nodes.filter((n) => n.id !== "ether");
       const txCandidates: StationNode[] = [];
 
-      /* Phase 1 – decide who tries to send */
+      /* Phase 1 – decide who tries to send */
       stations.forEach((s) => {
         if (s.backoff > 0) {
           s.backoff = Math.max(0, s.backoff - SLOT_TIME);
@@ -136,7 +134,7 @@ export default function EthernetSimulator({
 
       let links: EtherLink[] = [];
 
-      /* Phase 2 – medium access / collision handling */
+      /* Phase 2 – medium access / collision handling */
       if (txCandidates.length > 1) {
         links = txCandidates.map((s) => ({
           source: s.id,
@@ -181,7 +179,7 @@ export default function EthernetSimulator({
   }, [isSimulating, simStep]);
 
   /* -------------------------------------------------------- */
-  /*  Node painter (build-error fix is here)                  */
+  /*  Node painter                                            */
   /* -------------------------------------------------------- */
   const nodeCanvasObject = useCallback(
     (node: any, ctx: CanvasRenderingContext2D) => {
@@ -191,7 +189,6 @@ export default function EthernetSimulator({
       ctx.beginPath();
       ctx.arc(node.x, node.y, r, 0, 2 * Math.PI);
 
-      // ✅ EXPLICIT INDEX SIGNATURE → no TS error
       const colorMap: Record<string, string> = {
         idle: "#6b7280",
         deferring: "#f59e0b",
@@ -226,9 +223,14 @@ export default function EthernetSimulator({
         graphData={graphData}
         nodeCanvasObject={nodeCanvasObject}
         linkWidth={1.5}
-        linkColor={(l) => (l.state === "collision" ? "#ef4444" : "#22c55e")}
-        linkLineDash={(l) => (l.state === "collision" ? [2, 1] : [])}
-        linkDirectionalParticles={(l) => (l.state === "transmission" ? 2 : 0)}
+        /* explicit typing fixes the build error */
+        linkColor={(l: EtherLink) =>
+          l.state === "collision" ? "#ef4444" : "#22c55e"
+        }
+        linkLineDash={(l: EtherLink) => (l.state === "collision" ? [2, 1] : [])}
+        linkDirectionalParticles={(l: EtherLink) =>
+          l.state === "transmission" ? 2 : 0
+        }
         linkDirectionalParticleWidth={2}
         cooldownTicks={0}
       />
