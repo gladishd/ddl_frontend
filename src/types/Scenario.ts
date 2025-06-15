@@ -17,4 +17,5 @@ export interface Scenario {
   tags: string[];
   createdAt: string;
   updatedAt: string;
+  href?: string; // Optional link for the card
 }

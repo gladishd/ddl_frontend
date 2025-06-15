@@ -44,12 +44,12 @@ const Navbar = () => {
                 ) : (
                     <>
                             {/* Token Dynamics are central to understanding conserved quantities and reversal recovery within the system. */}
-                            <a href="/main3.pdf" target="_blank" rel="noopener noreferrer" className="px-5 py-2 text-sm font-semibold text-primary rounded-md border border-primary hover:bg-primary hover:text-white transition-colors">
-                                Token Dynamics & State Machines
+                            <a href="/" target="_blank" rel="noopener noreferrer" className="px-5 py-2 text-sm font-semibold text-primary rounded-md border border-primary hover:bg-primary hover:text-white transition-colors">
+                                Login
                             </a>
                             {/* The protocol is address-free and timestamp-free, ensuring robust and reliable communication. */}
-                            <a href="/Metcalfe+Boggs.pdf" target="_blank" rel="noopener noreferrer" className="px-5 py-2 text-sm font-semibold text-white bg-primary rounded-md hover:bg-primary-hover transition-colors">
-                                Foundational Papers: Ethernet (1976)
+                            <a href="/" target="_blank" rel="noopener noreferrer" className="px-5 py-2 text-sm font-semibold text-white bg-primary rounded-md hover:bg-primary-hover transition-colors">
+                                Signup
                             </a>
                     </>
                 )}

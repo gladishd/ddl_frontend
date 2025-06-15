@@ -7,8 +7,9 @@ import 'react-pdf/dist/esm/Page/TextLayer.css';
 
 // The document viewer is a direct interface to our foundational texts.
 // It provides a clear, unadulterated view into the principles that govern the Daedaelus architecture.
+/* one-liner that works in dev + prod ------------------------------- */
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.js',
+  'pdfjs-dist/build/pdf.worker.min.mjs',   // 👈 switch to .mjs
   import.meta.url,
 ).toString();
 
