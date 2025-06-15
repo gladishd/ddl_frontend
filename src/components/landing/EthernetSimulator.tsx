@@ -1,184 +1,234 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import dynamic from 'next/dynamic';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
+import dynamic from "next/dynamic";
 
-// This component implements the core logic for the agent-based Ethernet simulation.
-// We use a force-directed graph to represent the stations (nodes) and the shared Ether.
-// This provides an interactive canvas to visualize the distributed statistical arbitration in real-time.
-
-// --- Type Definitions ---
+/* ------------------------------------------------------------------ */
+/*  Types                                                             */
+/* ------------------------------------------------------------------ */
 interface StationNode {
   id: string;
   name: string;
-  fx?: number; // Fixed x-position for layout
-  fy?: number; // Fixed y-position for layout
-  // Daedaelus-specific state for simulation
+  fx?: number;
+  fy?: number;
   packetQueue: number;
   backoff: number;
   collisions: number;
-  state: 'idle' | 'deferring' | 'transmitting' | 'collided' | 'waiting';
+  state: "idle" | "deferring" | "transmitting" | "collided" | "waiting";
 }
-
 interface EtherLink {
   source: string;
   target: string;
-  state: 'idle' | 'transmission' | 'collision';
+  state: "idle" | "transmission" | "collision";
 }
-
 interface GraphData {
   nodes: StationNode[];
   links: EtherLink[];
 }
 
-// --- Dynamic Import for Client-Side Graph Library ---
+/* ------------------------------------------------------------------ */
+/*  Dynamic import (SSR-safe)                                         */
+/* ------------------------------------------------------------------ */
 const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), {
   ssr: false,
-  loading: () => <div className="graph-loading-placeholder">Loading Simulation Canvas…</div>,
+  loading: () => (
+    <div className="graph-loading-placeholder">Loading Simulation Canvas…</div>
+  ),
 });
 
+/* ------------------------------------------------------------------ */
+/*  Constants                                                         */
+/* ------------------------------------------------------------------ */
+const SLOT_TIME = 51.2; // 512 bit-times on 10 Mb/s Ethernet
 
-// --- Simulation Constants ---
-const SLOT_TIME = 51.2; // Corresponds to 512 bit-times on a 10Mbps Ether, a critical parameter for collision detection.
+/* ------------------------------------------------------------------ */
+/*  Component                                                         */
+/* ------------------------------------------------------------------ */
+type Props = {
+  numStations: number;
+  packetLength: number;
+  isSimulating: boolean;
+};
 
-const EthernetSimulator = ({ numStations, packetLength, isSimulating }: { numStations: number; packetLength: number; isSimulating: boolean; }) => {
-  const fgRef = useRef<any>();
+export default function EthernetSimulator({
+  numStations,
+  packetLength,
+  isSimulating,
+}: Props) {
+  /* The ref now has an initial value `null` – fixes TS error */
+  const fgRef = useRef<InstanceType<typeof ForceGraph2D> | null>(null);
+
   const [graphData, setGraphData] = useState<GraphData>({ nodes: [], links: [] });
-  const [metrics, setMetrics] = useState({ successfulPackets: 0, totalCollisions: 0, time: 0 });
+  const [metrics, setMetrics] = useState({
+    successfulPackets: 0,
+    totalCollisions: 0,
+    time: 0,
+  });
 
-  // --- Graph & Simulation Initialization ---
+  /* -------------------------------------------------------- */
+  /*  Build initial topology whenever numStations changes     */
+  /* -------------------------------------------------------- */
   useEffect(() => {
-    // We model the Ether as a central, invisible hub. Stations are distributed radially.
-    // This is a visual abstraction of the broadcast medium, not a physical star topology.
-    // It helps visualize contention for the single, shared resource.
-    const r = 150; // Radius for distributing station nodes
-    const initialNodes: StationNode[] = [
-      // The central node representing the passive, shared Ether.
-      { id: 'ether', name: 'Ether', fx: 0, fy: 0, packetQueue: 0, backoff: 0, collisions: 0, state: 'idle' }
+    const r = 150;
+    const nodes: StationNode[] = [
+      { id: "ether", name: "Ether", fx: 0, fy: 0, packetQueue: 0, backoff: 0, collisions: 0, state: "idle" },
     ];
     for (let i = 0; i < numStations; i++) {
-      const angle = (i / numStations) * 2 * Math.PI;
-      initialNodes.push({
+      const θ = (i / numStations) * 2 * Math.PI;
+      nodes.push({
         id: `st-${i}`,
         name: `Station ${i}`,
-        fx: r * Math.cos(angle),
-        fy: r * Math.sin(angle),
+        fx: r * Math.cos(θ),
+        fy: r * Math.sin(θ),
         packetQueue: 1,
         backoff: 0,
         collisions: 0,
-        state: 'idle',
+        state: "idle",
       });
     }
-    setGraphData({ nodes: initialNodes, links: [] });
+    setGraphData({ nodes, links: [] });
     setMetrics({ successfulPackets: 0, totalCollisions: 0, time: 0 });
   }, [numStations]);
 
-  // --- Core Simulation Step ---
-  const simulationStep = useCallback(() => {
-    setGraphData(prevData => {
-      const stations = prevData.nodes.filter(n => n.id !== 'ether');
-      const transmittingNow: StationNode[] = [];
+  /* -------------------------------------------------------- */
+  /*  One simulation tick                                     */
+  /* -------------------------------------------------------- */
+  const simStep = useCallback(() => {
+    setGraphData(prev => {
+      const stations = prev.nodes.filter(n => n.id !== "ether");
+      const txCandidates: StationNode[] = [];
 
-      // Phase 1: Determine station actions (transmit or wait)
-      stations.forEach(station => {
-        if (station.backoff > 0) {
-          station.backoff = Math.max(0, station.backoff - SLOT_TIME);
-          station.state = 'waiting';
+      /* Phase 1 – decide who tries to send */
+      stations.forEach(s => {
+        if (s.backoff > 0) {
+          s.backoff = Math.max(0, s.backoff - SLOT_TIME);
+          s.state = "waiting";
         }
-        if (station.packetQueue > 0 && station.backoff === 0) {
-          // Carrier Sense: Check if any link is currently active
-          if (prevData.links.some(l => l.state !== 'idle')) {
-            station.state = 'deferring';
+        if (s.packetQueue > 0 && s.backoff === 0) {
+          if (prev.links.some(l => l.state !== "idle")) {
+            s.state = "deferring";
           } else {
-            transmittingNow.push(station);
+            txCandidates.push(s);
           }
         }
       });
 
-      let newLinks: EtherLink[] = [];
-      // Phase 2: Resolve contention and update Ether state
-      if (transmittingNow.length > 1) { // Collision
-        newLinks = transmittingNow.map(s => ({ source: s.id, target: 'ether', state: 'collision' }));
-        transmittingNow.forEach(station => {
-          station.state = 'collided';
-          station.collisions += 1;
-          // Binary Exponential Backoff: A distributed statistical arbitration mechanism.
-          const maxSlots = Math.pow(2, Math.min(station.collisions, 10)) - 1;
-          station.backoff = Math.floor(Math.random() * (maxSlots + 1)) * SLOT_TIME;
-        });
-        setMetrics(m => ({ ...m, totalCollisions: m.totalCollisions + transmittingNow.length }));
+      let links: EtherLink[] = [];
 
-      } else if (transmittingNow.length === 1) { // Successful Transmission
-        const station = transmittingNow[0];
-        station.state = 'transmitting';
-        station.packetQueue = 0;
-        station.collisions = 0; // Reset on success
-        newLinks = [{ source: station.id, target: 'ether', state: 'transmission' }];
+      /* Phase 2 – medium access / collision handling */
+      if (txCandidates.length > 1) {
+        links = txCandidates.map(s => ({
+          source: s.id,
+          target: "ether",
+          state: "collision",
+        }));
+        txCandidates.forEach(s => {
+          s.state = "collided";
+          s.collisions += 1;
+          const k = Math.pow(2, Math.min(s.collisions, 10)) - 1;
+          s.backoff = Math.floor(Math.random() * (k + 1)) * SLOT_TIME;
+        });
+        setMetrics(m => ({
+          ...m,
+          totalCollisions: m.totalCollisions + txCandidates.length,
+        }));
+      } else if (txCandidates.length === 1) {
+        const s = txCandidates[0];
+        links = [{ source: s.id, target: "ether", state: "transmission" }];
+        s.state = "transmitting";
+        s.packetQueue = 0;
+        s.collisions = 0;
         setMetrics(m => ({ ...m, successfulPackets: m.successfulPackets + 1 }));
       }
 
-      // Update time and return new state
+      /* Advance virtual time */
       setMetrics(m => ({ ...m, time: m.time + SLOT_TIME }));
-      return { nodes: [prevData.nodes[0], ...stations], links: newLinks };
+      return { nodes: [prev.nodes[0], ...stations], links };
     });
   }, []);
 
-  // --- Simulation Loop Control ---
+  /* -------------------------------------------------------- */
+  /*  Run / stop interval                                     */
+  /* -------------------------------------------------------- */
   useEffect(() => {
     if (!isSimulating) return;
-    const timer = setInterval(simulationStep, 200); // Step every 200ms
-    return () => clearInterval(timer);
-  }, [isSimulating, simulationStep]);
+    const id = setInterval(simStep, 200);
+    return () => clearInterval(id);
+  }, [isSimulating, simStep]);
 
-  // --- Node Visualization ---
-  const nodeCanvasObject = useCallback((node: any, ctx: CanvasRenderingContext2D) => {
-    if (node.id === 'ether') return; // Do not draw the central ether node
+  /* -------------------------------------------------------- */
+  /*  Node painter                                            */
+  /* -------------------------------------------------------- */
+  const nodeCanvasObject = useCallback(
+    (node: any, ctx: CanvasRenderingContext2D) => {
+      if (node.id === "ether") return;
 
-    const r = 6;
-    ctx.beginPath();
-    ctx.arc(node.x, node.y, r, 0, 2 * Math.PI, false);
+      const r = 6;
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, r, 0, 2 * Math.PI);
+      ctx.fillStyle = (
+        {
+          idle: "#6b7280",
+          deferring: "#f59e0b",
+          waiting: "#3b82f6",
+          transmitting: "#22c55e",
+          collided: "#ef4444",
+        } as const
+      )[node.state];
+      ctx.fill();
 
-    // Node color reflects the station's state in the GVM
-    const colorMap = {
-      idle: '#6b7280',       // Gray
-      deferring: '#f59e0b',  // Amber
-      waiting: '#3b82f6',     // Blue
-      transmitting: '#22c55e',// Green
-      collided: '#ef4444',    // Red
-    };
-    ctx.fillStyle = colorMap[node.state as keyof typeof colorMap] || '#6b7280';
-    ctx.fill();
+      ctx.font = "5px Raleway";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      ctx.fillStyle = "#111827";
+      ctx.fillText(node.name, node.x, node.y + r + 5);
+    },
+    []
+  );
 
-    // Label
-    ctx.font = '5px Raleway';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#111827';
-    ctx.fillText(node.name, node.x, node.y + r + 5);
-  }, []);
+  const efficiency =
+    metrics.time === 0
+      ? 0
+      : ((metrics.successfulPackets * packetLength) / metrics.time) * 100;
 
+  /* -------------------------------------------------------- */
+  /*  Render                                                  */
+  /* -------------------------------------------------------- */
   return (
-    <div className="w-full h-full relative">
+    <div className="relative w-full h-full">
       <ForceGraph2D
         ref={fgRef}
         graphData={graphData}
         nodeCanvasObject={nodeCanvasObject}
         linkWidth={1.5}
-        linkColor={link => link.state === 'collision' ? '#ef4444' : '#22c55e'}
-        linkLineDash={link => link.state === 'collision' ? [2, 1] : []}
-        linkDirectionalParticles={link => link.state === 'transmission' ? 2 : 0}
+        linkColor={l => (l.state === "collision" ? "#ef4444" : "#22c55e")}
+        linkLineDash={l => (l.state === "collision" ? [2, 1] : [])}
+        linkDirectionalParticles={l => (l.state === "transmission" ? 2 : 0)}
         linkDirectionalParticleWidth={2}
         cooldownTicks={0}
-        enablePanInteraction={true}
-        enableZoomInteraction={true}
       />
+
+      {/* Metrics overlay */}
       <div className="simulation-metrics-overlay">
-        <div>Efficiency: <span>{((metrics.successfulPackets * packetLength) / metrics.time * 100).toFixed(2) || '0.00'}%</span></div>
-        <div>Collisions: <span>{metrics.totalCollisions}</span></div>
-        <div>Time (slots): <span>{(metrics.time / SLOT_TIME).toFixed(0)}</span></div>
+        <div>
+          Efficiency:&nbsp;
+          <span>{efficiency.toFixed(2)}%</span>
+        </div>
+        <div>
+          Collisions:&nbsp;
+          <span>{metrics.totalCollisions}</span>
+        </div>
+        <div>
+          Time (slots):&nbsp;
+          <span>{(metrics.time / SLOT_TIME).toFixed(0)}</span>
+        </div>
       </div>
     </div>
   );
-};
-
-export default EthernetSimulator;
+}

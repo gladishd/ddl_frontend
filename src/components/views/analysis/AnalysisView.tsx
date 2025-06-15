@@ -2,13 +2,15 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useMacMiniContext } from "@/context/MacMiniContext";
 import { MessageData } from "@/types/PortSnapshot";
 
+/* ------------------------------------------------------------------ */
+/*  Types & helpers                                                   */
+/* ------------------------------------------------------------------ */
 interface PacketEvent {
   direction: "IN" | "OUT";
   type: "LIVENESS" | "2PC";
-  payload: any;
+  payload: unknown;
 }
 
-// Helpers to fabricate packet traces
 const makeTrace = (ltp: number): PacketEvent[] => [
   { direction: "OUT", type: "LIVENESS", payload: {} },
   { direction: "IN", type: "LIVENESS", payload: {} },
@@ -31,21 +33,26 @@ const AnalysisView: React.FC = () => {
   const macMini = selectedMacMinis[0];
   const message: MessageData | undefined = macMini ? messages[macMini.ip] : undefined;
 
-  // Enforce single‑selection for this view
+  /* ------------------------------------------------------------------ */
+  /*  Enforce single-selection                                          */
+  /* ------------------------------------------------------------------ */
   useEffect(() => {
     if (selectedMacMinis.length > 1) {
-      selectedMacMinis.slice(1).forEach((m) => deselectMacMini(m.ip));
+      selectedMacMinis.slice(1).forEach(m => deselectMacMini(m.ip));
     }
   }, [selectedMacMinis, deselectMacMini]);
 
-  const [selectedPort, setSelectedPort] = useState<string | "">("");
+  /* ------------------------------------------------------------------ */
+  /*  Local state                                                       */
+  /* ------------------------------------------------------------------ */
+  const [selectedPort, setSelectedPort] = useState<string>("");
   const [events, setEvents] = useState<PacketEvent[]>([]);
   const [tracing, setTracing] = useState(false);
-  const mountRef = useRef(Date.now());
+  const mountRef = useRef<number>(Date.now());
 
   const nextLtp = useCallback(() => {
     const diffSec = (Date.now() - mountRef.current) / 1000;
-    return 100 + Math.floor(diffSec * 400); // 400 LTP/s just to make numbers fun
+    return 100 + Math.floor(diffSec * 400);
   }, []);
 
   const startTrace = useCallback(() => {
@@ -57,54 +64,56 @@ const AnalysisView: React.FC = () => {
       i % 2 === 0 ? makeTrace(nextLtp()) : makeErrorTrace(nextLtp())
     ).flat();
 
-    seq.forEach((e, idx) =>
-      setTimeout(() => setEvents((prev) => [...prev, e]), idx * 300)
+    seq.forEach((ev, idx) =>
+      setTimeout(() => setEvents(prev => [...prev, ev]), idx * 300)
     );
 
     setTimeout(() => setTracing(false), seq.length * 300 + 200);
   }, [selectedPort, nextLtp]);
 
-  // Set the first available port as default when component loads or message changes
+  /* Pick first port when data arrives */
   useEffect(() => {
-    if (message?.port_paths && Object.keys(message.port_paths).length > 0) {
-      if (!selectedPort || !message.port_paths[selectedPort]) {
-        setSelectedPort(Object.keys(message.port_paths)[0]);
-      }
-    } else {
-      setSelectedPort("");
+    const ports = Object.keys(message?.port_paths ?? {});
+    if (ports.length && !ports.includes(selectedPort)) {
+      setSelectedPort(ports[0]);
     }
-  }, [message?.port_paths]);
-
+  }, [message?.port_paths, selectedPort]);
 
   if (!macMini) {
     return <div className="p-4 text-gray-500">Select a Mac Mini to analyse.</div>;
   }
 
+  /* ------------------------------------------------------------------ */
+  /*  Render                                                            */
+  /* ------------------------------------------------------------------ */
   return (
     <div className="p-4 overflow-y-auto max-h-[calc(100vh-8rem)]">
-      <h2 className="text-lg font-bold mb-4">Analysis View — {macMini.ip}</h2>
+      <h2 className="text-lg font-bold mb-4">
+        Analysis View — {macMini.ip}
+      </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Controls */}
+        {/* ─────── Controls ─────── */}
         <div className="border rounded p-4">
           <h3 className="font-semibold mb-4">Port Controls</h3>
+
           <div className="mb-4">
             <label className="block text-sm mb-2">Select Port</label>
             <div className="daedalus-tabs-bar">
-              {message?.port_paths && Object.keys(message.port_paths).map(portId => (
+              {Object.keys(message?.port_paths ?? {}).map(pid => (
                 <button
-                  key={portId}
-                  onClick={() => setSelectedPort(portId)}
-                  className={`daedalus-tab ${selectedPort === portId ? 'active' : ''}`}
+                  key={pid}
+                  onClick={() => setSelectedPort(pid)}
+                  className={`daedalus-tab ${selectedPort === pid ? "active" : ""}`}
                 >
-                  {portId}
+                  {pid}
                 </button>
               ))}
             </div>
           </div>
 
           <button
-            className="w-full bg-primary text-primary-foreground py-2 rounded disabled:opacity-50 hover:bg-primary-hover transition-colors"
+            className="w-full bg-primary text-primary-foreground py-2 rounded disabled:opacity-50 hover:bg-primary/90 transition-colors"
             onClick={startTrace}
             disabled={!selectedPort || tracing}
           >
@@ -112,7 +121,7 @@ const AnalysisView: React.FC = () => {
           </button>
         </div>
 
-        {/* Trace display */}
+        {/* ─────── Trace display ─────── */}
         <div className="border rounded p-4">
           <h3 className="font-semibold mb-4">Packet Trace</h3>
           <div className="h-[400px] overflow-y-auto bg-gray-50 p-2 rounded">
@@ -134,7 +143,9 @@ const AnalysisView: React.FC = () => {
                     <span className="w-24 text-center text-sm font-mono border-r pr-3 mr-3">
                       {ev.type}
                     </span>
-                    <pre className="text-xs overflow-x-auto">{JSON.stringify(ev.payload)}</pre>
+                    <pre className="text-xs overflow-x-auto">
+                      {JSON.stringify(ev.payload)}
+                    </pre>
                   </div>
                 ))
             )}

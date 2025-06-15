@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, MouseEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ChevronUp, ChevronDown, X } from "lucide-react";
@@ -8,100 +8,102 @@ import MacMiniConfigurator from "./MacMiniConfigurator";
 import { useMacMiniContext } from "@/context/MacMiniContext";
 
 interface FloatingPanelProps {
-  containerRef: React.RefObject<HTMLDivElement | null>;
+  /** The element that bounds dragging (usually your page wrapper) */
+  containerRef: React.RefObject<HTMLDivElement>;
 }
 
 export default function FloatingPanel({ containerRef }: FloatingPanelProps) {
-  const panelRef = useRef<HTMLDivElement>(null);
-  const draggingRef = useRef(false);
-  const offsetRef = useRef({ x: 0, y: 0 });
+  /* ------------------------------------------------------------------ */
+  /*  Refs – give all of them an initial value to satisfy TS strict-null */
+  /* ------------------------------------------------------------------ */
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const draggingRef = useRef<boolean>(false);
+  const offsetRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  /* ------------------------------------------------------------------ */
+  /*  Local state                                                       */
+  /* ------------------------------------------------------------------ */
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [minimized, setMinimized] = useState(false);
   const [visible, setVisible] = useState(true);
 
-  // Use the context
-  const { 
-    activeView
-  } = useMacMiniContext();
+  /* Context – we might eventually change behaviour based on the view   */
+  const { activeView } = useMacMiniContext();
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  /* ------------------------------------------------------------------ */
+  /*  Drag handlers                                                     */
+  /* ------------------------------------------------------------------ */
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!panelRef.current || !containerRef.current) return;
 
     const panelRect = panelRef.current.getBoundingClientRect();
     const containerRect = containerRef.current.getBoundingClientRect();
 
-    const offsetX = e.clientX - panelRect.left;
-    const offsetY = e.clientY - panelRect.top;
-
-    offsetRef.current = { x: offsetX, y: offsetY };
+    offsetRef.current = {
+      x: e.clientX - panelRect.left + containerRect.left,
+      y: e.clientY - panelRect.top + containerRect.top,
+    };
     draggingRef.current = true;
-
-    e.preventDefault(); // prevent text selection
+    e.preventDefault(); // stop text-selection
   };
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (!draggingRef.current || !panelRef.current || !containerRef.current) return;
-  
-    const container = containerRef.current;
-    const panel = panelRef.current;
-  
-    const offset = offsetRef.current;
-  
-    let newX = e.clientX - container.getBoundingClientRect().left - offset.x;
-    let newY = e.clientY - container.getBoundingClientRect().top - offset.y;
-  
-    // Clamp values to stay within the container
-    newX = Math.max(0, Math.min(newX, container.offsetWidth - panel.offsetWidth));
-    newY = Math.max(0, Math.min(newY, container.offsetHeight - panel.offsetHeight));
-  
-    setPosition({ x: newX, y: newY });
+    if (
+      !draggingRef.current ||
+      !panelRef.current ||
+      !containerRef.current
+    ) return;
+
+    const { left, top } = containerRef.current.getBoundingClientRect();
+    const newX = e.clientX - offsetRef.current.x + left;
+    const newY = e.clientY - offsetRef.current.y + top;
+
+    const maxX = containerRef.current.offsetWidth - panelRef.current.offsetWidth;
+    const maxY = containerRef.current.offsetHeight - panelRef.current.offsetHeight;
+
+    setPosition({
+      x: Math.max(0, Math.min(newX, maxX)),
+      y: Math.max(0, Math.min(newY, maxY)),
+    });
   };
 
-  const handleMouseUp = () => {
-    draggingRef.current = false;
-  };
-
+  /* ------------------------------------------------------------------ */
+  /*  Lifecycle – attach & clean up listeners                           */
+  /* ------------------------------------------------------------------ */
   useEffect(() => {
-    if (containerRef.current && panelRef.current) {
-      const updatePosition = () => {
-        const container = containerRef.current;
-        const panel = panelRef.current;
-        if (!container || !panel) return;
+    const handleMouseUp = () => (draggingRef.current = false);
 
-        const containerWidth = container.offsetWidth;
-        const panelWidth = panel.offsetWidth;
-        const containerHeight = container.offsetHeight;
-        const panelHeight = panel.offsetHeight;
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
 
-        // Calculate new position
-        let newX = containerWidth - panelWidth - 16; // 16px right margin
-        let newY = 16; // 16px top margin
-
-        // Ensure panel stays within container bounds
-        newX = Math.max(0, Math.min(newX, containerWidth - panelWidth));
-        newY = Math.max(0, Math.min(newY, containerHeight - panelHeight));
-
-        setPosition({ x: newX, y: newY });
-      };
-
-      // Initial position
-      updatePosition();
-
-      // Add resize event listener
-      window.addEventListener("resize", updatePosition);
-      window.addEventListener("mousemove", handleMouseMove);
-      window.addEventListener("mouseup", handleMouseUp);
-
-      return () => {
-        window.removeEventListener("resize", updatePosition);
-        window.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("mouseup", handleMouseUp);
-      };
-    }
+  /* ------------------------------------------------------------------ */
+  /*  Initial placement on first mount & window-resize                  */
+  /* ------------------------------------------------------------------ */
+  useEffect(() => {
+    const reposition = () => {
+      if (!containerRef.current || !panelRef.current) return;
+      const c = containerRef.current;
+      const p = panelRef.current;
+      setPosition({
+        x: Math.max(0, c.offsetWidth - p.offsetWidth - 16),
+        y: Math.max(0, 16),
+      });
+    };
+    reposition();
+    window.addEventListener("resize", reposition);
+    return () => window.removeEventListener("resize", reposition);
   }, [containerRef]);
 
   if (!visible) return null;
 
+  /* ------------------------------------------------------------------ */
+  /*  Render                                                            */
+  /* ------------------------------------------------------------------ */
   return (
     <div
       ref={panelRef}
@@ -109,38 +111,33 @@ export default function FloatingPanel({ containerRef }: FloatingPanelProps) {
         "absolute z-50 bg-white shadow-lg border rounded-md",
         minimized ? "w-64 h-auto" : "w-64"
       )}
-      style={{ top: position.y, left: position.x }}
+      style={{ left: position.x, top: position.y }}
     >
+      {/* ─────── Header / drag handle ─────── */}
       <div
         className="flex items-center justify-between px-3 py-2 border-b bg-gray-100 rounded-t-md cursor-move"
         onMouseDown={handleMouseDown}
       >
         <span className="text-sm font-medium">::: Actions</span>
-        <div className="flex space-x-1">
-          <Button
-            size="icon"
-            variant="ghost"
-            onClick={() => setMinimized((prev) => !prev)}
-          >
-            {minimized ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+        <div className="flex gap-1">
+          <Button size="icon" variant="ghost" onClick={() => setMinimized(v => !v)}>
+            {minimized ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
           </Button>
-          <Button
-            size="icon"
-            variant="ghost"
-            onClick={() => setVisible(false)}
-          >
-            <X className="w-4 h-4" />
+          <Button size="icon" variant="ghost" onClick={() => setVisible(false)}>
+            <X className="size-4" />
           </Button>
         </div>
       </div>
+
+      {/* ─────── Body ─────── */}
       {!minimized && (
         <div className="p-3 space-y-2">
           <Button className="w-full">Start Simulation</Button>
-          <Button variant="outline" className="w-full">Reset</Button>
+          <Button variant="outline" className="w-full">
+            Reset
+          </Button>
 
-          <MacMiniConfigurator 
-            multiSelect={true}
-          />
+          <MacMiniConfigurator multiSelect />
         </div>
       )}
     </div>
