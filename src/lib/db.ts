@@ -23,6 +23,11 @@ const pool = new Pool({
 type DocMeta = { file: string; title: string; description?: string };
 
 const PDF_META: DocMeta[] = [
+  {
+    file: "Packct-Spraying.pdf",
+    title: "Packct Spraying",
+    description: "Technical notes on packet-spraying attack simulations."
+  },
   { file: "Bandwidth-Works-in-Practice-not-in-Theory.pdf", title: "Bandwidth Works in Practice, Not in Theory" },
   { file: "Latex-Files-and-Colors.numbers.pdf", title: "LaTeX - File Types and Color Tags" },
   { file: "main.pdf", title: "Packet Switching - Historical Context" },

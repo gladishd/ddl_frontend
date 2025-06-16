@@ -5,6 +5,12 @@ BEGIN;
 
 INSERT INTO documents (title, description, image, href) VALUES
 (
+  'Packct Spraying',
+  'Technical notes on packet-spraying attack simulations',
+  'https://images.unsplash.com/photo-...q=80',  -- pick an appropriate image URL
+  '/Packct-Spraying.pdf'
+),
+(
   'Bandwidth Works in Practice, not in Theory',
   'A real-world look at Ethernet performance versus the textbooks.',
   'https://images.unsplash.com/photo-1550745165-9bc0b252726a?auto=format&fit=crop&w=800&q=80',

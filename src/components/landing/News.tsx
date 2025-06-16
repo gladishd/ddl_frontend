@@ -7,6 +7,12 @@ import React from 'react';
 const News = () => {
   const newsItems = [
     {
+      date: 'June 16, 2025',
+      title: 'Packet-Spraying Attack Notes',
+      link: '/Packct-Spraying.pdf',
+      description: 'Detailed simulation results of packet-spraying attacks against CSMA/CD.',
+    },
+    {
       date: 'June 5, 2025',
       title: 'Bandwidth Works in Practice, not in Theory',
       link: '/Bandwidth-Works-in-Practice-not-in-Theory.pdf',
