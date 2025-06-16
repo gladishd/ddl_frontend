@@ -7,6 +7,18 @@ import React from 'react';
 const News = () => {
   const newsItems = [
     {
+      date: 'June 24, 2025',
+      title: 'GraalVM: Universal Virtual Machine',
+      link: 'https://www.graalvm.org/',
+      description: 'High-performance runtime that supports multiple languages and execution modes, enabling polyglot applications with low overhead.',
+    },
+    {
+      date: 'June 24, 2025',
+      title: 'SLURM Quickstart Guide',
+      link: 'https://slurm.schedmd.com/quickstart.html',
+      description: 'An introduction to SLURM’s architecture and basic commands for scheduling and running jobs across an HPC cluster.',
+    },
+    {
       date: 'June 20, 2025',
       title: 'ALOHAnet: The Original Wireless Packet Network',
       link: 'https://en.wikipedia.org/wiki/ALOHAnet',
