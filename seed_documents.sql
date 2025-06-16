@@ -99,6 +99,12 @@ INSERT INTO documents (title, description, image, href) VALUES
   'Frequently asked questions on the design and usage of the Graph Virtual Machine.',
   'https://images.unsplash.com/photo-...q=80',
   '/FAQ-GVM.pdf'
+),
+(
+  'Reversibility & Time-Reversible Computing',
+  'Charles H. Bennett’s foundational paper on logical reversibility and thermodynamics of computation.',
+  'https://images.unsplash.com/photo-XXXXXX?auto=format&fit=crop&w=800&q=80',
+  '/Bennett_Reversibility.pdf'
 )
 ON CONFLICT (href) DO NOTHING; -- Avoids errors if you run the script multiple times
 

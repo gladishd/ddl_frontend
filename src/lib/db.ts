@@ -84,6 +84,11 @@ const PDF_META: DocMeta[] = [
     title: "FAQ – Graph Virtual Machine (GVM)",
     description: "Frequently asked questions on the design and usage of the Graph Virtual Machine.",
   },
+  {
+    file: "Bennett_Reversibility.pdf",
+    title: "Reversibility & Time-Reversible Computing",
+    description: "Charles H. Bennett’s foundational paper on logical reversibility and thermodynamics of computation."
+  },
 ];
 
 /* ────────────────────────── 3. Self-seeding + GC ───────────────────── */
