@@ -13,6 +13,12 @@ const News = () => {
       description: 'A retrospective on ALOHAnet, the pioneering packet‐radio network that laid the groundwork for modern Ethernet and Wi-Fi.',
     },
     {
+      date: 'June 22, 2025',
+      title: 'Pure vs Slotted ALOHA Compared',
+      link: 'https://www.geeksforgeeks.org/computer-networks/differences-between-pure-and-slotted-aloha/',
+      description: 'An accessible breakdown of the core differences between Pure ALOHA and Slotted ALOHA collision-avoidance techniques.',
+    },
+    {
       date: 'June 18, 2025',
       title: 'Open Atomic Ethernet Initiative',
       link: 'https://www.opencompute.org/projects/open-atomic-ethernet',
