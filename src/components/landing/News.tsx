@@ -7,6 +7,12 @@ import React from 'react';
 const News = () => {
   const newsItems = [
     {
+      date: 'June 20, 2025',
+      title: 'Keynote: Networking for AI & HPC (Ultra Ethernet)',
+      link: 'https://www.youtube.com/watch?v=0roIi1pscts',
+      description: 'Watch the OAP keynote on next-gen Ethernet for AI and high-performance computing workloads.',
+    },
+    {
       date: 'June 26, 2025',
       title: 'F-Tile Overview',
       link: 'https://www.intel.com/content/www/us/en/docs/programmable/683872/24-1-4-8-0/f-tile-overview.html',
