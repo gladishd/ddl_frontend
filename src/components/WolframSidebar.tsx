@@ -16,6 +16,7 @@ const WolframSidebar = () => {
   const relatedDocs = [
     { title: 'Packet Switching – Historical Context', href: '/main.pdf' },
     { title: 'Critique of Bandwidth-First Design', href: '/main2.pdf' },
+    { title: 'FAQ – Graph Virtual Machine (GVM)', href: '/FAQ-GVM.pdf' },
   ];
 
   return (

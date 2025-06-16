@@ -7,6 +7,12 @@ import React from 'react';
 const News = () => {
   const newsItems = [
     {
+      date: 'June 26, 2025',
+      title: 'F-Tile Overview',
+      link: 'https://www.intel.com/content/www/us/en/docs/programmable/683872/24-1-4-8-0/f-tile-overview.html',
+      description: 'Intel’s F-Tile architecture: a snapshot of its fabric, interconnect, and compute tile design for high-density FPGAs.',
+    },
+    {
       date: 'June 24, 2025',
       title: 'GraalVM: Universal Virtual Machine',
       link: 'https://www.graalvm.org/',

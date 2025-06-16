@@ -93,6 +93,12 @@ INSERT INTO documents (title, description, image, href) VALUES
   'The “hello world” of Dædælus — our mission statement.',
   'https://images.unsplash.com/photo-1526401281623-3ad9882883b4?auto=format&fit=crop&w=800&q=80',
   '/Welcome-Dean.pdf'
+),
+(
+  'FAQ – Graph Virtual Machine (GVM)',
+  'Frequently asked questions on the design and usage of the Graph Virtual Machine.',
+  'https://images.unsplash.com/photo-...q=80',
+  '/FAQ-GVM.pdf'
 )
 ON CONFLICT (href) DO NOTHING; -- Avoids errors if you run the script multiple times
 

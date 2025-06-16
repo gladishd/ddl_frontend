@@ -79,6 +79,11 @@ const PDF_META: DocMeta[] = [
     title: "Instructions for Dædælus",
     description: "Internal notes and instructions related to the Dædælus project.",
   },
+  {
+    file: "FAQ-GVM.pdf",
+    title: "FAQ – Graph Virtual Machine (GVM)",
+    description: "Frequently asked questions on the design and usage of the Graph Virtual Machine.",
+  },
 ];
 
 /* ────────────────────────── 3. Self-seeding + GC ───────────────────── */
