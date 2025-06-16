@@ -7,6 +7,12 @@ import React from 'react';
 const News = () => {
   const newsItems = [
     {
+      date: 'June 18, 2025',
+      title: 'Open Atomic Ethernet Initiative',
+      link: 'https://www.opencompute.org/projects/open-atomic-ethernet',
+      description: 'The Open Compute Project launches the Open Atomic Ethernet initiative to develop open-source, high-performance Ethernet hardware and reference designs.',
+    },
+    {
       date: 'June 16, 2025',
       title: 'Packet-Spraying Attack Notes',
       link: '/Packct-Spraying.pdf',
