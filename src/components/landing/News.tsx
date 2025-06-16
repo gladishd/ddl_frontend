@@ -7,6 +7,12 @@ import React from 'react';
 const News = () => {
   const newsItems = [
     {
+      date: 'June 20, 2025',
+      title: 'ALOHAnet: The Original Wireless Packet Network',
+      link: 'https://en.wikipedia.org/wiki/ALOHAnet',
+      description: 'A retrospective on ALOHAnet, the pioneering packet‐radio network that laid the groundwork for modern Ethernet and Wi-Fi.',
+    },
+    {
       date: 'June 18, 2025',
       title: 'Open Atomic Ethernet Initiative',
       link: 'https://www.opencompute.org/projects/open-atomic-ethernet',
