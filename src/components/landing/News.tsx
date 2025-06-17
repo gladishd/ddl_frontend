@@ -7,6 +7,42 @@ import React from 'react';
 const News = () => {
   const newsItems = [
     {
+      date: 'August 5–7, 2025',
+      title: 'FMS: the Future of Memory & Storage Summit 2025',
+      link: 'https://futurememorystorage.com/',
+      description: '19th annual global conference at the Santa Clara Convention Center covering all tiers of memory & storage: DRAM, DNA storage, UCIe, CXL, AI/ML, 3D flash, NVMe, ZNS, and more.',
+    },
+    {
+      date: 'August 5–7, 2025',
+      title: 'FMS: the Future of Memory and Storage Summit 2025',
+      link: 'https://futurememorystorage.com/',
+      description: 'Global conference on memory & storage—from DRAM and DNA data storage to CXL, AI/ML, and more—at the Santa Clara Convention Center.',
+    },
+    {
+      date: 'June 24, 2025',
+      title: 'Open-Source EDA Birds-of-a-Feather @ DAC 2025',
+      link: 'https://open-source-eda-birds-of-a-feather.github.io/',
+      description: 'Join the Birds-of-a-Feather session on open-source EDA tools, AI/ML integration, benchmarks, education & community practices—free admission (DAC badge required).',
+    },
+    {
+      date: 'June 23, 2025',
+      title: 'HEMBUS Micro-grid Energy Management Platform',
+      link: 'https://w3.hembus.com/',
+      description: 'HEMBUS unveils a patented micro-grid energy management system to provide reliable power during catastrophic events by balancing local demand with all available generation and storage.',
+    },
+    {
+      date: 'June 22, 2025',
+      title: 'Reversible Computing Escapes the Lab',
+      link: 'https://spectrum.ieee.org/reversible-computing',
+      description: 'IEEE Spectrum explores how reversible computing is moving from theory into practical, energy-efficient architectures.',
+    },
+    {
+      date: 'June 21, 2025',
+      title: 'Networking | Docker Docs',
+      link: 'https://docs.docker.com/engine/network/',
+      description: 'Official Docker documentation on container networking with the Engine Networking API and drivers.',
+    },
+    {
       date: 'June 20, 2025',
       title: 'Keynote: Networking for AI & HPC (Ultra Ethernet)',
       link: 'https://www.youtube.com/watch?v=0roIi1pscts',
