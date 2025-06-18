@@ -4,7 +4,8 @@ import React from 'react';
 import Link from 'next/link';
 
 const Footer = () => (
-  <footer className="bg-[#8c1515] text-white p-12">
+  <footer id="bottom-anchor" className="bg-[#8c1515] text-white p-12">
+
     {/* 5 columns on ≥ md, 1 column on mobile */}
     <div className="container mx-auto grid grid-cols-1 md:grid-cols-5 gap-8">
       {/* ─────────── Brand / copyright ─────────── */}

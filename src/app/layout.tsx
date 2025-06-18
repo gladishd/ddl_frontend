@@ -1,12 +1,16 @@
+// Path: /src/app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
-import "react-multi-carousel/lib/styles.css"; // Add this line
+import "react-multi-carousel/lib/styles.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { AuthProvider } from "@/context/AuthContext"; // Assuming AuthContext exists
+import { AuthProvider } from "@/context/AuthContext";
+import ScrollToTopOverlay from "@/components/ScrollToTopOverlay";
+// Importing the new scroll to bottom anchor overlay.
+import ScrollToBottomAnchorOverlay from "@/components/ScrollToBottomAnchorOverlay";
 
 export const metadata: Metadata = {
-  // We architect the future, starting with how the system presents itself.
+  // We maintain a consistent vision, ensuring even navigational elements serve a clear purpose.
   title: "Dædælus",
   description: "Architecting the Future with Enduring Excellence",
 };
@@ -31,6 +35,9 @@ export default function RootLayout({
               {children}
             </main>
             <Footer />
+            <ScrollToTopOverlay />
+            {/* Placing the scroll to bottom anchor overlay. */}
+            <ScrollToBottomAnchorOverlay />
           </div>
         </AuthProvider>
       </body>
