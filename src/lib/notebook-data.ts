@@ -13,6 +13,10 @@ export interface Notebook {
   date: string;
 }
 
+// A type for the notebook data before the slug is generated.
+// This ensures type safety at each stage of data transformation.
+type RawNotebook = Omit<Notebook, 'slug'>;
+
 // Utility to create a URL-friendly slug from a title.
 // This is essential for our dynamic routing, providing a clean, predictable
 // identifier for each model's page.
@@ -20,16 +24,17 @@ const slugify = (text: string): string => {
   return text
     .toString()
     .toLowerCase()
-    .replace(/\s+/g, '-')       // Replace spaces with -
-    .replace(/[^\w\-]+/g, '')   // Remove all non-word chars
-    .replace(/\-\-+/g, '-')     // Replace multiple - with single -
-    .replace(/^-+/, '')         // Trim - from start of text
-    .replace(/-+$/, '');        // Trim - from end of text
+    .replace(/\s+/g, '-')       // Replace spaces with -
+    .replace(/[^\w\-]+/g, '')   // Remove all non-word chars
+    .replace(/\-\-+/g, '-')     // Replace multiple - with single -
+    .replace(/^-+/, '')         // Trim - from start of text
+    .replace(/-+$/, '');        // Trim - from end of text
 };
 
-// First define the raw array as Notebook[] so that each `type` remains
-// a literal union member and TS won't widen it to plain string.
-const rawNotebooks: Notebook[] = [
+// First define the raw array with a type that correctly describes its shape.
+// This ensures that each `type` property remains a literal union member
+// and that TypeScript doesn't widen it to a plain string.
+const rawNotebooks: RawNotebook[] = [
   {
     id: 1,
     // This agentic simulation models the original half-duplex, shared Metcalfe ether.
