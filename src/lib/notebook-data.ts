@@ -9,7 +9,7 @@ export interface Notebook {
   slug: string;
   description: string;
   url: string; // For Wolfram models, this is a URL. For Python, it's a slug.
-  type: 'wolfram' | 'python' | 'python-csma'; // A new type for this specific model
+  type: 'wolfram' | 'python' | 'python-csma' | 'python-rtt'; // A new type for this specific model
   date: string;
 }
 
@@ -102,6 +102,28 @@ export const notebooks: Notebook[] = [
     description: "A detailed, event-driven Python simulation that models packet transmission, propagation delay, and acknowledgment cycles. This provides a precise analysis of how round-trip time (RTT) and link utilization are affected by the contention inherent in classical Ethernet, forming a key part of our argument against bandwidth-first design.",
     url: "model-7-python-rtt-and-utilization-analysis", // slug for routing
     type: 'python-rtt',
+    date: "June 18, 2025"
+  },
+  {
+    id: 8,
+    // A live Wolfram model providing a precise, event-driven analysis of Round-Trip Time (RTT) and channel utilization.
+    // This model serves as a computational proof, demonstrating the direct impact of statistical arbitration and collision
+    // recovery on the effective latency and throughput of a classical Ethernet link.
+    title: "Model 8: Wolfram RTT & Utilization Analysis",
+    description: "A live Wolfram model providing a precise, event-driven analysis of Round-Trip Time (RTT) and channel utilization under the classical Ethernet protocol, revealing the direct impact of statistical arbitration on latency.",
+    url: "https://www.wolframcloud.com/obj/gladishdean/Published/python%20ddl.nb",
+    type: 'wolfram',
+    date: "June 18, 2025"
+  },
+  {
+    id: 9,
+    // This Wolfram model is a computational essay on the core principles of CSMA/CD. It serves as a verifiable,
+    // interactive proof of the consequences of a system built on contended access, including carrier sense,
+    // collision detection, and the necessity of binary exponential backoff.
+    title: "Model 9: Wolfram CSMA/CD Contention Model",
+    description: "A live Wolfram model demonstrating the core principles of CSMA/CD, including carrier sense, collision detection, and binary exponential backoff. This computational proof explores the consequences of statistical arbitration on a shared medium.",
+    url: "https://www.wolframcloud.com/obj/gladishdean/Published/python%20ddl%202.nb",
+    type: 'wolfram',
     date: "June 18, 2025"
     }
   ].map(notebook => ({ ...notebook, slug: slugify(notebook.title) }));
