@@ -132,7 +132,7 @@ const responsive = {
 
 const NewsCarousel: React.FC = () => {
   return (
-    <section className="py-20 px-4 bg-gray-100">
+    <section className="py-20 px-4 bg-[#32373c0b]">
       <h2 className="text-4xl font-bold text-center mb-8">Latest News & Updates</h2>
       <div className="max-w-7xl mx-auto">
         {/*

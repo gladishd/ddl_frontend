@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import Link from "next/link";
 import EthernetModel from "./EthernetModel";
-import NewsCarousel from "./News"; // ← import the carousel
+import NewsCarousel from "./News";
 
 /* LOAD hero background … unchanged */
 const HERO_BG = "url(/Dædælus.png) repeat 0 0 / 220px 160px";
@@ -94,78 +94,13 @@ export default function LandingPage() {
                     />
                 </div>
             </section>
-            <NewsCarousel />
+
+            {/* The old Strategic Initiatives section has been removed from here and is now handled by the dedicated StrategicInitiatives.tsx component, called from page.tsx */}
+
             {/* ============================================= */}
             {/* === NEW ETHERNET SIMULATION MODEL SECTION === */}
             {/* ============================================= */}
             <EthernetModel />
-            {/*
-                This section details our primary application areas and strategic initiatives.
-                It replaces the more general use-cases with a concrete roadmap, outlining our work in simulation,
-                team development, and infrastructure. This approach provides a clearer picture of how we are actively building
-                the future of Ethernet, from formal specification to physical demonstration.
-            */}
-            <section className="py-20 px-4 bg-gray-100">
-                <h2 className="text-4xl font-bold text-center mb-4">Our Strategic Initiatives</h2>
-                <p className="text-lg text-center text-gray-600 max-w-3xl mx-auto mb-12">
-                    We are executing a multi-pronged strategy combining formal simulation, team development, and robust tooling to build the next generation of Ethernet.
-                </p>
-                <div className="container mx-auto max-w-5xl space-y-8">
-
-                    {/* Card 1: Agent-Based Simulation */}
-                    <div className="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition-shadow text-left">
-                        <h3 className="text-2xl font-bold mb-4">1. Agent-Based Packet Simulation: From Mathematica to Rust</h3>
-                        <p className="mb-4">
-                            Our primary application is a high-fidelity, agent-based simulation to model Ethernet's fundamental behaviors under contention. The goal is to computationally demonstrate the pathological behaviors in modern networking, directly challenging the assumptions underpinning specifications like the Ultra Ethernet Consortium's (UEC).
-                        </p>
-                        <ul className="list-disc list-inside space-y-3">
-                            <li>
-                                <strong>Mathematica as the Specification Language:</strong> We leverage Wolfram Language for the initial model, simulating the 1976 Metcalfe-Boggs half-duplex specification. This includes explicit modeling of transmission collisions, contention intervals, binary exponential backoff, and carrier sense (CSMA/CD).
-                            </li>
-                            <li>
-                                <strong>Exposing Inherent Flaws:</strong> By layering a TCP-like protocol, we highlight the systemic inefficiencies of bandwidth multiplexing. This computationally demonstrates the emergence of what we term <strong>Promiscuous Bandwidth</strong>, <strong>Imposition Mode</strong>, and <strong>TAR Limpware</strong>—degraded states where network "optimizations" actively harm application performance.
-                            </li>
-                            <li>
-                                <strong>High-Fidelity Rust Emulator:</strong> To create an "Ethernet w/o Mac Minis," we are developing a packet network emulator in Rust, our "OAE Cell Agent Simulator." This models our architecture of cells communicating over links (as Unix pipes), providing a framework to explore concurrency and low-level protocol mechanics in a way that is validated against our formal Mathematica specifications.
-                            </li>
-                        </ul>
-                    </div>
-                    {/* Card 2: Team Development */}
-                    <div className="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition-shadow text-left">
-                        <h3 className="text-2xl font-bold mb-4">2. Tree Algorithms and Dashboard Development</h3>
-                        <p className="mb-4">
-                            The success of our architecture relies on a sophisticated control plane and clear visualization. We are strategically building our team's capabilities to deliver on the promise of the Graph Virtual Machine (GVM).
-                        </p>
-                        <ul className="list-disc list-inside space-y-3">
-                            <li>
-                                <strong>Team Roles and Focus:</strong> Sahas Munamala will advance our core tree algorithms, leveraging the Wolfram Summer School. We will onboard Sumon U. as a full-stack developer to build a network dashboard, likely in Go, to visualize these complex interactions.
-                            </li>
-                            <li>
-                                <strong>Architectural Foundation:</strong> This work directly implements the logic of the GVM. Our architecture uses recursively stacked trees for hardware-enforced confinement and resource provisioning. The algorithms developed will form the basis of the GVM’s ability to manage consensus, elasticity, and load balancing within a 9-cell "hypercell" tile.
-                            </li>
-                            <li>
-                                <strong>Tooling:</strong> Concurrency for these processes will be prototyped and explored using Python, directly feeding into the "OAE Python Emulator" project listed in our OCP repository.
-                            </li>
-                        </ul>
-                    </div>
-
-                    {/* Card 3: Documentation & Demo */}
-                    <div className="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition-shadow text-left">
-                        <h3 className="text-2xl font-bold mb-4">3. Document Repository and Physical Demonstration</h3>
-                        <p className="mb-4">
-                            To support our technical development and ensure our ideas are clearly communicated, we are establishing a robust documentation workflow and building towards a physical, real-world demonstration.
-                        </p>
-                        <ul className="list-disc list-inside space-y-3">
-                            <li>
-                                <strong>A Hybrid Documentation Strategy:</strong> Managed by Gia Singh, we will use a "Markdown-first, LaTeX-enhanced" approach. Markdown will be used for accessible, collaborative drafting, while LaTeX, via Pandoc, will provide high-fidelity typesetting for formal documents like patents and scientific papers, all version-controlled in our "OAE Latex Github" repository.
-                            </li>
-                            <li>
-                                <strong>Simulation and Physical Demo:</strong> In parallel, our Python simulation will be enhanced. Ultimately, to prove the viability of our protocol—especially the benefits realized when a data "snake" is longer than the physical cable—we will build a physical demonstration using high-speed Thunderbolt interconnects, providing tangible proof for our simulated and specified claims.
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
         </>
     );
 }

@@ -1,3 +1,103 @@
+/* ADD THESE STYLES FOR INITIATIVE CARD REFINEMENT */
+
+.initiative-card-image-wrapper {
+  @apply w-full h-48 bg-gray-200; /* Added a background color for placeholder */
+}
+
+.initiative-card-image {
+  @apply w-full h-full object-cover;
+}
+
+.initiative-card-content {
+  /*
+   * The card's content block must not artificially expand. Removing 'flex-grow'
+   * ensures it occupies only the space required by the information it contains, creating a
+   * compact, efficient internal structure.
+   */
+  @apply p-6 flex flex-col;
+}
+
+.initiative-card-points-wrapper {
+  /* This wrapper simply holds the points list. The parent flex container
+      will handle stacking. Removing 'flex-grow' prevents the large,
+      unwanted space from appearing between the description and the points. */
+}
+
+.initiative-card-points {
+    @apply space-y-4 mt-6;
+}
+
+.initiative-card-point-item {
+    @apply border-l-2 border-primary pl-3;
+}
+
+/* ───── Strategic Initiatives Section ───── */
+.initiatives-section {
+  /* keep your text-color and spacing */
+  @apply text-[#820000] pt-20 pb-12 px-4;
+
+  /* abrupt transition: dark for 0–2%, then white for 2–100% */
+  background-image: linear-gradient(
+    to bottom,
+    #32373c6c 0%,
+    #32373c0b 2%,
+    #32373c0b 100%
+  );
+}
+
+
+
+.initiatives-header {
+  @apply text-4xl font-bold text-center mb-12;
+}
+
+.initiatives-container {
+  /*
+   * We must break the enforced uniformity of the grid. 'items-start' ensures each card
+   * maintains its own structural integrity, with its height determined by its own content,
+   * not by its neighbors. This prevents the grid from stretching shorter cards.
+   */
+  @apply container mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-10 items-start;
+}
+
+.initiative-card {
+  /*
+   * A card must be elastic, its form defined only by its content. Removing 'h-full'
+   * allows each initiative to have a natural, self-determined height, preventing
+   * the creation of artificial whitespace to match its neighbors.
+   */
+  @apply bg-white text-gray-800 rounded-lg shadow-lg flex flex-col overflow-hidden transition-transform duration-300 ease-in-out;
+}
+
+.initiative-card:hover {
+  @apply -translate-y-2 shadow-2xl;
+}
+
+.initiative-card-image {
+  @apply w-full h-48 object-cover;
+}
+
+.initiative-card-date {
+  @apply text-sm text-gray-500 mb-2;
+}
+
+.initiative-card-title {
+  @apply text-xl font-bold mb-2;
+}
+
+.initiative-card-description {
+  /*
+   * An informational element should not consume more space than it requires.
+   * Removing 'flex-grow' prevents the description from creating an internal void,
+   * ensuring a compact and efficient layout of the card's content.
+   */
+@apply text-base text-gray-600 mb-4;
+}
+
+.initiative-card-link {
+  @apply text-primary font-semibold hover:underline mt-auto;
+}
+
 /* wrap each title+blurb */
 .pdf-card {
   margin-bottom: 1rem;

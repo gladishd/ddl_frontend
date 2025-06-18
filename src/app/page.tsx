@@ -5,19 +5,17 @@ import dynamic from "next/dynamic";
 
 import { MacMiniProvider } from "@/context/MacMiniContext";
 import DocumentCard from "@/components/DocumentCard";
-import DocumentToc from "@/components/DocumentToc"; // Import new component
+import DocumentToc from "@/components/DocumentToc";
 import { DocumentRecord } from "@/types/Document";
-import { Button } from "@/components/ui/button"; // Import Button
-import { Search, List, LayoutGrid } from "lucide-react"; // Import icons
+import { Button } from "@/components/ui/button";
+import { Search, List, LayoutGrid } from "lucide-react";
 
 import DashboardContent from "@/components/DashboardContent";
 import WolframNotebookEmbed from "@/components/WolframNotebookEmbed";
+import LandingPage from "@/components/landing/LandingPage";
+import NewsCarousel from "@/components/landing/News";
+import StrategicInitiatives from "@/components/landing/StrategicInitiatives"; // This component now holds the new, styled section.
 import "./globals.css";
-
-const LandingPage = dynamic(
-  () => import("@/components/landing/LandingPage"),
-  { ssr: false, loading: () => null },
-);
 
 export default function DashboardPage() {
   const [docs, setDocs] = useState<DocumentRecord[]>([]);
@@ -52,6 +50,9 @@ export default function DashboardPage() {
 
   return (
     <MacMiniProvider>
+      <LandingPage />
+      <StrategicInitiatives />
+      <NewsCarousel />
       <main className="px-6 py-8">
         <h1 className="text-4xl font-extrabold mb-4">📚 Dædælus Library</h1>
 
@@ -108,8 +109,6 @@ export default function DashboardPage() {
           <p className="text-muted-foreground text-center py-10">No documents match your search criteria.</p>
         )}
       </main>
-
-      <LandingPage />
       <DashboardContent />
       <WolframNotebookEmbed />
     </MacMiniProvider>
