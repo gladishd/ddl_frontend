@@ -1645,3 +1645,53 @@ input[type="text"].pl-10:focus, input[type="search"].pl-10:focus {
   left: 50%;
   transform: translateX(-50%);
 }
+
+/* ==========================================================================
+   Python Model Display
+   Styles for presenting Python code and its output as a computational essay.
+   This reflects the "Code as Proof" methodology, ensuring that our models are
+   not just functional but also clearly documented and visually coherent.
+========================================================================== */
+.python-model-container {
+  padding: 1rem 2rem;
+  background-color: #0d1117; /* A github-like dark background */
+  color: #c9d1d9;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  line-height: 1.5;
+}
+
+.code-section {
+  margin-bottom: 2rem;
+}
+
+.code-header {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #8b949e;
+  border-bottom: 1px solid #30363d;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.code-block {
+  background-color: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+}
+
+/* Basic Python Syntax Highlighting */
+.python-syntax .token.comment { color: #8b949e; }
+.python-syntax .token.keyword { color: #ff7b72; }
+.python-syntax .token.function { color: #d2a8ff; }
+.python-syntax .token.string { color: #a5d6ff; }
+.python-syntax .token.number { color: #79c0ff; }
+.python-syntax .token.boolean { color: #ff7b72; }
+.python-syntax .token.class-name { color: #f0f6fc; font-weight: bold; }
+
+/* Output styling */
+.output-syntax {
+  color: #a5d6ff;
+}

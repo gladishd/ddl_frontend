@@ -1,9 +1,10 @@
 import { notebooks, Notebook } from '@/lib/notebook-data';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import PythonModelDisplay from './PythonModelDisplay'; // Import the new component
 
 // This page serves as the dedicated "wrapper" for each of our live computational models.
-// It provides context, embeds the interactive Wolfram Notebook, and guides the user to
+// It provides context, embeds the interactive content, and guides the user to
 // related explorations, creating a curated journey through our core arguments.
 
 type RelatedNotebooks = {
@@ -13,32 +14,27 @@ type RelatedNotebooks = {
 
 // This function implements the circular linking logic for our models.
 // The structure is intentional, guiding the user through a specific path of our arguments.
-// For instance, from the critique of half-duplex contention (Model 1), we point to our
-// ultimate solution (Model 4) and the subsequent problem of full-duplex degradation (Model 2).
+// It ensures that from any point in our logical chain, the next step is clear.
 const getRelatedNotebooks = (currentIndex: number): RelatedNotebooks => {
   const total = notebooks.length;
-  switch (currentIndex) {
-    case 0: // Model 1
-      return { readNext: notebooks[3], mightEnjoy: notebooks[1] }; // 4, 2
-    case 1: // Model 2
-      return { readNext: notebooks[0], mightEnjoy: notebooks[2] }; // 1, 3
-    case 2: // Model 3
-      return { readNext: notebooks[1], mightEnjoy: notebooks[3] }; // 2, 4
-    case 3: // Model 4
-      return { readNext: notebooks[2], mightEnjoy: notebooks[0] }; // 3, 1
-    default:
-      // Fallback just in case, though it should not be reached with valid data.
-      return { readNext: notebooks[0], mightEnjoy: notebooks[1] };
-  }
+  // We use modulo arithmetic to create a seamless, circular navigation path.
+  // This is a more robust, mathematical approach than a fragile, hardcoded switch statement.
+  const readNextIndex = (currentIndex + 1) % total;
+  const mightEnjoyIndex = (currentIndex + total - 1) % total; // Previous item
+
+  return {
+    readNext: notebooks[readNextIndex],
+    mightEnjoy: notebooks[mightEnjoyIndex],
+  };
 };
 
-// By making this component async, we adhere to the new data-fetching model in Next.js 15.
+// By making this component async, we adhere to the new data-fetching model in Next.js.
 // The framework can now correctly await the resolution of dynamic route parameters before rendering,
-// preventing the race condition that caused the error. This ensures a predictable, sequential data flow.
+// preventing race conditions. This ensures a predictable, sequential data flow.
 export default async function ModelPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+    params: Promise<{ slug: string }>;
 }) {
   // unwrap the params promise
   const { slug } = await params;
@@ -65,17 +61,21 @@ export default async function ModelPage({
           <section className="post-content">
             <p className="text-lg text-center max-w-3xl mx-auto mb-8">{notebook.description}</p>
             {/* This container uses a CSS trick to break out of the parent's width constraints, achieving a full-width effect.
-                It is a visual representation of escaping a constrained model to utilize the full available space. */}
+                It is a visual representation of escaping a constrained model to utilize the full available space. */}
             <div className="wolfram-embed-container my-8">
               <div className="border-y border-gray-200 dark:border-gray-700 shadow-lg bg-gray-50 dark:bg-gray-800">
-                <iframe
-                  key={notebook.url}
-                  src={notebook.url}
-                  title={notebook.title}
-                  className="w-full h-[85vh]"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
+                {notebook.type === 'wolfram' ? (
+                  <iframe
+                    key={notebook.url}
+                    src={notebook.url}
+                    title={notebook.title}
+                    className="w-full h-[85vh]"
+                    frameBorder="0"
+                    allowFullScreen
+                  ></iframe>
+                ) : (
+                  <PythonModelDisplay />
+                )}
               </div>
             </div>
           </section>
