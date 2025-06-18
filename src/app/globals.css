@@ -589,10 +589,9 @@ body {
   color: hsl(var(--primary));
   font-weight: 600;
   text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
+  display: inline-block;
   transition: color 0.2s ease-in-out;
+  word-break: break-all; /* This is key for wrapping long URLs */
 }
 
 .news-card-link:hover {
