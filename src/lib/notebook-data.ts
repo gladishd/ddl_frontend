@@ -9,7 +9,7 @@ export interface Notebook {
   slug: string;
   description: string;
   url: string; // For Wolfram models, this is a URL. For Python, it's a slug.
-  type: 'wolfram' | 'python';
+  type: 'wolfram' | 'python' | 'python-csma'; // A new type for this specific model
   date: string;
 }
 
@@ -80,5 +80,28 @@ export const notebooks: Notebook[] = [
       url: "model-5-python-tiktyktik-protocol", // This is now a slug for routing
       type: 'python',
       date: "June 18, 2025"
+  },
+  {
+    id: 6,
+    // This is not merely a simulation; it is a computational proof of the consequences of statistical arbitration.
+    // We model the "irreversible smash and restart of Shannon information" that is the hallmark of CSMA/CD to show
+    // why a system built on such fragile assumptions cannot provide the guarantees required by modern distributed systems.
+    title: "Model 6: Python CSMA/CD Contention Analysis",
+    description: "A Python-based agentic simulation of the 1976 Metcalfe-Boggs protocol. This model serves as a computational proof, demonstrating the consequences of statistical arbitration, the necessity of unbounded backoff, and the resulting degradation of transactional capacity on a shared Ether. It is a tool for understanding the problems we solve.",
+    url: "model-6-python-csmacd-contention-analysis", // slug for routing
+    type: 'python-csma',
+    date: "June 18, 2025"
+  },
+  {
+    id: 7,
+    // This event-driven simulation provides a more precise analysis of round-trip dynamics.
+    // It moves beyond showing *that* contention occurs and models *how* it impacts latency and utilization.
+    // This is crucial for understanding the RTT component in the Mathis equation and arguing for a shift
+    // from bandwidth-multiplexing to transaction-multiplexing.
+    title: "Model 7: Event-Driven RTT and Utilization Analysis",
+    description: "A detailed, event-driven Python simulation that models packet transmission, propagation delay, and acknowledgment cycles. This provides a precise analysis of how round-trip time (RTT) and link utilization are affected by the contention inherent in classical Ethernet, forming a key part of our argument against bandwidth-first design.",
+    url: "model-7-python-rtt-and-utilization-analysis", // slug for routing
+    type: 'python-rtt',
+    date: "June 18, 2025"
     }
   ].map(notebook => ({ ...notebook, slug: slugify(notebook.title) }));

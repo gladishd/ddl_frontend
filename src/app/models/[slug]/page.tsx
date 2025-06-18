@@ -1,7 +1,9 @@
 import { notebooks, Notebook } from '@/lib/notebook-data';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import PythonModelDisplay from './PythonModelDisplay'; // Import the new component
+import PythonModelDisplay from './PythonModelDisplay';
+import PythonCSMACDModelDisplay from './PythonCSMACDModelDisplay';
+import PythonRTTModelDisplay from './PythonRTTModelDisplay'; // Import the new component
 
 // This page serves as the dedicated "wrapper" for each of our live computational models.
 // It provides context, embeds the interactive content, and guides the user to
@@ -73,9 +75,13 @@ export default async function ModelPage({
                     frameBorder="0"
                     allowFullScreen
                   ></iframe>
-                ) : (
+                ) : notebook.type === 'python' ? (
                   <PythonModelDisplay />
-                )}
+                ) : notebook.type === 'python-csma' ? (
+                  <PythonCSMACDModelDisplay />
+                ) : notebook.type === 'python-rtt' ? (
+                  <PythonRTTModelDisplay />
+                ) : null}
               </div>
             </div>
           </section>
