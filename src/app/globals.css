@@ -1464,13 +1464,13 @@ input[type="text"].pl-10:focus, input[type="search"].pl-10:focus {
 }
 
 /* ==========================================================================
-   Read Next Section
-   This section provides navigational affordances to guide users through the
-   logical progression of our computational models. By presenting related
-   proofs, we create a cohesive narrative, demonstrating that our arguments
-   are not isolated but part of a larger, interconnected system of thought.
-   The layout is inspired by classic blog designs, but the purpose is to
-   reinforce the structure of our reasoning.
+   Read Next Section Styling
+   This ruleset establishes a deliberate visual asymmetry between the two
+   navigational choices. The left link conforms to the surrounding theme,
+   while the right link is given a static, dark context. This is not a
+   failure of the theme but an intentional design choice to create a stable,
+   predictable hierarchy, ensuring the distinction between the primary and
+   secondary recommendations is never conflated or lost.
 ========================================================================== */
 
 .read-next {
@@ -1483,44 +1483,28 @@ input[type="text"].pl-10:focus, input[type="search"].pl-10:focus {
   margin-right: auto;
 }
 
+/*
+ * Base styles for each navigational cell. They are designed to be elastic,
+ * adapting to their container rather than adhering to a fragile, fixed geometry.
+ */
 .read-next-story {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   flex-grow: 1;
   min-width: 50%;
   text-decoration: none;
   position: relative;
   text-align: center;
-  color: hsl(var(--card-foreground));
-  background-color: hsl(var(--card));
-  border: 1px solid hsl(var(--border));
   overflow: hidden;
-  transition: background-color 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 3rem 1.5rem;
 }
-
-.read-next-story:hover {
-  background-color: hsl(var(--accent-hover));
-}
-
-.read-next-story:first-child {
-  border-top-left-radius: var(--radius-lg);
-  border-bottom-left-radius: var(--radius-lg);
-  border-right: 0;
-}
-
-.read-next-story:last-child {
-  border-top-right-radius: var(--radius-lg);
-  border-bottom-right-radius: var(--radius-lg);
-}
-
 
 .read-next-story .post {
-  padding: 3rem 1.5rem;
   border-bottom: none;
-  margin-bottom: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  margin: 0;
+  padding: 0;
   width: 100%;
 }
 
@@ -1528,51 +1512,121 @@ input[type="text"].pl-10:focus, input[type="search"].pl-10:focus {
   display: none;
 }
 
+.read-next-story h2 {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    font-family: "Open Sans", sans-serif;
+}
+
+/*
+ * The label pseudo-element is styled as a distinct "box" or "tag".
+ * This gives the label its own visual boundary, clearly separating it
+ * from the content title it introduces.
+ */
 .read-next-story .post:before {
-  content: "Read This Next";
-  display: block;
-  padding: 4px 10px 5px;
-  text-transform: uppercase;
-  font-size: 0.7rem;
-  font-family: "Open Sans", sans-serif;
-  color: hsl(var(--muted-foreground));
-  border: 1px solid hsl(var(--border));
-  border-radius: 4px;
-  transition: all 0.2s ease;
+    content: "Read This Next";
+    display: inline-block;
+    padding: 4px 10px 5px;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    font-family: "Open Sans", sans-serif;
+    border-radius: 4px;
+    transition: all 0.2s ease;
 }
 
 .read-next-story.prev .post:before {
-  content: "You Might Enjoy";
+    content: "You Might Enjoy";
+}
+
+/*
+ * THEME-ADAPTIVE (LEFT): The primary link inherits its appearance from the
+ * surrounding UI theme, using shared variables for a cohesive look.
+ */
+.read-next-story {
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-right-width: 0.5px;
+  border-top-left-radius: var(--radius-lg);
+  border-bottom-left-radius: var(--radius-lg);
+}
+
+.read-next-story:hover {
+  background-color: hsl(var(--accent-hover));
+}
+
+.read-next-story .post-title {
+    color: hsl(var(--foreground));
+}
+
+.read-next-story .post:before {
+    background-color: hsl(var(--background));
+    color: hsl(var(--muted-foreground));
+    border: 1px solid black;
 }
 
 .read-next-story:hover .post:before {
-  color: hsl(var(--primary));
-  border-color: hsl(var(--primary));
+    color: hsl(var(--primary));
+    border-color: hsl(var(--primary));
+    background-color: hsl(var(--card));
+}
+
+/*
+ * STATIC DARK (RIGHT): The secondary link uses a fixed, non-adaptive dark
+ * theme to create a permanent visual contrast. This makes its role as an
+ * alternative suggestion explicit and unambiguous.
+ */
+.read-next-story.prev {
+  color: #ffffff;
+  background-color: #2E2E2E; /* A static, dark color */
+  border: 1px solid #444; /* A border visible against the dark background */
+  border-left-width: 0.5px;
+  border-top-right-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
+}
+
+.read-next-story.prev:hover {
+  background-color: #3A4145; /* A slightly lighter dark for hover */
+}
+
+.read-next-story.prev .post-title {
+    color: #ffffff;
+}
+
+.read-next-story.prev .post:before {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.read-next-story.prev:hover .post:before {
+    color: #ffffff;
+    border-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 
-.read-next-story h2 {
-  margin-top: 1rem;
-  font-size: 1.5rem;
-  font-family: "Open Sans", sans-serif;
-  color: hsl(var(--foreground));
-}
-
+/* Responsive adjustments for mobile, creating a stacked layout */
 @media (max-width: 768px) {
   .read-next {
     flex-direction: column;
   }
 
-  .read-next-story:first-child {
-    border-top-right-radius: var(--radius-lg);
-    border-bottom-left-radius: 0;
-    border-right: 1px solid hsl(var(--border));
-    border-bottom: 0;
+  .read-next-story,
+  .read-next-story.prev {
+    border-radius: 0;
+    border-width: 1px;
   }
 
-  .read-next-story:last-child {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: var(--radius-lg);
+  .read-next-story {
+    border-top-left-radius: var(--radius-lg);
+    border-top-right-radius: var(--radius-lg);
+    border-bottom-width: 0.5px;
+  }
+
+  .read-next-story.prev {
     border-bottom-left-radius: var(--radius-lg);
+    border-bottom-right-radius: var(--radius-lg);
+    border-top-width: 0.5px;
   }
 }
