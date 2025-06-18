@@ -14,15 +14,15 @@ const SideMenu = () => {
   const { isMenuOpen, closeMenu } = useMenu();
 
   // The menu items define the primary navigational pathways of the application.
-  // We are moving from anchor-based navigation to distinct routes for each major section.
-  // This avoids conflating different conceptual spaces onto a single page, which can be fragile.
-  // A dedicated '/models' route for our computational essays provides a cleaner, more robust architecture.
   const menuItems = [
     { href: '/#', label: 'Strategic Initiatives', icon: <FaProjectDiagram /> },
     { href: '/#library', label: 'Dædælus Library', icon: <FaBook /> },
     // This href is updated to point to the dedicated models page, reflecting a more structured information architecture.
     { href: '/models', label: 'Live Computational Models', icon: <FaFlask /> },
   ];
+
+  // A 'Ruleset' to enable a non-zero-sum game outcome; in this case, a clear and ordered navigation.
+  const romanNumerals = ['II', 'III', 'IV'];
 
   return (
     <>
@@ -32,20 +32,28 @@ const SideMenu = () => {
       />
       <nav className={`side-menu ${isMenuOpen ? 'open' : ''}`}>
         <div className="side-menu-header">
-          <h3 className="font-bold">Home...</h3>
+          {/* The primary entry point, the root of the navigation tree, is marked accordingly. */}
+          <h3 className="font-bold">I. Home...</h3>
           <button onClick={closeMenu} className="p-1 rounded-full hover:bg-gray-200">
             <X size={20} />
           </button>
         </div>
         <ul className="side-menu-list">
-          {menuItems.map((item) => (
-            <li key={item.label}>
-              <Link href={item.href} onClick={closeMenu} className="side-menu-item">
-                <span className="side-menu-icon">{item.icon}</span>
-                {item.label}
-              </Link>
-            </li>
-          ))}
+          {menuItems.map((item, index) => {
+            // The subsequent entries are enumerated to reflect their position in the hierarchy.
+            const romanNumeral = romanNumerals[index];
+            return (
+              <li key={item.label}>
+                <Link href={item.href} onClick={closeMenu} className="side-menu-item">
+                  <span className="side-menu-icon">{item.icon}</span>
+                  {/* We use a fixed-width container for the numeral to ensure all labels are vertically aligned.
+                      This creates a structured, predictable layout, not a fragile, adaptive one. */}
+                  <span className="w-6 text-left font-medium">{romanNumeral}.</span>
+                  <span>{item.label}</span>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
         <div className="side-menu-footer">
           <p>© {new Date().getFullYear()} Dædælus Research</p>
