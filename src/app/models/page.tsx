@@ -1,32 +1,26 @@
-"use client";
-
-import React, { useState } from 'react';
 import Link from 'next/link';
-import WolframSidebar from './WolframSidebar';
-import { notebooks } from '@/lib/notebook-data'; // Import from the new central file
+import WolframSidebar from '@/components/WolframSidebar';
+import { notebooks } from '@/lib/notebook-data';
 
-// This component presents the four core computational models that form the foundation of our argument against bandwidth-multiplexing.
-// Each model is a "proof by code," a precise information-theoretic emulator designed to reveal the consequences of different networking assumptions.
-// They are presented here as entries that link to dedicated pages where the live models can be interrogated.
-
-const ITEMS_PER_PAGE = 2;
-
-const WolframNotebookEmbed: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+// This page serves as the central hub for our live computational models.
+// By making this a Server Component, we handle pagination via URL search parameters,
+// creating a bookmarkable and shareable state for the model list. This is a more
+// robust and less fragile architecture than relying on client-side state.
+export default async function ModelsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  // unwrap the params promise
+  const sp = await searchParams;
+  const page = Number(sp.page ?? 1);
+  const ITEMS_PER_PAGE = 2;
   const totalPages = Math.ceil(notebooks.length / ITEMS_PER_PAGE);
 
   const currentNotebooks = notebooks.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    (page - 1) * ITEMS_PER_PAGE,
+    page * ITEMS_PER_PAGE
   );
-
-  const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
-  };
 
   return (
     <section id="live-models" className="bg-white dark:bg-black py-12">
@@ -40,7 +34,7 @@ const WolframNotebookEmbed: React.FC = () => {
         <div className="wolfram-layout-container">
           <WolframSidebar />
           <main id="content" className="content" role="main">
-            {currentNotebooks.map((notebook, index) => (
+            {currentNotebooks.map((notebook) => (
               <article className="post" key={notebook.id}>
                 <header className="post-header">
                   <h2 className="post-title">
@@ -58,8 +52,6 @@ const WolframNotebookEmbed: React.FC = () => {
                   </p>
                 </section>
                 <footer className="post-meta">
-                  {/* This author credit establishes the origin of the proof. The image is a placeholder,
-                      as the work emerges from the collective research of the Daedaelus project. */}
                   <img className="author-thumb" src="https://www.gravatar.com/avatar/daedalus?d=identicon&s=250" alt="Dædælus Research" />
                   <span>Dædælus Research</span>
                   <time className="post-date" dateTime={new Date(notebook.date).toISOString()}>
@@ -68,21 +60,20 @@ const WolframNotebookEmbed: React.FC = () => {
                 </footer>
               </article>
             ))}
-
             <nav className="pagination" role="navigation">
-              {currentPage > 1 ? (
-                <button onClick={handlePrevPage} className="newer-posts">
+              {page > 1 ? (
+                <Link href={`/models?page=${page - 1}`} className="newer-posts" scroll={false}>
                   <span aria-hidden="true">←</span> Newer Models
-                </button>
-              ) : <div className="w-[125px]" />} {/* Placeholder for alignment */}
+                </Link>
+              ) : <div className="w-[125px]" />}
               <span className="page-number">
-                Page {currentPage} of {totalPages}
+                Page {page} of {totalPages}
               </span>
-              {currentPage < totalPages ? (
-                <button onClick={handleNextPage} className="older-posts">
+              {page < totalPages ? (
+                <Link href={`/models?page=${page + 1}`} className="older-posts" scroll={false}>
                   Older Models <span aria-hidden="true">→</span>
-                </button>
-              ) : <div className="w-[125px]" />} {/* Placeholder for alignment */}
+                </Link>
+              ) : <div className="w-[125px]" />}
             </nav>
           </main>
         </div>
@@ -90,5 +81,3 @@ const WolframNotebookEmbed: React.FC = () => {
     </section>
   );
 };
-
-export default WolframNotebookEmbed;

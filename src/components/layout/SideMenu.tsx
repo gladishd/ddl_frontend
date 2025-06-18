@@ -13,10 +13,15 @@ import { FaBook, FaFlask, FaProjectDiagram } from 'react-icons/fa';
 const SideMenu = () => {
   const { isMenuOpen, closeMenu } = useMenu();
 
+  // The menu items define the primary navigational pathways of the application.
+  // We are moving from anchor-based navigation to distinct routes for each major section.
+  // This avoids conflating different conceptual spaces onto a single page, which can be fragile.
+  // A dedicated '/models' route for our computational essays provides a cleaner, more robust architecture.
   const menuItems = [
     { href: '/#', label: 'Strategic Initiatives', icon: <FaProjectDiagram /> },
     { href: '/#library', label: 'Dædælus Library', icon: <FaBook /> },
-    { href: '/#live-models', label: 'Live Computational Models', icon: <FaFlask /> },
+    // This href is updated to point to the dedicated models page, reflecting a more structured information architecture.
+    { href: '/models', label: 'Live Computational Models', icon: <FaFlask /> },
   ];
 
   return (

@@ -1317,3 +1317,262 @@ input[type="text"].pl-10:focus, input[type="search"].pl-10:focus {
   font-weight: 700;
   color: hsl(var(--foreground));
 }
+/* ==========================================================================
+   Computational Model Presentation
+   Each model is presented as a distinct article, a self-contained unit of proof.
+   This structure avoids the undifferentiated stream of a simple list, giving each
+   computational essay the weight and clarity it deserves. The pagination reflects
+   a deliberate, sequential exploration of our foundational arguments.
+========================================================================== */
+.content {
+  max-width: 710px;
+  margin: 0 auto;
+}
+
+.post {
+  position: relative;
+  width: 100%;
+  margin: 0 auto 4rem auto;
+  padding-bottom: 4rem;
+  border-bottom: 1px solid hsl(var(--border));
+  word-wrap: break-word;
+}
+
+.post:after {
+  display: block;
+  content: "";
+  width: 7px;
+  height: 7px;
+  border: 1px solid hsl(var(--border) / 0.5);
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  margin-left: -4px;
+  background: #fff;
+  border-radius: 100%;
+  box-shadow: #fff 0 0 0 5px;
+}
+
+.dark .post:after {
+  background: oklch(0.145 0 0); /* Match dark background */
+  box-shadow: oklch(0.145 0 0) 0 0 0 5px;
+}
+
+.post-header {
+  margin-bottom: 1.5rem;
+}
+
+.post-title {
+  font-family: "Open Sans", sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -1px;
+  margin: 0;
+}
+
+.post-title a {
+  color: hsl(var(--foreground));
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.post-title a:hover {
+  color: hsl(var(--primary));
+}
+
+.post-excerpt p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.7em;
+  color: hsl(var(--muted-foreground));
+}
+
+.read-more {
+  text-decoration: none;
+  color: hsl(var(--primary));
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  margin: 1.75rem 0 0 0;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.9rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.author-thumb {
+  width: 24px;
+  height: 24px;
+  margin-right: 9px;
+  border-radius: 100%;
+}
+
+.post-meta span {
+  font-weight: 500;
+}
+
+.post-date {
+  display: inline-block;
+  margin-left: 8px;
+  padding-left: 12px;
+  border-left: 1px solid hsl(var(--border));
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.pagination {
+  position: relative;
+  width: 100%;
+  margin: 1rem auto;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.8rem;
+  color: hsl(var(--muted-foreground));
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pagination button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.older-posts,
+.newer-posts {
+  display: inline-block;
+  padding: 5px 15px;
+  border: 1px solid hsl(var(--border));
+  text-decoration: none;
+  border-radius: 4px;
+  transition: border 0.3s ease, color 0.3s ease;
+  color: hsl(var(--muted-foreground));
+}
+
+.older-posts:hover,
+.newer-posts:hover {
+  color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+}
+
+.page-number {
+  display: inline-block;
+  padding: 2px 0;
+}
+
+/* ==========================================================================
+   Read Next Section
+   This section provides navigational affordances to guide users through the
+   logical progression of our computational models. By presenting related
+   proofs, we create a cohesive narrative, demonstrating that our arguments
+   are not isolated but part of a larger, interconnected system of thought.
+   The layout is inspired by classic blog designs, but the purpose is to
+   reinforce the structure of our reasoning.
+========================================================================== */
+
+.read-next {
+  display: flex;
+  flex-direction: row;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.read-next-story {
+  display: flex;
+  flex-grow: 1;
+  min-width: 50%;
+  text-decoration: none;
+  position: relative;
+  text-align: center;
+  color: hsl(var(--card-foreground));
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  overflow: hidden;
+  transition: background-color 0.3s ease;
+}
+
+.read-next-story:hover {
+  background-color: hsl(var(--accent-hover));
+}
+
+.read-next-story:first-child {
+  border-top-left-radius: var(--radius-lg);
+  border-bottom-left-radius: var(--radius-lg);
+  border-right: 0;
+}
+
+.read-next-story:last-child {
+  border-top-right-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
+}
+
+
+.read-next-story .post {
+  padding: 3rem 1.5rem;
+  border-bottom: none;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.read-next-story .post:after {
+  display: none;
+}
+
+.read-next-story .post:before {
+  content: "Read This Next";
+  display: block;
+  padding: 4px 10px 5px;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  font-family: "Open Sans", sans-serif;
+  color: hsl(var(--muted-foreground));
+  border: 1px solid hsl(var(--border));
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.read-next-story.prev .post:before {
+  content: "You Might Enjoy";
+}
+
+.read-next-story:hover .post:before {
+  color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+}
+
+
+.read-next-story h2 {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  font-family: "Open Sans", sans-serif;
+  color: hsl(var(--foreground));
+}
+
+@media (max-width: 768px) {
+  .read-next {
+    flex-direction: column;
+  }
+
+  .read-next-story:first-child {
+    border-top-right-radius: var(--radius-lg);
+    border-bottom-left-radius: 0;
+    border-right: 1px solid hsl(var(--border));
+    border-bottom: 0;
+  }
+
+  .read-next-story:last-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: var(--radius-lg);
+    border-bottom-left-radius: var(--radius-lg);
+  }
+}
