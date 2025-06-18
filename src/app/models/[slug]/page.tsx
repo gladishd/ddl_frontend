@@ -64,15 +64,19 @@ export default async function ModelPage({
 
           <section className="post-content">
             <p className="text-lg text-center max-w-3xl mx-auto mb-8">{notebook.description}</p>
-            <div className="aspect-w-16 aspect-h-9 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-lg">
-              <iframe
-                key={notebook.url}
-                src={notebook.url}
-                title={notebook.title}
-                className="w-full h-[80vh]"
-                frameBorder="0"
-                allowFullScreen
-              ></iframe>
+            {/* This container uses a CSS trick to break out of the parent's width constraints, achieving a full-width effect.
+                It is a visual representation of escaping a constrained model to utilize the full available space. */}
+            <div className="wolfram-embed-container my-8">
+              <div className="border-y border-gray-200 dark:border-gray-700 shadow-lg bg-gray-50 dark:bg-gray-800">
+                <iframe
+                  key={notebook.url}
+                  src={notebook.url}
+                  title={notebook.title}
+                  className="w-full h-[85vh]"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
             </div>
           </section>
         </article>

@@ -32,7 +32,7 @@ const SideMenu = () => {
       />
       <nav className={`side-menu ${isMenuOpen ? 'open' : ''}`}>
         <div className="side-menu-header">
-          <h3 className="font-bold">Navigation</h3>
+          <h3 className="font-bold">Home...</h3>
           <button onClick={closeMenu} className="p-1 rounded-full hover:bg-gray-200">
             <X size={20} />
           </button>

@@ -1630,3 +1630,18 @@ input[type="text"].pl-10:focus, input[type="search"].pl-10:focus {
     border-top-width: 0.5px;
   }
 }
+
+/* ==========================================================================
+   Wolfram Notebook Full-Width Embed
+   This uses a standard CSS technique to break a child element out of its
+   parent's width constraints. The container is pushed to the horizontal
+   center of its constrained parent, then its position is adjusted via a
+   transform to span the full viewport. This allows the computational essay
+   to command the visual space it requires.
+========================================================================== */
+.wolfram-embed-container {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
