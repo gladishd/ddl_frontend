@@ -2,10 +2,14 @@
 
 import React from 'react';
 
-// This component represents the 'liveness' of the Daedaelus project, providing updates and insights.
-// Just as our protocol knows if a transaction succeeded or failed without heartbeats or timeouts, this section provides direct, stateful updates on our progress.
-const News = () => {
-  const newsItems = [
+interface NewsItem {
+  date: string;
+  title: string;
+  link: string;
+  description: string;
+}
+
+const newsItems: NewsItem[] = [
     {
       date: 'August 5–7, 2025',
       title: 'FMS: the Future of Memory & Storage Summit 2025',
@@ -114,26 +118,44 @@ const News = () => {
     }
   ];
 
+const NewsCarousel: React.FC = () => {
   return (
     <section className="py-20 px-4 bg-gray-100">
-      <h2 className="text-4xl font-bold text-center mb-12">Latest News & Updates</h2>
-      <div className="container mx-auto grid md:grid-cols-1 lg:grid-cols-3 gap-10">
-        {newsItems.map((item, index) => (
-          <div key={index} className="news-card p-6">
-            <p className="news-card-date">{item.date}</p>
-            <h3 className="news-card-title">{item.title}</h3>
-            <p className="news-card-description">{item.description}</p>
-            <a href={item.link} target="_blank" rel="noopener noreferrer" className="news-card-link">
-              Read More
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
+        <h2 className="text-4xl font-bold text-center mb-8">Latest News & Updates</h2>
+        <div className="overflow-x-auto px-4">
+          <div className="flex space-x-6 snap-x snap-mandatory">
+            {newsItems.map((item, idx) => (
+              <div key={idx} className="flex-shrink-0 w-80 snap-start">
+                <div className="news-card p-6 h-full flex flex-col justify-between">
+                  <div>
+                    <p className="news-card-date">{item.date}</p>
+                    <h3 className="news-card-title">{item.title}</h3>
+                    <p className="news-card-description">{item.description}</p>
+                  </div>
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="news-card-link mt-4 inline-flex items-center font-semibold"
+                  >
+                    Read More
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 ml-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
     </section>
   );
 };
 
-export default News;
+export default NewsCarousel;

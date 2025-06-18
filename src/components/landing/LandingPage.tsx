@@ -3,15 +3,17 @@
 
 import React, { useEffect, useState } from "react";
 import {
-    FaCogs, FaShareSquare, FaPaintBrush, FaChartBar,
-    FaPlayCircle, FaGraduationCap, FaBuilding,
+    FaCogs,
+    FaShareSquare,
+    FaPaintBrush,
+    FaChartBar,
 } from "react-icons/fa";
 import Link from "next/link";
-import EthernetModel from "./EthernetModel"; // Import the new model component
+import EthernetModel from "./EthernetModel";
+import NewsCarousel from "./News"; // ← import the carousel
 
 /* LOAD hero background … unchanged */
-const HERO_BG =
-    "url(/Dædælus.png) repeat 0 0 / 220px 160px";
+const HERO_BG = "url(/Dædælus.png) repeat 0 0 / 220px 160px";
 
 const overlay: React.CSSProperties = {
     position: "absolute",
@@ -21,7 +23,6 @@ const overlay: React.CSSProperties = {
 };
 
 export default function LandingPage() {
-    /* tiny client-only wrapper for SSR icons */
     const [mounted, setMounted] = useState(false);
     useEffect(() => setMounted(true), []);
     const C = ({ children }: { children: React.ReactNode }) =>
@@ -65,40 +66,39 @@ export default function LandingPage() {
                 Each model is a step in a larger narrative, starting from the original Metcalfe ether and culminating in a new paradigm of Interaction Multiplexing.
                 This directly reflects our strategy to "organize the story we want to portray with this computation model."
             */}
+            {/* feature grid */}
             <section className="py-20 px-4">
                 <h2 className="text-4xl font-bold text-center mb-12">
                     The Bandwidth Argument We Want to Make
                 </h2>
                 <div className="container mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-10">
-                    {/*
-                        Point 1 from the email: Model the original shared Metcalfe ether.
-                        The goal is to show the consequences of the root assumption: dividing bandwidth as a "fair arbitration of the contended resource."
-                        We are building an "agentic simulation/transmission contention model" to demonstrate this computationally, not statistically.
-                    */}
-                    <FeatureCard icon={<C><FaCogs /></C>} title="1. Half-Duplex Contention" description="An agentic simulation of the shared Metcalfe ether. We computationally model transmission and contention intervals to show how multiplexing bandwidth fundamentally limits the transactional capacity of the link." />
-                    {/*
-                        Point 2: Show how bandwidth multiplexing also fails on modern links.
-                        This model demonstrates how "multiplexing bandwidth is killing the intimacy of the interactions, even on full duplex links," which is crucial in our argument against bandwidth multiplexing.
-                    */}
-                    <FeatureCard icon={<C><FaShareSquare /></C>} title="2. Full-Duplex Degradation" description="A model of modern, full-duplex links demonstrating how bandwidth-multiplexing decimates TCP throughput under loss, leading to severe round-trip latency degradation and proving the model is broken." />
-                    {/*
-                        Point 3: Demolish the stop-and-wait assumption with the "circulating snakes idea."
-                        With a "self-contained snake of bits, that's longer than the wire itself, the acknowledgement is being received while the sender is still transmitting."  This is how we prove reliability is nearly free.
-                    */}
-                    <FeatureCard icon={<C><FaPaintBrush /></C>} title="3. The Circulating Snake" description="We demolish the assumption that stop-and-wait throttles bandwidth. This model shows a 'snake' of bits longer than the wire, where acknowledgements arrive before transmission ends, eliminating the round-trip penalty." />
-                    {/*
-                        Point 4: The superior model of multiplexing interactions.
-                        This is the final step, showing that a round-robin of handshake interactions "does better at maximizing total throughput under contention, and with much more deterministic latency."
-                    */}
-                    <FeatureCard icon={<C><FaChartBar /></C>} title="4. Interaction Multiplexing" description="The superior model. We demonstrate that multiplexing handshake interactions, not time-sharing the link, maximizes total throughput and provides deterministic latency that walks right over packet loss." />
+                    <FeatureCard
+                        icon={<C><FaCogs /></C>}
+                        title="1. Half-Duplex Contention"
+                        description="An agentic simulation of the shared Metcalfe ether. We computationally model transmission and contention intervals to show how multiplexing bandwidth fundamentally limits the transactional capacity of the link."
+                    />
+                    <FeatureCard
+                        icon={<C><FaShareSquare /></C>}
+                        title="2. Full-Duplex Degradation"
+                        description="A model of modern, full-duplex links demonstrating how bandwidth-multiplexing decimates TCP throughput under loss, leading to severe round-trip latency degradation and proving the model is broken."
+                    />
+                    <FeatureCard
+                        icon={<C><FaPaintBrush /></C>}
+                        title="3. The Circulating Snake"
+                        description="We demolish the assumption that stop-and-wait throttles bandwidth. This model shows a 'snake' of bits longer than the wire, where acknowledgements arrive before transmission ends, eliminating the round-trip penalty."
+                    />
+                    <FeatureCard
+                        icon={<C><FaChartBar /></C>}
+                        title="4. Interaction Multiplexing"
+                        description="The superior model. We demonstrate that multiplexing handshake interactions, not time-sharing the link, maximizes total throughput and provides deterministic latency that walks right over packet loss."
+                    />
                 </div>
             </section>
-
+            <NewsCarousel />
             {/* ============================================= */}
             {/* === NEW ETHERNET SIMULATION MODEL SECTION === */}
             {/* ============================================= */}
             <EthernetModel />
-
             {/*
                 This section details our primary application areas and strategic initiatives.
                 It replaces the more general use-cases with a concrete roadmap, outlining our work in simulation,
@@ -130,7 +130,6 @@ export default function LandingPage() {
                             </li>
                         </ul>
                     </div>
-
                     {/* Card 2: Team Development */}
                     <div className="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition-shadow text-left">
                         <h3 className="text-2xl font-bold mb-4">2. Tree Algorithms and Dashboard Development</h3>
@@ -165,24 +164,23 @@ export default function LandingPage() {
                             </li>
                         </ul>
                     </div>
-
                 </div>
             </section>
         </>
     );
 }
 
-/* helpers (unchanged) */
-const FeatureCard = ({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) => (
+const FeatureCard = ({
+    icon,
+    title,
+    description,
+}: {
+    icon: React.ReactNode;
+    title: string;
+    description: string;
+}) => (
     <div className="text-center p-6">
         <div className="text-primary text-4xl mb-4 inline-block">{icon}</div>
-        <h3 className="text-2xl font-bold mb-2">{title}</h3>
-        <p className="text-gray-600">{description}</p>
-    </div>
-);
-const IndustryCard = ({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) => (
-    <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow">
-        <div className="text-accent text-4xl mb-4 inline-block">{icon}</div>
         <h3 className="text-2xl font-bold mb-2">{title}</h3>
         <p className="text-gray-600">{description}</p>
     </div>
