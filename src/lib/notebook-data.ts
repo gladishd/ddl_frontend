@@ -9,7 +9,7 @@ export interface Notebook {
   slug: string;
   description: string;
   url: string; // For Wolfram models, this is a URL. For Python, it's a slug.
-  type: 'wolfram' | 'python' | 'python-csma' | 'python-rtt'; // A new type for this specific model
+  type: 'wolfram' | 'python' | 'python-csma' | 'python-rtt';
   date: string;
 }
 
@@ -21,13 +21,15 @@ const slugify = (text: string): string => {
     .toString()
     .toLowerCase()
     .replace(/\s+/g, '-')       // Replace spaces with -
-    .replace(/[^\w\-]+/g, '')  // Remove all non-word chars
-    .replace(/\-\-+/g, '-')    // Replace multiple - with single -
-    .replace(/^-+/, '')          // Trim - from start of text
-    .replace(/-+$/, '');         // Trim - from end of text
+    .replace(/[^\w\-]+/g, '')   // Remove all non-word chars
+    .replace(/\-\-+/g, '-')     // Replace multiple - with single -
+    .replace(/^-+/, '')         // Trim - from start of text
+    .replace(/-+$/, '');        // Trim - from end of text
 };
 
-export const notebooks: Notebook[] = [
+// First define the raw array as Notebook[] so that each `type` remains
+// a literal union member and TS won't widen it to plain string.
+const rawNotebooks: Notebook[] = [
   {
     id: 1,
     // This agentic simulation models the original half-duplex, shared Metcalfe ether.
@@ -37,7 +39,7 @@ export const notebooks: Notebook[] = [
     description: "An agentic simulation of the original 1976 Metcalfe-Boggs protocol. This model visualizes the transmission and contention intervals on a shared half-duplex medium, demonstrating how statistical arbitration impacts throughput.",
     url: "https://www.wolframcloud.com/obj/gladishdean/Published/wolfram%20cloud%20for%20sahas.nb",
     type: 'wolfram',
-    date: "June 11, 2025"
+    date: "June 11, 2025",
   },
   {
     id: 2,
@@ -47,7 +49,7 @@ export const notebooks: Notebook[] = [
     description: "A model of modern full-duplex links where multiple TCP flows compete. It shows how bandwidth-multiplexing still leads to severe latency degradation and reduced throughput under contention and packet loss.",
     url: "https://www.wolframcloud.com/obj/gladishdean/Published/wolfram%20cloud%20for%20sahas2.nb",
     type: 'wolfram',
-    date: "June 12, 2025"
+    date: "June 12, 2025",
   },
   {
     id: 3,
@@ -58,7 +60,7 @@ export const notebooks: Notebook[] = [
     description: "This model demolishes the 'stop-and-wait' assumption. It demonstrates a 'snake' of bits longer than the physical link, where pipelined acknowledgements eliminate the round-trip penalty and achieve maximum transactional throughput.",
     url: "https://www.wolframcloud.com/obj/gladishdean/Published/wolfram%20cloud%20for%20sahas3.nb",
     type: 'wolfram',
-    date: "June 14, 2025"
+    date: "June 14, 2025",
   },
   {
     id: 4,
@@ -68,7 +70,7 @@ export const notebooks: Notebook[] = [
     description: "The superior model. We show that multiplexing discrete, reliable handshake interactions, rather than contending for bandwidth, maximizes total system throughput and offers deterministic latency, walking right over packet loss.",
     url: "https://www.wolframcloud.com/obj/gladishdean/Published/wolfram%20cloud%20for%20sahas4.nb",
     type: 'wolfram',
-    date: "June 17, 2025"
+    date: "June 17, 2025",
   },
   {
     id: 5,
@@ -78,7 +80,7 @@ export const notebooks: Notebook[] = [
     description: "A Python-based simulation demonstrating the three-way handshake required to achieve mutual, persistent knowledge between two agents, forming the basis of a reliable link.",
     url: "model-5-python-tiktyktik-protocol",
     type: 'python',
-    date: "June 18, 2025"
+    date: "June 18, 2025",
   },
   {
     id: 6,
@@ -89,7 +91,7 @@ export const notebooks: Notebook[] = [
     description: "A Python-based agentic simulation of the 1976 Metcalfe-Boggs protocol. This model serves as a computational proof, demonstrating the consequences of statistical arbitration, the necessity of unbounded backoff, and the resulting degradation of transactional capacity on a shared Ether. It is a tool for understanding the problems we solve.",
     url: "model-6-python-csmacd-contention-analysis",
     type: 'python-csma',
-    date: "June 18, 2025"
+    date: "June 18, 2025",
   },
   {
     id: 7,
@@ -101,7 +103,7 @@ export const notebooks: Notebook[] = [
     description: "A detailed, event-driven Python simulation that models packet transmission, propagation delay, and acknowledgment cycles. This provides a precise analysis of how round-trip time (RTT) and link utilization are affected by the contention inherent in classical Ethernet, forming a key part of our argument against bandwidth-first design.",
     url: "model-7-python-rtt-and-utilization-analysis",
     type: 'python-rtt',
-    date: "June 18, 2025"
+    date: "June 18, 2025",
   },
   {
     id: 8,
@@ -112,7 +114,7 @@ export const notebooks: Notebook[] = [
     description: "A live Wolfram model providing a precise, event-driven analysis of Round-Trip Time (RTT) and channel utilization under the classical Ethernet protocol, revealing the direct impact of statistical arbitration on latency.",
     url: "https://www.wolframcloud.com/obj/gladishdean/Published/python%20ddl.nb",
     type: 'wolfram',
-    date: "June 18, 2025"
+    date: "June 18, 2025",
   },
   {
     id: 9,
@@ -123,6 +125,12 @@ export const notebooks: Notebook[] = [
     description: "A live Wolfram model demonstrating the core principles of CSMA/CD, including carrier sense, collision detection, and binary exponential backoff. This computational proof explores the consequences of statistical arbitration on a shared medium.",
     url: "https://www.wolframcloud.com/obj/gladishdean/Published/python%20ddl%202.nb",
     type: 'wolfram',
-    date: "June 18, 2025"
-  }
-].map(notebook => ({ ...notebook, slug: slugify(notebook.title) }));
+    date: "June 18, 2025",
+  },
+];
+
+// Now map over the typed array to inject the slug field without widening `type`.
+export const notebooks: Notebook[] = rawNotebooks.map(n => ({
+  ...n,
+  slug: slugify(n.title),
+}));
