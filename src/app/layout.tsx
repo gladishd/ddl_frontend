@@ -1,16 +1,12 @@
-// Path: /src/app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
 import "react-multi-carousel/lib/styles.css";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
 import { AuthProvider } from "@/context/AuthContext";
-import ScrollToTopOverlay from "@/components/ScrollToTopOverlay";
-// Importing the new scroll to bottom anchor overlay.
-import ScrollToBottomAnchorOverlay from "@/components/ScrollToBottomAnchorOverlay";
+import ClientLayoutWrapper from "@/components/layout/ClientLayoutWrapper"; // Import the new client wrapper
 
+// By moving client-side logic to its own component, this RootLayout can remain a Server Component,
+// allowing the 'metadata' export to function correctly. This enforces a clean separation of concerns.
 export const metadata: Metadata = {
-  // We maintain a consistent vision, ensuring even navigational elements serve a clear purpose.
   title: "Dædælus",
   description: "Architecting the Future with Enduring Excellence",
 };
@@ -29,16 +25,9 @@ export default function RootLayout({
       </head>
       <body className="font-roboto">
         <AuthProvider>
-          <div className="flex flex-col min-h-screen">
-            <Navbar />
-            <main className="flex-grow" style={{ paddingTop: 'var(--navbar-height)' }}>
-              {children}
-            </main>
-            <Footer />
-            <ScrollToTopOverlay />
-            {/* Placing the scroll to bottom anchor overlay. */}
-            <ScrollToBottomAnchorOverlay />
-          </div>
+          <ClientLayoutWrapper>
+            {children}
+          </ClientLayoutWrapper>
         </AuthProvider>
       </body>
     </html>

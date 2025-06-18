@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import Link from "next/link";
 import EthernetModel from "./EthernetModel";
-import NewsCarousel from "./News";
+import MenuButton from "../MenuButton"; // Import the new component
 
 /* LOAD hero background … unchanged */
 const HERO_BG = "url(/Dædælus.png) repeat 0 0 / 220px 160px";
@@ -32,17 +32,25 @@ export default function LandingPage() {
         <>
             {/* hero */}
             {/*
-                This hero section establishes our core thesis. We are not merely improving existing network paradigms;
-                we are architecting a new future by challenging the industry's most fundamental assumptions.
-                Our focus shifts from the raw measure of bandwidth to the transactional capacity of a link—the round-trip interactions.
-                This is rooted in our philosophy of using 'Time-reversible' constructors that "no longer rely on the irreversible smash and restart of Shannon information to recover from failures."
-            */}
+                This hero section establishes our core thesis. We are not merely improving existing network paradigms;
+                we are architecting a new future by challenging the industry's most fundamental assumptions.
+                Our focus shifts from the raw measure of bandwidth to the transactional capacity of a link—the round-trip interactions.
+                This is rooted in our philosophy of using 'Time-reversible' constructors that "no longer rely on the irreversible smash and restart of Shannon information to recover from failures."
+            */}
             <section
                 suppressHydrationWarning
                 className="relative text-center py-20 px-4 overflow-hidden"
                 style={{ background: HERO_BG, color: "rgb(130,0,0)", textShadow: "0 0 1px black" }}
             >
                 <div style={overlay} />
+
+                {/* This button provides access to the main navigational structure of the Graph Virtual Machine.
+                    It's placed here to provide immediate access from the primary entry point of the application.
+                */}
+                <div className="hero-menu-button-container">
+                    <MenuButton />
+                </div>
+
                 <div className="relative z-10 max-w-4xl mx-auto">
                     <h1 className="text-5xl font-bold mb-4 font-inika">
                         Beyond Bandwidth: Architecting Transactional Causality
@@ -62,10 +70,10 @@ export default function LandingPage() {
             </section>
 
             {/*
-                This section outlines the four key modeling arguments we are making to challenge the industry's core assumptions about network performance.
-                Each model is a step in a larger narrative, starting from the original Metcalfe ether and culminating in a new paradigm of Interaction Multiplexing.
-                This directly reflects our strategy to "organize the story we want to portray with this computation model."
-            */}
+                This section outlines the four key modeling arguments we are making to challenge the industry's core assumptions about network performance.
+                Each model is a step in a larger narrative, starting from the original Metcalfe ether and culminating in a new paradigm of Interaction Multiplexing.
+                This directly reflects our strategy to "organize the story we want to portray with this computation model."
+            */}
             {/* feature grid */}
             <section className="py-20 px-4">
                 <h2 className="text-4xl font-bold text-center mb-12">
@@ -110,9 +118,9 @@ const FeatureCard = ({
     title,
     description,
 }: {
-    icon: React.ReactNode;
-    title: string;
-    description: string;
+        icon: React.ReactNode;
+        title: string;
+        description: string;
 }) => (
     <div className="text-center p-6">
         <div className="text-primary text-4xl mb-4 inline-block">{icon}</div>

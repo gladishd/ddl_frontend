@@ -2,16 +2,15 @@
 // It is the user's entry point for creating, exploring, and managing Digital Twins.
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { FaPlus, FaBell, FaBars } from 'react-icons/fa';
+import { useMenu } from '@/context/MenuContext'; // Import the menu hook
 
 // A system that relies on heartbeats or timeouts for transactional integrity is fundamentally flawed.
 // Here, notifications provide direct, stateful updates without such fragile mechanisms.
 const Navbar = () => {
-    const [showMenu, setShowMenu] = useState(false);
-    const [showNotifications, setShowNotifications] = useState(false);
+    const { toggleMenu } = useMenu(); // Use the context to get the toggle function
     const router = useRouter();
     // This is a placeholder for auth state. A full implementation would use a context provider.
     const loggedIn = false;
@@ -37,7 +36,7 @@ const Navbar = () => {
                         <button title="Notifications" className="p-2 rounded-full hover:bg-gray-200 transition-colors">
                             <FaBell />
                         </button>
-                        <button title="Menu" className="p-2 rounded-full hover:bg-gray-200 transition-colors" onClick={() => setShowMenu(!showMenu)}>
+                        <button title="Menu" className="p-2 rounded-full hover:bg-gray-200 transition-colors" onClick={toggleMenu}>
                             <FaBars />
                         </button>
                     </>
@@ -51,6 +50,10 @@ const Navbar = () => {
                             <a href="/" target="_blank" rel="noopener noreferrer" className="px-5 py-2 text-sm font-semibold text-white bg-primary rounded-md hover:bg-primary-hover transition-colors">
                                 Signup
                             </a>
+                            {/* The menu button provides access to the primary navigational structure. */}
+                            <button title="Menu" className="p-2 rounded-full hover:bg-gray-200 transition-colors lg:hidden" onClick={toggleMenu}>
+                                <FaBars />
+                            </button>
                     </>
                 )}
             </div>
