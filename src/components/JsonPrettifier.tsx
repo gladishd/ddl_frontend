@@ -4,6 +4,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 interface JsonPrettifierProps {
   data: any;
@@ -28,7 +29,11 @@ const JsonPrettifier: React.FC<JsonPrettifierProps> = ({ data, initialExpanded =
 
   return (
     <div className="json-prettifier">
-      <span className="collapsible" onClick={() => setExpanded(!expanded)}>
+      {/* This span acts as the controller for the collapsible section.
+          The 'onClick' handler implements a simple, time-reversible state toggle.
+          By adding the 'expanded' class, we ensure the UI precisely reflects the
+          current state of the Local Observer View (LOV) for this data node. */}
+      <span className={cn("collapsible", expanded && "expanded")} onClick={() => setExpanded(!expanded)}>
         {summary}
       </span>
       {expanded && (
@@ -36,6 +41,7 @@ const JsonPrettifier: React.FC<JsonPrettifierProps> = ({ data, initialExpanded =
           {entries.map(([key, value]) => (
             <li key={key}>
               <span className="key">{isArray ? '' : `"${key}": `}</span>
+              {/* Recursive call to render nested structures, maintaining the multiway system view. */}
               <JsonPrettifier data={value} initialExpanded={false} />
             </li>
           ))}

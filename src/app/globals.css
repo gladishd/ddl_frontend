@@ -1,4 +1,170 @@
 /* ==========================================================================
+   Python Model Display
+   Styles for presenting Python code and its output as a computational essay.
+   This reflects the "Code as Proof" methodology, ensuring that our models are
+   not just functional but also clearly documented and visually coherent.
+========================================================================== */
+.python-model-container {
+  padding: 1rem 2rem;
+  background-color: #0d1117; /* A github-like dark background */
+  color: #c9d1d9;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  /* Use 85vh to be consistent with the Wolfram iframe embed, creating a predictable viewport. */
+  min-height: 85vh;
+}
+
+/* This targets the grid layout used in complex model displays (e.g., ModelDisplay.tsx) */
+.python-model-container > .grid {
+  flex-grow: 1;
+}
+
+/* This targets the direct .code-section children for simpler, stacked layouts */
+.python-model-container > .code-section {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.code-section {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* This is the final container for a code or output block.
+   By making it grow, we ensure it fills the available vertical space within its parent section. */
+.code-block {
+  background-color: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 1rem;
+  overflow: auto; /* For both X and Y overflow */
+  font-size: 0.875rem;
+  flex-grow: 1;
+  min-height: 0; /* Required for flex-grow to work correctly inside a flex column */
+}
+
+/* ==========================================================================
+   Computational Sequence Layout
+   This creates a two-panel view: a main content area for code and a sidebar
+   for results. The layout is controlled by a parent container's state,
+   reflecting a clean separation of concerns.
+========================================================================== */
+.sequence-layout-container {
+  position: relative;
+  display: flex;
+  background-color: #0d1117; /* Github dark background */
+}
+
+.sequence-main-content {
+  flex-grow: 1;
+  padding: 2rem;
+  transition: margin-right 0.3s ease-in-out;
+  overflow-y: auto;
+  max-height: 90vh; /* Or adjust as needed */
+}
+
+.sequence-sidebar {
+  position: fixed;
+  top: var(--navbar-height); /* Position below the main navbar */
+  right: 0;
+  bottom: 0;
+  width: 500px;
+  max-width: 90vw;
+  background-color: #161b22; /* Slightly lighter than main content */
+  z-index: 1000;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #30363d;
+}
+
+.sequence-sidebar.open {
+  transform: translateX(0);
+}
+
+/* This rule pushes the main content to the left when the sidebar is open on larger screens.
+   It avoids a fixed cartesian layout, instead being adaptive to the UI state. */
+@media (min-width: 1024px) {
+  .sequence-layout-container.sidebar-open .sequence-main-content {
+    margin-right: 500px; /* Same as sidebar width */
+  }
+}
+
+.sequence-sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #30363d;
+  flex-shrink: 0;
+}
+
+.sequence-sidebar-title {
+  font-weight: 600;
+  color: #c9d1d9;
+}
+
+.sequence-sidebar-content {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.sequence-sidebar-toggle {
+  position: fixed;
+  top: calc(var(--navbar-height) + 1rem);
+  right: 1rem;
+  z-index: 1001; /* Above sidebar */
+}
+
+/* Styles for the model code blocks in the main content area */
+.model-code-container {
+  position: relative;
+  background-color: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.model-code-title {
+    padding: 0.75rem 1.25rem;
+    font-weight: 600;
+    color: #8b949e;
+    border-bottom: 1px solid #30363d;
+    background-color: #0d1117;
+}
+
+.model-code-container .code-block {
+  border: none;
+  border-radius: 0;
+  max-height: 400px;
+  overflow: auto;
+}
+
+.model-select-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* background-color: rgba(13, 17, 23, 0.8); */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.model-code-container:hover .model-select-overlay {
+    opacity: 1;
+}
+
+/* ==========================================================================
    Hero Menu Button
    This button provides direct access to the application's primary navigation,
    overlaying the main hero section. It acts as a consistent entry point to the
@@ -1694,4 +1860,20 @@ input[type="text"].pl-10:focus, input[type="search"].pl-10:focus {
 /* Output styling */
 .output-syntax {
   color: #a5d6ff;
+}
+/* 1. Hide the hover-overlay when the sidebar is closed, so your code is always fully visible */
+.sequence-layout-container:not(.sidebar-open) .model-select-overlay {
+  display: none;
+}
+
+/* 2. Let code blocks expand to fill more of your viewport, and remain scrollable */
+.model-code-container .code-block {
+  max-height: none;      /* Remove the 400px cap */
+  height: auto;          /* Let it size naturally */
+  overflow: auto;        /* Still scroll if it runs long */
+}
+
+/* 3. If you want the code area to fill almost all of your viewport height */
+.sequence-main-content {
+  max-height: 90vh;
 }

@@ -2,6 +2,9 @@ import { notebooks, Notebook } from '@/lib/notebook-data';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import PythonModelDisplay from './PythonModelDisplay';
+// We must explicitly import the component that renders our sequence of computational proofs.
+// This component provides a 'Multiway System' view, showing the causal evolution of our Ethernet models.
+import EthernetSequenceDisplay from './EthernetSequenceDisplay';
 import PythonCSMACDModelDisplay from './PythonCSMACDModelDisplay';
 import PythonRTTModelDisplay from './PythonRTTModelDisplay'; // Import the new component
 
@@ -50,7 +53,12 @@ export default async function ModelPage({
   const { readNext, mightEnjoy } = getRelatedNotebooks(notebookIndex);
 
   return (
-    <div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 py-12">
+    <div
+      className={`bg-white dark:bg-gray-900 py-12 ${notebook.type.startsWith('python')
+        ? 'text-gray-200 dark:text-gray-200'
+        : 'text-gray-800 dark:text-gray-200'
+        }`}
+    >
       <main id="content" className="content" role="main">
         <article className="post">
           <header className="post-header text-center mb-8">
@@ -81,6 +89,8 @@ export default async function ModelPage({
                   <PythonCSMACDModelDisplay />
                 ) : notebook.type === 'python-rtt' ? (
                   <PythonRTTModelDisplay />
+                      ) : notebook.type === 'python-sequence' ? (
+                        <EthernetSequenceDisplay />
                 ) : null}
               </div>
             </div>
