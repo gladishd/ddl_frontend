@@ -113,11 +113,19 @@ const rawNotebooks: RawNotebook[] = [
   // It provides a 'Multiway System' view of our simulation development, showing the evolution of the models.
   {
     id: 10,
-    title: "A Computational History of Ethernet Contention",
+    title: "Model 10: A Computational History of Ethernet Contention",
     description: "A sequence of six Python simulations that computationally model the evolution of Ethernet, from the original ALOHA protocols to a modern, acknowledged data transfer over CSMA/CD. Each step serves as a 'proof by code' for the principles of network contention and reliability.",
     url: "ethernet-emulation-sequence",
     type: 'python-sequence',
     date: "June 18, 2025",
+  },
+  {
+    id: 11,
+    title: "Model 11: A Computational History of Ethernet Simulations",
+    description: "A single‐page sequence showcasing twenty-five Python-based Ethernet simulations — from classical CSMA/CD contention through modern fabric-based transactions — complete with textual logs and sequence diagrams.",
+    url: "model-11-a-computational-history-of-ethernet-simulations",
+    type: 'python-sequence',
+    date: "June 20, 2025",
   },
 ];
 

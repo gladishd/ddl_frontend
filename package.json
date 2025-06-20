@@ -33,6 +33,7 @@
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.4",
     "react-multi-carousel": "^2.8.6",
+    "react-syntax-highlighter": "^15.6.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
