@@ -97,7 +97,7 @@ const InteractiveSequenceView: React.FC<InteractiveSequenceViewProps> = ({ seque
           <div
             key={index}
             className="model-code-container"
-            ref={el => (itemRefs.current[index] = el)}
+            ref={el => { itemRefs.current[index] = el; }}  // <-- fixed: use block-bodied callback
           >
             <h2 className="model-code-title">{data.title}</h2>
 
