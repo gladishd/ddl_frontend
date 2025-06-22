@@ -1,56 +1,86 @@
 [
   {
+    "event": "start_tx",
     "time": 0,
-    "event": "LinkInitiation",
-    "link": "A<->B",
-    "detail": "Attempting to establish a reversible transaction channel."
+    "pkt_id": "c4437e36-44c8-4519-9d5c-56441068abd4",
+    "type": "LIVENESS_TOKEN",
+    "src": "A",
+    "dst": "B",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#B48EAD"
   },
   {
+    "event": "start_tx",
     "time": 0,
-    "event": "LinkInitiation",
-    "link": "A<->B",
-    "detail": "Attempting to establish a reversible transaction channel."
+    "pkt_id": "c4437e36-44c8-4519-9d5c-56441068abd4",
+    "type": "LIVENESS_TOKEN",
+    "src": "A",
+    "dst": "B",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#B48EAD"
   },
   {
-    "time": 1.2967958067821161,
-    "event": "TokenExchange",
-    "link": "A<->B",
-    "owner": "A",
-    "state": "SENT_LIVENESS_TOKEN"
+    "event": "start_tx",
+    "time": 1.4634720431800408,
+    "pkt_id": "4dbb59c9-f5ab-417b-a5f0-12cfd1c1a22e",
+    "type": "LIVENESS_TOKEN",
+    "src": "B",
+    "dst": "A",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#B48EAD"
   },
   {
-    "time": 1.2967958067821161,
-    "event": "TokenExchange",
-    "link": "A<->B",
-    "owner": "A",
-    "state": "SENT_LIVENESS_TOKEN"
+    "event": "start_tx",
+    "time": 1.4634720431800408,
+    "pkt_id": "4dbb59c9-f5ab-417b-a5f0-12cfd1c1a22e",
+    "type": "LIVENESS_TOKEN",
+    "src": "B",
+    "dst": "A",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#B48EAD"
   },
   {
-    "time": 1.8091356390878492,
-    "event": "TokenExchange",
-    "link": "A<->B",
-    "owner": "B",
-    "state": "RECEIVED_LIVENESS_TOKEN"
+    "event": "start_tx",
+    "time": 2.6215318638177467,
+    "pkt_id": "41e8e528-5632-40e4-8512-c933b8217617",
+    "type": "ACK",
+    "src": "A",
+    "dst": "B",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#A3BE8C"
   },
   {
-    "time": 1.8091356390878492,
-    "event": "TokenExchange",
-    "link": "A<->B",
-    "owner": "B",
-    "state": "RECEIVED_LIVENESS_TOKEN"
-  },
-  {
-    "time": 2.6708986732535998,
-    "event": "ConservedQuantityTransfer",
-    "link": "A<->B",
-    "size": 1024,
-    "status": "SUCCESS"
-  },
-  {
-    "time": 2.6708986732535998,
-    "event": "ConservedQuantityTransfer",
-    "link": "A<->B",
-    "size": 1024,
-    "status": "SUCCESS"
+    "event": "start_tx",
+    "time": 2.6215318638177467,
+    "pkt_id": "41e8e528-5632-40e4-8512-c933b8217617",
+    "type": "ACK",
+    "src": "A",
+    "dst": "B",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#A3BE8C"
   }
 ]
