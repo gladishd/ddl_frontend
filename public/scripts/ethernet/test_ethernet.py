@@ -101,11 +101,18 @@ class Packet:
         self.dst = getattr(dst, 'name', dst)
         self.size, self.seq, self.ack = size, seq, ack
         self.success, self.collision_count = True, 0
+        # A high-contrast color palette to ensure visual clarity of different packet types.
+        # Clear visualization is essential for making the system's behavior intelligible.
         self.color = {
-            "SYN": "#5E81AC", "SYN_ACK": "#88C0D0", "ACK": "#A3BE8C", 
-            "DATA": "#EBCB8B", "JAM": "#BF616A", "LIVENESS_TOKEN": "#B48EAD",
-            "TSN_MSG": "#D08770", "IOT_DATA": "#A3BE8C"
-        }.get(ptype.value, "#4C566A")
+            "SYN": "#00BFFF",           # DeepSkyBlue
+            "SYN_ACK": "#00FFFF",        # Cyan
+            "ACK": "#32CD32",           # LimeGreen
+            "DATA": "#FFD700",          # Gold
+            "JAM": "#FF0000",           # Red
+            "LIVENESS_TOKEN": "#FF00FF", # Magenta
+            "TSN_MSG": "#FFA500",        # Orange
+            "IOT_DATA": "#98FB98"        # PaleGreen
+        }.get(ptype.value, "#FFFFFF")   # White for default
 
     def bits(self): return self.size * 8
     def to_dict(self):
@@ -540,9 +547,9 @@ class SimulationFramework:
     def animate_packet_movement(self, event, src_node, duration_ms):
         dst_node = next((n for n in self.nodes if n['name'] == event.get("dst")), None)
         color = event.get('color', '#4C566A')
-        if not event.get('success', True): color = '#BF616A'
+        if not event.get('success', True): color = '#FF0000' # Override color for failure
 
-        packet_size = 8
+        packet_size = 16
         pkt_obj = self.canvas.create_rectangle(0,0,0,0, fill=color, outline="#ECEFF4", tags="packet_anim")
         x_start, y_start = src_node['x'], src_node['y']
         
