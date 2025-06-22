@@ -104,14 +104,14 @@ class Packet:
         # A high-contrast color palette to ensure visual clarity of different packet types.
         # Clear visualization is essential for making the system's behavior intelligible.
         self.color = {
-            "SYN": "#00BFFF",           # DeepSkyBlue
-            "SYN_ACK": "#00FFFF",        # Cyan
-            "ACK": "#32CD32",           # LimeGreen
-            "DATA": "#FFD700",          # Gold
-            "JAM": "#FF0000",           # Red
+            "SYN": "#00BFFF",            # DeepSkyBlue
+            "SYN_ACK": "#00FFFF",         # Cyan
+            "ACK": "#32CD32",            # LimeGreen
+            "DATA": "#FFD700",           # Gold
+            "JAM": "#FF0000",            # Red
             "LIVENESS_TOKEN": "#FF00FF", # Magenta
-            "TSN_MSG": "#FFA500",        # Orange
-            "IOT_DATA": "#98FB98"        # PaleGreen
+            "TSN_MSG": "#FFA500",         # Orange
+            "IOT_DATA": "#98FB98"         # PaleGreen
         }.get(ptype.value, "#FFFFFF")   # White for default
 
     def bits(self): return self.size * 8
@@ -228,6 +228,7 @@ class Ether:
         transmission_time = packet.bits() / self.bandwidth
         packet.start_time = self.env.now
         
+        # This models deference: a station delays sending until the Ether is quiet.
         while self.is_busy():
             yield self.env.timeout(self.prop_delay / 10)
         
@@ -235,14 +236,21 @@ class Ether:
         log_entry = {"time": self.env.now, "event": "start_tx", "chan": self.name, **packet.to_dict()}
         logger.info(json.dumps(log_entry)); self.log.append(log_entry)
 
+        # A packet must be on the Ether for one propagation delay to be detected by others.
         yield self.env.timeout(self.prop_delay)
 
+        # This models collision detection. If multiple packets are on the Ether
+        # simultaneously, they interfere and become unrecognizable.
         if self.contention and len(self.transmitting_packets) > 1:
             packet.success = False
+            # To ensure all participants detect interference, a JAM signal is broadcast.
+            # This is Collision Consensus Enforcement.
             jam_packet = Packet(PacketType.JAM, src=source_node)
             logger.info(json.dumps({"time": self.env.now, "event": "jam_signal", "chan": self.name, **jam_packet.to_dict()}))
             yield self.env.timeout(self.prop_delay)
         else:
+            # If no collision is detected after one propagation delay, the Ether is acquired.
+            # The transmission will complete without interference.
             yield self.env.timeout(transmission_time - self.prop_delay)
             packet.success = True
             for node in all_nodes:
@@ -254,6 +262,7 @@ class Ether:
         end_log = {"time": self.env.now, "event": "end_tx", "chan": self.name, **packet.to_dict(), "latency": packet.end_time - packet.start_time}
         logger.info(json.dumps(end_log)); self.log.append(end_log)
         
+        # Signal completion to the sending node's process.
         if hasattr(source_node, 'active_tx_proc') and source_node.active_tx_proc and not source_node.active_tx_proc.triggered:
             source_node.active_tx_proc.succeed(packet)
 
@@ -278,6 +287,8 @@ class Node:
             if result_packet.success: return result_packet
             
             self.backoff_attempts += 1
+            # Implements Binary Exponential Backoff. The retransmission interval's mean
+            # is adjusted based on collision history to keep Ether utilization optimal.
             k = min(self.backoff_attempts, 10)
             slot_time = 2 * self.ether.prop_delay
             backoff_duration = random.randint(0, (2**k) - 1) * slot_time
@@ -322,6 +333,67 @@ class Node:
                     if ack_data.dst == self.name and ack_data.ptype == PacketType.ACK: self.send_una = ack_data.ack
         else:
             pass
+
+class MetcalfeNode:
+    """A station operating on the classic Metcalfe half-duplex channel, implementing CSMA/CD."""
+    def __init__(self, env, name, ether, all_nodes, peer=None, is_sender=False):
+        self.env, self.name, self.ether, self.all_nodes = env, name, ether, all_nodes
+        self.is_sender = is_sender
+        self.peer = peer
+        self.inbox = simpy.Store(env)
+        self.action = env.process(self.run())
+
+    def receive_packet(self, packet):
+        self.inbox.put(packet)
+
+    def run(self):
+        if self.is_sender:
+            # Senders periodically generate data packets
+            while True:
+                yield self.env.timeout(random.expovariate(0.5))
+                packet_to_send = Packet(PacketType.DATA, src=self, dst=self.peer)
+                self.env.process(self.send_packet(packet_to_send))
+        else:
+            # Receivers wait for data and send ACKs
+            while True:
+                received_packet = yield self.inbox.get()
+                if received_packet.ptype == PacketType.DATA and received_packet.dst == self.name:
+                    ack_packet = Packet(PacketType.ACK, src=self, dst=received_packet.src)
+                    self.env.process(self.send_packet(ack_packet))
+
+    def send_packet(self, packet):
+        """Implements the full CSMA/CD with Binary Exponential Backoff logic."""
+        packet.collision_count = 0
+        while packet.collision_count < 16:
+            # 1. Carrier Sense (Defer): Wait for the Ether to be free.
+            # Transmissions initiated by a station defer to any which may already be in progress.
+            while self.ether.is_busy():
+                yield self.env.timeout(self.ether.prop_delay / 10)
+            
+            # 2. Transmit: Attempt to send the packet.
+            self.active_tx_proc = self.env.event()
+            yield self.env.process(self.ether.transmit(packet, self, self.all_nodes))
+            result_packet = yield self.active_tx_proc
+            
+            if result_packet.success:
+                return # Success
+            
+            packet.collision_count += 1
+            # A station recovers from a detected collision by abandoning the attempt
+            # and retransmitting the packet after some dynamically chosen random time period.
+            k = min(packet.collision_count, 10)
+            slot_time = 2 * self.ether.prop_delay
+            backoff_duration = random.randint(0, (2**k) - 1) * slot_time
+            
+            log_entry = {
+                "time": self.env.now, "event": "backoff", "node": self.name, 
+                "attempts": packet.collision_count, "delay": backoff_duration
+            }
+            logger.info(json.dumps(log_entry))
+            yield self.env.timeout(backoff_duration)
+            
+        logger.info(json.dumps({"time": self.env.now, "event": "tx_abort", "node": self.name, "pkt_id": packet.id}))
+
 
 class AlohaNode:
     """A simplified node for demonstrating ALOHA-family contention protocols."""
@@ -370,9 +442,21 @@ class AlohaNode:
 def setup_and_run(env, protocol, **kwargs):
     """A unified function to set up and run different simulation scenarios."""
     
+    nodes = []
     if "ALOHA" in protocol:
         ether = Ether(env, name="aloha_ether", bandwidth_bps=kwargs['bandwidth_bps'], contention=True)
         nodes = [AlohaNode(env, name=chr(ord('A') + i), ether=ether, all_nodes=[], arrival_rate=kwargs['arrival_rate'], protocol_type=protocol) for i in range(kwargs['num_nodes'])]
+        for node in nodes: node.all_nodes = nodes
+
+    elif protocol == "Metcalfe Half-Duplex":
+        ether = Ether(env, name="metcalfe_ether", bandwidth_bps=kwargs['bandwidth_bps'], propagation_delay_s=5e-7, contention=True)
+        num_pairs = kwargs['num_nodes'] // 2
+        for i in range(num_pairs):
+            sender_name = f'S{i}'
+            receiver_name = f'R{i}'
+            sender = MetcalfeNode(env, sender_name, ether, [], peer=receiver_name, is_sender=True)
+            receiver = MetcalfeNode(env, receiver_name, ether, [], peer=sender_name, is_sender=False)
+            nodes.extend([sender, receiver])
         for node in nodes: node.all_nodes = nodes
         
     elif "Ethernet" in protocol or "Handshake" in protocol:
@@ -385,19 +469,25 @@ def setup_and_run(env, protocol, **kwargs):
             node_B = Node(env, 'B', ether_ba, [], is_sender=False, data_size=kwargs.get('data_size', 5120))
             node_A = Node(env, 'A', ether_ab, [], peer=node_B, is_sender=True, data_size=kwargs.get('data_size', 5120))
             node_B.peer, node_A.all_nodes, node_B.all_nodes = 'A', [node_A, node_B], [node_A, node_B]
+            nodes = [node_A, node_B]
         else: # Half-Duplex cases
             contention = "no contention" not in protocol
             ether = Ether(env, name="shared_ether", bandwidth_bps=bw, propagation_delay_s=prop_delay, contention=contention)
-            all_nodes_list = [Node(env, chr(ord('A') + i), ether, [], is_sender=(i==0), data_size=kwargs.get('data_size', 5120 if "Ethernet" in protocol else 0)) for i in range(num_nodes)]
-            for i, node in enumerate(all_nodes_list):
-                node.all_nodes = all_nodes_list
-                possible_peers = [p for p in all_nodes_list if p != node]
+            nodes = [Node(env, chr(ord('A') + i), ether, [], is_sender=(i==0), data_size=kwargs.get('data_size', 5120 if "Ethernet" in protocol else 0)) for i in range(num_nodes)]
+            for i, node in enumerate(nodes):
+                node.all_nodes = nodes
+                possible_peers = [p for p in nodes if p != node]
                 if possible_peers: node.peer = random.choice(possible_peers)
     
-    elif protocol == "Daedaelus Fabric": MockDaedaelusFabric(env, num_nodes=kwargs['num_nodes']).setup_processes()
+    elif protocol == "Daedaelus Fabric":
+        fabric = MockDaedaelusFabric(env, num_nodes=kwargs['num_nodes'])
+        fabric.setup_processes()
     elif protocol == "Automotive TSN": MockAutomotiveTSN(env).setup_processes()
     elif protocol == "Active Building": MockActiveBuilding(env).setup_processes()
     
+    if hasattr(env, 'root_tk'):
+        env.root_tk.sim_nodes = nodes
+
     env.run(until=kwargs['duration'])
 
 
@@ -413,11 +503,12 @@ class SimulationFramework:
         self.root.columnconfigure(0, weight=1); self.root.rowconfigure(0, weight=1)
         lf = ttk.LabelFrame(mf, text="Controls", padding="10"); lf.grid(row=0, column=0, sticky="w")
         ttk.Label(lf, text="Protocol:").grid(row=0, column=0, sticky=tk.W, pady=2)
-        self.proto = ttk.Combobox(lf, width=35, values=["TCP Handshake (HD, no contention)","TCP Handshake (HD, contention)","TCP Handshake (FD)","CSMA/CD (ALOHA)","Pure ALOHA","Slotted ALOHA","Half-Duplex Ethernet","Full-Duplex Ethernet","Daedaelus Fabric","Automotive TSN","Active Building"], state="readonly")
-        self.proto.current(1); self.proto.grid(row=0, column=1, sticky=tk.W)
+        # Added "Metcalfe Half-Duplex" to the list of available protocols.
+        self.proto = ttk.Combobox(lf, width=35, values=["Metcalfe Half-Duplex","TCP Handshake (HD, no contention)","TCP Handshake (HD, contention)","TCP Handshake (FD)","CSMA/CD (ALOHA)","Pure ALOHA","Slotted ALOHA","Half-Duplex Ethernet","Full-Duplex Ethernet","Daedaelus Fabric","Automotive TSN","Active Building"], state="readonly")
+        self.proto.current(0); self.proto.grid(row=0, column=1, sticky=tk.W)
         self.proto.bind("<<ComboboxSelected>>", self.draw_network_layout)
         self.entries = {}
-        labels_and_defaults = {"Pkt Size":"1024","Bandwidth":"1e6","Arrival λ":"0.1","Sim Time":"20","Priorities":"1,1,1","Num Nodes":"3","Export Logs?":"True"}
+        labels_and_defaults = {"Pkt Size":"1024","Bandwidth":"1e6","Arrival λ":"0.1","Sim Time":"20","Priorities":"1,1,1","Num Nodes":"4","Export Logs?":"True"}
         for i, (text, default_val) in enumerate(labels_and_defaults.items(), start=1):
             key = text.lower().split()[0].replace('?', '')
             ttk.Label(lf, text=f"{text}:").grid(row=i, column=0, sticky=tk.W, pady=2)
@@ -443,9 +534,67 @@ class SimulationFramework:
             "do_export": self.entries['export'].get().lower() in ("true","1","yes")
         }
 
-    def draw_network_layout(self, event=None):
+    def draw_metcalfe_channel_layout(self):
         self.canvas.delete("all")
+        self.nodes = []
+        sim_params = self.get_sim_params()
+        num_nodes_total = sim_params['num_nodes']
+        nodes_per_quadrant = max(1, num_nodes_total // 4)
+
+        y_pos = {'tx_fwd': 100, 'rx_fwd': 150, 'tx_rev': 250, 'rx_rev': 300}
+        
+        # Define the four quadrants for the chains
+        quadrants = {
+            'tx_fwd': {'y': y_pos['tx_fwd'], 'x_start': 50, 'x_end': 350, 'flow': 'right'},
+            'rx_fwd': {'y': y_pos['rx_fwd'], 'x_start': 450, 'x_end': 750, 'flow': 'right'},
+            'tx_rev': {'y': y_pos['tx_rev'], 'x_start': 750, 'x_end': 450, 'flow': 'left'},
+            'rx_rev': {'y': y_pos['rx_rev'], 'x_start': 350, 'x_end': 50, 'flow': 'left'},
+        }
+
+        # Populate nodes for the visual layout
+        for quad_name, props in quadrants.items():
+            for i in range(nodes_per_quadrant):
+                prog = i / (nodes_per_quadrant -1) if nodes_per_quadrant > 1 else 0.5
+                x = props['x_start'] + (props['x_end'] - props['x_start']) * prog
+                
+                label = ""
+                if i == 0 and quad_name == 'tx_fwd': label = "INFO SRC"
+                elif i == nodes_per_quadrant - 1 and quad_name == 'tx_fwd': label = "TRANSMITTER"
+                elif i == 0 and quad_name == 'rx_fwd': label = "RECEIVER"
+                elif i == nodes_per_quadrant - 1 and quad_name == 'rx_fwd': label = "DESTINATION"
+                
+                self.nodes.append({'name': f"{quad_name}_{i}", 'label': label, 'x': x, 'y': props['y'], 'quad': quad_name})
+
+        # Draw nodes and connecting arrows
+        for quad_name, props in quadrants.items():
+            quad_nodes = sorted([n for n in self.nodes if n['quad'] == quad_name], key=lambda n: n['x'])
+            if props['flow'] == 'left': quad_nodes.reverse()
+            
+            for i in range(len(quad_nodes) - 1):
+                n1, n2 = quad_nodes[i], quad_nodes[i+1]
+                self.canvas.create_line(n1['x'], n1['y'], n2['x'], n2['y'], arrow=tk.LAST, fill="#D8DEE9", width=1.5)
+
+        for node in self.nodes:
+             self.canvas.create_rectangle(node['x']-20, node['y']-10, node['x']+20, node['y']+10, fill="#434C5E", outline="#D8DEE9")
+             if node['label']: self.canvas.create_text(node['x'], node['y'] + 20, text=node['label'], font=("Helvetica", 8), fill="#ECEFF4")
+
+        # Draw central hub and connections
+        hub_x, hub_y = 400, 200
+        self.canvas.create_rectangle(hub_x - 15, hub_y - 15, hub_x + 15, hub_y + 15, fill="#4C566A", outline="#D8DEE9")
+        self.canvas.create_text(hub_x, hub_y + 25, text="ETHERNET", fill="#ECEFF4", font=("Helvetica", 9))
+        
+        self.canvas.create_line(quadrants['tx_fwd']['x_end'], quadrants['tx_fwd']['y'], hub_x, hub_y, arrow=tk.LAST, fill="#BF616A")
+        self.canvas.create_line(hub_x, hub_y, quadrants['rx_fwd']['x_start'], quadrants['rx_fwd']['y'], arrow=tk.LAST, fill="#BF616A")
+        self.canvas.create_line(quadrants['tx_rev']['x_end'], quadrants['tx_rev']['y'], hub_x, hub_y, arrow=tk.LAST, fill="#A3BE8C")
+        self.canvas.create_line(hub_x, hub_y, quadrants['rx_rev']['x_start'], quadrants['rx_rev']['y'], arrow=tk.LAST, fill="#A3BE8C")
+
+    def draw_network_layout(self, event=None):
         proto = self.proto.get()
+        if proto == "Metcalfe Half-Duplex":
+            self.draw_metcalfe_channel_layout()
+            return
+            
+        self.canvas.delete("all")
         self.nodes = []
         node_names = []
 
@@ -489,7 +638,10 @@ class SimulationFramework:
         
         self.draw_network_layout(); self.status.config(text="Running simulation..."); self.root.update()
         log_buffer.truncate(0); log_buffer.seek(0)
-        setup_and_run(simpy.Environment(), self.proto.get(), **sim_params)
+        
+        env = simpy.Environment()
+        env.root_tk = self # Give environment access to the GUI root
+        setup_and_run(env, self.proto.get(), **sim_params)
         
         logs = [json.loads(line) for line in log_buffer.getvalue().strip().splitlines() if "{" in line]
         self.status.config(text=f"Simulation complete. Animating {len(logs)} events..."); self.root.update()
@@ -531,55 +683,87 @@ class SimulationFramework:
                 self.status.config(text="Animation finished."); return
             
             event = events[event_idx]
-            src = next((n for n in self.nodes if n['name'] == event.get("src")), None)
             
+            sim_node_names = [n.name for n in getattr(self, 'sim_nodes', [])]
+            src_node, dst_node = None, None
+            if event.get("src") in sim_node_names:
+                src_node = next((n for n in self.nodes if n['name'] == event.get("src")), None)
+            if event.get("dst") in sim_node_names:
+                dst_node = next((n for n in self.nodes if n['name'] == event.get("dst")), None)
+
             delay_to_next_ms = 50
             if event_idx + 1 < len(events):
                 delay_s = events[event_idx+1].get("time",0) - event.get("time",0)
                 delay_to_next_ms = max(10, int(delay_s * time_scale))
 
-            if src: self.animate_packet_movement(event, src, delay_to_next_ms)
+            self.animate_packet_movement(event, src_node, dst_node, delay_to_next_ms)
             
             if Image: self.frames.append(self.capture_frame_as_image())
             self.root.after(delay_to_next_ms, lambda: _step(event_idx + 1))
         _step(0)
 
-    def animate_packet_movement(self, event, src_node, duration_ms):
-        dst_node = next((n for n in self.nodes if n['name'] == event.get("dst")), None)
+    def animate_packet_movement(self, event, src_node, dst_node, duration_ms):
+        proto = self.proto.get()
         color = event.get('color', '#4C566A')
-        if not event.get('success', True): color = '#FF0000' # Override color for failure
-
-        packet_size = 16
+        if not event.get('success', True): color = '#FF0000'
+        
+        packet_size = 12
         pkt_obj = self.canvas.create_rectangle(0,0,0,0, fill=color, outline="#ECEFF4", tags="packet_anim")
-        x_start, y_start = src_node['x'], src_node['y']
         
         steps, step_delay = 20, max(1, duration_ms // 20)
-        is_bus = "Ethernet" in self.proto.get() or "ALOHA" in self.proto.get()
-        y_bus = self.nodes[0]['y'] if self.nodes and is_bus else y_start
+        is_bus = "Ethernet" in proto or "ALOHA" in proto
+        is_metcalfe_channel = proto == "Metcalfe Half-Duplex"
 
         def _move(step_num):
-            if not self.is_animating:
+            if not self.is_animating or step_num > steps:
                 self.canvas.delete(pkt_obj)
-                return
-
-            if step_num > steps:
-                self.canvas.delete(pkt_obj)
-                if event.get('success') and event.get('type') != 'JAM_SIGNAL' and dst_node:
-                     self.canvas.create_oval(dst_node['x']-4, dst_node['y']-4, dst_node['x']+4, dst_node['y']+4, fill=color, tags="packet_delivered", outline="")
-                     self.root.after(200, lambda: self.canvas.delete("packet_delivered"))
+                if step_num > steps and event.get('success') and event.get('type') != 'JAM_SIGNAL' and dst_node:
+                     if is_metcalfe_channel: # Don't draw ovals for metcalfe channel
+                         pass
+                     else:
+                         self.canvas.create_oval(dst_node['x']-4, dst_node['y']-4, dst_node['x']+4, dst_node['y']+4, fill=color, tags="packet_delivered", outline="")
+                         self.root.after(200, lambda: self.canvas.delete("packet_delivered"))
                 return
 
             prog = step_num / steps
-            x_curr, y_curr = x_start, y_start
             
-            if is_bus and dst_node:
+            if is_metcalfe_channel:
+                hub_x, hub_y = 400, 200
+                is_ack = "ACK" in event.get('type', "")
+
+                # Get the chains based on direction
+                tx_path_nodes = sorted([n for n in self.nodes if n['quad'] == ('tx_rev' if is_ack else 'tx_fwd')], key=lambda n: n['x'], reverse=is_ack)
+                rx_path_nodes = sorted([n for n in self.nodes if n['quad'] == ('rx_rev' if is_ack else 'rx_fwd')], key=lambda n: n['x'], reverse=is_ack)
+                
+                path = tx_path_nodes + [None] + rx_path_nodes # Insert hub placeholder
+                path_len = len(path)
+                current_segment = int(prog * (path_len - 1))
+                
+                if current_segment + 1 >= path_len: self.canvas.delete(pkt_obj); return
+                
+                start_pos, end_pos = path[current_segment], path[current_segment+1]
+                segment_prog = (prog * (path_len - 1)) - current_segment
+
+                if start_pos is None: start_pos = {'x': hub_x, 'y': hub_y}
+                if end_pos is None: end_pos = {'x': hub_x, 'y': hub_y}
+                
+                x_curr = start_pos['x'] + (end_pos['x'] - start_pos['x']) * segment_prog
+                y_curr = start_pos['y'] + (end_pos['y'] - start_pos['y']) * segment_prog
+
+            elif is_bus and src_node and dst_node:
+                y_bus = src_node['y']
+                x_start, y_start = src_node['x'], src_node['y']
                 x_end, y_end = dst_node['x'], dst_node['y']
                 if prog <= 0.2: y_curr = y_start - (y_start - y_bus) * (prog / 0.2)
                 elif prog <= 0.8: x_curr, y_curr = x_start + (x_end - x_start) * ((prog - 0.2) / 0.6), y_bus
                 else: x_curr, y_curr = x_end, y_bus + (y_end - y_bus) * ((prog - 0.8) / 0.2)
-            elif dst_node:
+            elif src_node and dst_node:
+                x_start, y_start = src_node['x'], src_node['y']
                 x_end, y_end = dst_node['x'], dst_node['y']
                 x_curr, y_curr = x_start + (x_end - x_start) * prog, y_start + (y_end - y_start) * prog
+            else:
+                self.canvas.delete(pkt_obj)
+                return
             
             self.canvas.coords(pkt_obj, x_curr-packet_size/2, y_curr-packet_size/2, x_curr+packet_size/2, y_curr+packet_size/2)
             self.root.after(step_delay, lambda: _move(step_num + 1))
@@ -599,6 +783,7 @@ class SimulationFramework:
 
 def main():
     root = tk.Tk()
+    root.sim_nodes = []
     SimulationFramework(root)
     root.mainloop()
 
