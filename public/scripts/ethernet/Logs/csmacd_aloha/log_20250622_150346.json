@@ -1,0 +1,1090 @@
+[
+  {
+    "time": 0,
+    "event": "simulation_start",
+    "protocol": "CSMA/CD (ALOHA)",
+    "params": {
+      "num_nodes": 20,
+      "duration": 5.0,
+      "bandwidth_bps": 10000000000.0,
+      "data_size": 1024,
+      "arrival_rate": 0.1,
+      "priorities": [
+        1,
+        1,
+        1
+      ],
+      "do_export": true
+    }
+  },
+  {
+    "time": 0,
+    "event": "simulation_start",
+    "protocol": "CSMA/CD (ALOHA)",
+    "params": {
+      "num_nodes": 20,
+      "duration": 5.0,
+      "bandwidth_bps": 10000000000.0,
+      "data_size": 1024,
+      "arrival_rate": 0.1,
+      "priorities": [
+        1,
+        1,
+        1
+      ],
+      "do_export": true
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Ether",
+    "name": "aloha_ether",
+    "params": {
+      "bandwidth_bps": 10000000000.0,
+      "propagation_delay_s": 5e-09,
+      "contention": true
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Ether",
+    "name": "aloha_ether",
+    "params": {
+      "bandwidth_bps": 10000000000.0,
+      "propagation_delay_s": 5e-09,
+      "contention": true
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "A",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "A",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "B",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "B",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "C",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "C",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "D",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "D",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "E",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "E",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "F",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "F",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "G",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "G",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "H",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "H",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "I",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "I",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "J",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "J",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "K",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "K",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "L",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "L",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "M",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "M",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "N",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "N",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "O",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "O",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "P",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "P",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "Q",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "Q",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "R",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "R",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "S",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "S",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "T",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "T",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "CSMA/CD (ALOHA)"
+    }
+  },
+  {
+    "time": 0.06541366339839376,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "9b3cbf5d-58d5-4041-8e33-ca9ffd3ecad4",
+    "type": "DATA",
+    "src": "I",
+    "dst": "O",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0.06541366339839376,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "9b3cbf5d-58d5-4041-8e33-ca9ffd3ecad4",
+    "type": "DATA",
+    "src": "I",
+    "dst": "O",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0.06541366339839376,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "9b3cbf5d-58d5-4041-8e33-ca9ffd3ecad4",
+    "type": "DATA",
+    "src": "I",
+    "dst": "O",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1200000003581714e-08
+  },
+  {
+    "time": 0.06541366339839376,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "9b3cbf5d-58d5-4041-8e33-ca9ffd3ecad4",
+    "type": "DATA",
+    "src": "I",
+    "dst": "O",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1200000003581714e-08
+  },
+  {
+    "time": 0.5482419553233107,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "0e81f56e-93ef-4328-aa4a-137ec4119094",
+    "type": "DATA",
+    "src": "P",
+    "dst": "R",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0.5482419553233107,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "0e81f56e-93ef-4328-aa4a-137ec4119094",
+    "type": "DATA",
+    "src": "P",
+    "dst": "R",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0.5482419553233107,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "0e81f56e-93ef-4328-aa4a-137ec4119094",
+    "type": "DATA",
+    "src": "P",
+    "dst": "R",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.12000000174595e-08
+  },
+  {
+    "time": 0.5482419553233107,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "0e81f56e-93ef-4328-aa4a-137ec4119094",
+    "type": "DATA",
+    "src": "P",
+    "dst": "R",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.12000000174595e-08
+  },
+  {
+    "time": 0.638355149855992,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "5104df77-84fb-425a-9c74-23c1e26cac34",
+    "type": "DATA",
+    "src": "M",
+    "dst": "C",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0.638355149855992,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "5104df77-84fb-425a-9c74-23c1e26cac34",
+    "type": "DATA",
+    "src": "M",
+    "dst": "C",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0.638355149855992,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "5104df77-84fb-425a-9c74-23c1e26cac34",
+    "type": "DATA",
+    "src": "M",
+    "dst": "C",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.12000000174595e-08
+  },
+  {
+    "time": 0.638355149855992,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "5104df77-84fb-425a-9c74-23c1e26cac34",
+    "type": "DATA",
+    "src": "M",
+    "dst": "C",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.12000000174595e-08
+  },
+  {
+    "time": 1.6504097759014846,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "6222be21-1932-4586-ac92-f2f98c8c5e8f",
+    "type": "DATA",
+    "src": "D",
+    "dst": "A",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 1.6504097759014846,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "6222be21-1932-4586-ac92-f2f98c8c5e8f",
+    "type": "DATA",
+    "src": "D",
+    "dst": "A",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 1.6504097759014846,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "6222be21-1932-4586-ac92-f2f98c8c5e8f",
+    "type": "DATA",
+    "src": "D",
+    "dst": "A",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.12000000174595e-08
+  },
+  {
+    "time": 1.6504097759014846,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "6222be21-1932-4586-ac92-f2f98c8c5e8f",
+    "type": "DATA",
+    "src": "D",
+    "dst": "A",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.12000000174595e-08
+  },
+  {
+    "time": 2.346848616873577,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "720e04a5-e1a6-4ccc-9603-e4f2b63efc73",
+    "type": "DATA",
+    "src": "G",
+    "dst": "P",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 2.346848616873577,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "720e04a5-e1a6-4ccc-9603-e4f2b63efc73",
+    "type": "DATA",
+    "src": "G",
+    "dst": "P",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 2.346848616873577,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "720e04a5-e1a6-4ccc-9603-e4f2b63efc73",
+    "type": "DATA",
+    "src": "G",
+    "dst": "P",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 2.346848616873577,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "720e04a5-e1a6-4ccc-9603-e4f2b63efc73",
+    "type": "DATA",
+    "src": "G",
+    "dst": "P",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 3.0266124587974805,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "40c8918f-8458-4f36-9976-99cc1c17f3f0",
+    "type": "DATA",
+    "src": "O",
+    "dst": "I",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 3.0266124587974805,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "40c8918f-8458-4f36-9976-99cc1c17f3f0",
+    "type": "DATA",
+    "src": "O",
+    "dst": "I",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 3.0266124587974805,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "40c8918f-8458-4f36-9976-99cc1c17f3f0",
+    "type": "DATA",
+    "src": "O",
+    "dst": "I",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 3.0266124587974805,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "40c8918f-8458-4f36-9976-99cc1c17f3f0",
+    "type": "DATA",
+    "src": "O",
+    "dst": "I",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 3.076027616563698,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "c4b8cab1-410c-4ac3-bb51-557c8399b493",
+    "type": "DATA",
+    "src": "O",
+    "dst": "M",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 3.076027616563698,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "c4b8cab1-410c-4ac3-bb51-557c8399b493",
+    "type": "DATA",
+    "src": "O",
+    "dst": "M",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 3.076027616563698,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "c4b8cab1-410c-4ac3-bb51-557c8399b493",
+    "type": "DATA",
+    "src": "O",
+    "dst": "M",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 3.076027616563698,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "c4b8cab1-410c-4ac3-bb51-557c8399b493",
+    "type": "DATA",
+    "src": "O",
+    "dst": "M",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 3.4991150474757573,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "74be1835-8643-4234-aaaf-3112af0c5132",
+    "type": "DATA",
+    "src": "F",
+    "dst": "P",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 3.4991150474757573,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "74be1835-8643-4234-aaaf-3112af0c5132",
+    "type": "DATA",
+    "src": "F",
+    "dst": "P",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 3.4991150474757573,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "74be1835-8643-4234-aaaf-3112af0c5132",
+    "type": "DATA",
+    "src": "F",
+    "dst": "P",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 3.4991150474757573,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "74be1835-8643-4234-aaaf-3112af0c5132",
+    "type": "DATA",
+    "src": "F",
+    "dst": "P",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 4.234955216266336,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "9392dd11-bf20-4803-a6b4-6c0e34d28830",
+    "type": "DATA",
+    "src": "B",
+    "dst": "Q",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 4.234955216266336,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "9392dd11-bf20-4803-a6b4-6c0e34d28830",
+    "type": "DATA",
+    "src": "B",
+    "dst": "Q",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 4.234955216266336,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "9392dd11-bf20-4803-a6b4-6c0e34d28830",
+    "type": "DATA",
+    "src": "B",
+    "dst": "Q",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1200000683593316e-08
+  },
+  {
+    "time": 4.234955216266336,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "9392dd11-bf20-4803-a6b4-6c0e34d28830",
+    "type": "DATA",
+    "src": "B",
+    "dst": "Q",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1200000683593316e-08
+  },
+  {
+    "time": 4.628148186091372,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "361da388-4c1d-42c5-9760-a8188114eb3e",
+    "type": "DATA",
+    "src": "Q",
+    "dst": "T",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 4.628148186091372,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "361da388-4c1d-42c5-9760-a8188114eb3e",
+    "type": "DATA",
+    "src": "Q",
+    "dst": "T",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 4.628148186091372,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "361da388-4c1d-42c5-9760-a8188114eb3e",
+    "type": "DATA",
+    "src": "Q",
+    "dst": "T",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1200000683593316e-08
+  },
+  {
+    "time": 4.628148186091372,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "361da388-4c1d-42c5-9760-a8188114eb3e",
+    "type": "DATA",
+    "src": "Q",
+    "dst": "T",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1200000683593316e-08
+  },
+  {
+    "time": 5.0,
+    "event": "simulation_end",
+    "protocol": "CSMA/CD (ALOHA)"
+  },
+  {
+    "time": 5.0,
+    "event": "simulation_end",
+    "protocol": "CSMA/CD (ALOHA)"
+  }
+]

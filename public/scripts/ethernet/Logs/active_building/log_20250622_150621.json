@@ -1,0 +1,208 @@
+[
+  {
+    "time": 0,
+    "event": "simulation_start",
+    "protocol": "Active Building",
+    "params": {
+      "num_nodes": 20,
+      "duration": 15.0,
+      "bandwidth_bps": 10000000000.0,
+      "data_size": 1024,
+      "arrival_rate": 0.1,
+      "priorities": [
+        1,
+        1,
+        1
+      ],
+      "do_export": true
+    }
+  },
+  {
+    "time": 0,
+    "event": "simulation_start",
+    "protocol": "Active Building",
+    "params": {
+      "num_nodes": 20,
+      "duration": 15.0,
+      "bandwidth_bps": 10000000000.0,
+      "data_size": 1024,
+      "arrival_rate": 0.1,
+      "priorities": [
+        1,
+        1,
+        1
+      ],
+      "do_export": true
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "ActiveBuilding"
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "ActiveBuilding"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Active Building",
+    "time": 0,
+    "pkt_id": "cce3407e-f120-4437-a480-439057a5b435",
+    "type": "IOT_DATA",
+    "src": "TempSensor",
+    "dst": "Thermostat",
+    "seq": 0,
+    "ack": 0,
+    "size": 8,
+    "success": true,
+    "collisions": 0,
+    "color": "#98FB98"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Active Building",
+    "time": 0,
+    "pkt_id": "cce3407e-f120-4437-a480-439057a5b435",
+    "type": "IOT_DATA",
+    "src": "TempSensor",
+    "dst": "Thermostat",
+    "seq": 0,
+    "ack": 0,
+    "size": 8,
+    "success": true,
+    "collisions": 0,
+    "color": "#98FB98"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Active Building",
+    "time": 5,
+    "pkt_id": "e4a56e0d-5a06-4229-a4c8-704ffea08483",
+    "type": "IOT_DATA",
+    "src": "TempSensor",
+    "dst": "Thermostat",
+    "seq": 0,
+    "ack": 0,
+    "size": 8,
+    "success": true,
+    "collisions": 0,
+    "color": "#98FB98"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Active Building",
+    "time": 5,
+    "pkt_id": "e4a56e0d-5a06-4229-a4c8-704ffea08483",
+    "type": "IOT_DATA",
+    "src": "TempSensor",
+    "dst": "Thermostat",
+    "seq": 0,
+    "ack": 0,
+    "size": 8,
+    "success": true,
+    "collisions": 0,
+    "color": "#98FB98"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Active Building",
+    "time": 5.1,
+    "pkt_id": "a95d7574-8959-4748-b33c-ea594c2cbcb1",
+    "type": "IOT_DATA",
+    "src": "Thermostat",
+    "dst": "HVAC_Unit",
+    "seq": 0,
+    "ack": 0,
+    "size": 4,
+    "success": true,
+    "collisions": 0,
+    "color": "#98FB98"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Active Building",
+    "time": 5.1,
+    "pkt_id": "a95d7574-8959-4748-b33c-ea594c2cbcb1",
+    "type": "IOT_DATA",
+    "src": "Thermostat",
+    "dst": "HVAC_Unit",
+    "seq": 0,
+    "ack": 0,
+    "size": 4,
+    "success": true,
+    "collisions": 0,
+    "color": "#98FB98"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Active Building",
+    "time": 10,
+    "pkt_id": "9a21aff5-eca9-4996-acc1-b804c8c69a58",
+    "type": "IOT_DATA",
+    "src": "TempSensor",
+    "dst": "Thermostat",
+    "seq": 0,
+    "ack": 0,
+    "size": 8,
+    "success": true,
+    "collisions": 0,
+    "color": "#98FB98"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Active Building",
+    "time": 10,
+    "pkt_id": "9a21aff5-eca9-4996-acc1-b804c8c69a58",
+    "type": "IOT_DATA",
+    "src": "TempSensor",
+    "dst": "Thermostat",
+    "seq": 0,
+    "ack": 0,
+    "size": 8,
+    "success": true,
+    "collisions": 0,
+    "color": "#98FB98"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Active Building",
+    "time": 10.2,
+    "pkt_id": "b62de2b9-896e-422f-a789-9181009a30c4",
+    "type": "IOT_DATA",
+    "src": "Thermostat",
+    "dst": "HVAC_Unit",
+    "seq": 0,
+    "ack": 0,
+    "size": 4,
+    "success": true,
+    "collisions": 0,
+    "color": "#98FB98"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Active Building",
+    "time": 10.2,
+    "pkt_id": "b62de2b9-896e-422f-a789-9181009a30c4",
+    "type": "IOT_DATA",
+    "src": "Thermostat",
+    "dst": "HVAC_Unit",
+    "seq": 0,
+    "ack": 0,
+    "size": 4,
+    "success": true,
+    "collisions": 0,
+    "color": "#98FB98"
+  },
+  {
+    "time": 15.0,
+    "event": "simulation_end",
+    "protocol": "Active Building"
+  },
+  {
+    "time": 15.0,
+    "event": "simulation_end",
+    "protocol": "Active Building"
+  }
+]

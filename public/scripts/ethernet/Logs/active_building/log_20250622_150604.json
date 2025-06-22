@@ -1,0 +1,88 @@
+[
+  {
+    "time": 0,
+    "event": "simulation_start",
+    "protocol": "Active Building",
+    "params": {
+      "num_nodes": 20,
+      "duration": 5.0,
+      "bandwidth_bps": 10000000000.0,
+      "data_size": 1024,
+      "arrival_rate": 0.1,
+      "priorities": [
+        1,
+        1,
+        1
+      ],
+      "do_export": true
+    }
+  },
+  {
+    "time": 0,
+    "event": "simulation_start",
+    "protocol": "Active Building",
+    "params": {
+      "num_nodes": 20,
+      "duration": 5.0,
+      "bandwidth_bps": 10000000000.0,
+      "data_size": 1024,
+      "arrival_rate": 0.1,
+      "priorities": [
+        1,
+        1,
+        1
+      ],
+      "do_export": true
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "ActiveBuilding"
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "ActiveBuilding"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Active Building",
+    "time": 0,
+    "pkt_id": "90829d19-ddc4-4296-a449-54e99c4e981a",
+    "type": "IOT_DATA",
+    "src": "TempSensor",
+    "dst": "Thermostat",
+    "seq": 0,
+    "ack": 0,
+    "size": 8,
+    "success": true,
+    "collisions": 0,
+    "color": "#98FB98"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Active Building",
+    "time": 0,
+    "pkt_id": "90829d19-ddc4-4296-a449-54e99c4e981a",
+    "type": "IOT_DATA",
+    "src": "TempSensor",
+    "dst": "Thermostat",
+    "seq": 0,
+    "ack": 0,
+    "size": 8,
+    "success": true,
+    "collisions": 0,
+    "color": "#98FB98"
+  },
+  {
+    "time": 5.0,
+    "event": "simulation_end",
+    "protocol": "Active Building"
+  },
+  {
+    "time": 5.0,
+    "event": "simulation_end",
+    "protocol": "Active Building"
+  }
+]

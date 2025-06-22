@@ -1,0 +1,1136 @@
+[
+  {
+    "time": 0,
+    "event": "simulation_start",
+    "protocol": "Slotted ALOHA",
+    "params": {
+      "num_nodes": 20,
+      "duration": 5.0,
+      "bandwidth_bps": 10000000000.0,
+      "data_size": 1024,
+      "arrival_rate": 0.1,
+      "priorities": [
+        1,
+        1,
+        1
+      ],
+      "do_export": true
+    }
+  },
+  {
+    "time": 0,
+    "event": "simulation_start",
+    "protocol": "Slotted ALOHA",
+    "params": {
+      "num_nodes": 20,
+      "duration": 5.0,
+      "bandwidth_bps": 10000000000.0,
+      "data_size": 1024,
+      "arrival_rate": 0.1,
+      "priorities": [
+        1,
+        1,
+        1
+      ],
+      "do_export": true
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Ether",
+    "name": "aloha_ether",
+    "params": {
+      "bandwidth_bps": 10000000000.0,
+      "propagation_delay_s": 5e-09,
+      "contention": true
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Ether",
+    "name": "aloha_ether",
+    "params": {
+      "bandwidth_bps": 10000000000.0,
+      "propagation_delay_s": 5e-09,
+      "contention": true
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "A",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "A",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "B",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "B",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "C",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "C",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "D",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "D",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "E",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "E",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "F",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "F",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "G",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "G",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "H",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "H",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "I",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "I",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "J",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "J",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "K",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "K",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "L",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "L",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "M",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "M",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "N",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "N",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "O",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "O",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "P",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "P",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "Q",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "Q",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "R",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "R",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "S",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "S",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "T",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "AlohaNode",
+    "name": "T",
+    "params": {
+      "arrival_rate": 0.1,
+      "protocol": "Slotted ALOHA"
+    }
+  },
+  {
+    "time": 0.8754105640536473,
+    "event": "wait_for_slot",
+    "node": "R",
+    "wait_time": 3.214635274945988e-08
+  },
+  {
+    "time": 0.8754105640536473,
+    "event": "wait_for_slot",
+    "node": "R",
+    "wait_time": 3.214635274945988e-08
+  },
+  {
+    "time": 0.8754105962000001,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "5ad092df-5aab-4d86-8eb8-db7d1cf358bb",
+    "type": "DATA",
+    "src": "R",
+    "dst": "O",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0.8754105962000001,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "5ad092df-5aab-4d86-8eb8-db7d1cf358bb",
+    "type": "DATA",
+    "src": "R",
+    "dst": "O",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0.8754105962000001,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "5ad092df-5aab-4d86-8eb8-db7d1cf358bb",
+    "type": "DATA",
+    "src": "R",
+    "dst": "O",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.12000000174595e-08
+  },
+  {
+    "time": 0.8754105962000001,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "5ad092df-5aab-4d86-8eb8-db7d1cf358bb",
+    "type": "DATA",
+    "src": "R",
+    "dst": "O",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.12000000174595e-08
+  },
+  {
+    "time": 2.2499289125477984,
+    "event": "wait_for_slot",
+    "node": "F",
+    "wait_time": 4.005220164733839e-08
+  },
+  {
+    "time": 2.2499289125477984,
+    "event": "wait_for_slot",
+    "node": "F",
+    "wait_time": 4.005220164733839e-08
+  },
+  {
+    "time": 2.2499289526,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "45d2eb63-6c1e-4c36-9dee-906bb3f679b2",
+    "type": "DATA",
+    "src": "F",
+    "dst": "C",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 2.2499289526,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "45d2eb63-6c1e-4c36-9dee-906bb3f679b2",
+    "type": "DATA",
+    "src": "F",
+    "dst": "C",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 2.2499289526,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "45d2eb63-6c1e-4c36-9dee-906bb3f679b2",
+    "type": "DATA",
+    "src": "F",
+    "dst": "C",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 2.2499289526,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "45d2eb63-6c1e-4c36-9dee-906bb3f679b2",
+    "type": "DATA",
+    "src": "F",
+    "dst": "C",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 2.4109377976472888,
+    "event": "wait_for_slot",
+    "node": "O",
+    "wait_time": 5.235271124185292e-08
+  },
+  {
+    "time": 2.4109377976472888,
+    "event": "wait_for_slot",
+    "node": "O",
+    "wait_time": 5.235271124185292e-08
+  },
+  {
+    "time": 2.41093785,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "94ddd626-d0c7-41a3-8e34-0afa4104b117",
+    "type": "DATA",
+    "src": "O",
+    "dst": "M",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 2.41093785,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "94ddd626-d0c7-41a3-8e34-0afa4104b117",
+    "type": "DATA",
+    "src": "O",
+    "dst": "M",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 2.41093785,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "94ddd626-d0c7-41a3-8e34-0afa4104b117",
+    "type": "DATA",
+    "src": "O",
+    "dst": "M",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 2.41093785,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "94ddd626-d0c7-41a3-8e34-0afa4104b117",
+    "type": "DATA",
+    "src": "O",
+    "dst": "M",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 2.9718460432250993,
+    "event": "wait_for_slot",
+    "node": "M",
+    "wait_time": 9.374900751359792e-09
+  },
+  {
+    "time": 2.9718460432250993,
+    "event": "wait_for_slot",
+    "node": "M",
+    "wait_time": 9.374900751359792e-09
+  },
+  {
+    "time": 2.9718460526,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "3f853a2f-a20d-4d0b-ab14-a638d8068526",
+    "type": "DATA",
+    "src": "M",
+    "dst": "G",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 2.9718460526,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "3f853a2f-a20d-4d0b-ab14-a638d8068526",
+    "type": "DATA",
+    "src": "M",
+    "dst": "G",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 2.9718460526,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "3f853a2f-a20d-4d0b-ab14-a638d8068526",
+    "type": "DATA",
+    "src": "M",
+    "dst": "G",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 2.9718460526,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "3f853a2f-a20d-4d0b-ab14-a638d8068526",
+    "type": "DATA",
+    "src": "M",
+    "dst": "G",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 3.389081906514861,
+    "event": "wait_for_slot",
+    "node": "O",
+    "wait_time": 2.7285139054467485e-08
+  },
+  {
+    "time": 3.389081906514861,
+    "event": "wait_for_slot",
+    "node": "O",
+    "wait_time": 2.7285139054467485e-08
+  },
+  {
+    "time": 3.3890819338,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "487e3c05-535c-4afa-a16b-dfc3d73221a8",
+    "type": "DATA",
+    "src": "O",
+    "dst": "T",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 3.3890819338,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "487e3c05-535c-4afa-a16b-dfc3d73221a8",
+    "type": "DATA",
+    "src": "O",
+    "dst": "T",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 3.3890819338,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "487e3c05-535c-4afa-a16b-dfc3d73221a8",
+    "type": "DATA",
+    "src": "O",
+    "dst": "T",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 3.3890819338,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "487e3c05-535c-4afa-a16b-dfc3d73221a8",
+    "type": "DATA",
+    "src": "O",
+    "dst": "T",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 3.4242202497166385,
+    "event": "wait_for_slot",
+    "node": "R",
+    "wait_time": 3.483361499229114e-09
+  },
+  {
+    "time": 3.4242202497166385,
+    "event": "wait_for_slot",
+    "node": "R",
+    "wait_time": 3.483361499229114e-09
+  },
+  {
+    "time": 3.4242202532,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "4624dc16-f031-4e8e-859d-98ed1ecbae45",
+    "type": "DATA",
+    "src": "R",
+    "dst": "M",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 3.4242202532,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "4624dc16-f031-4e8e-859d-98ed1ecbae45",
+    "type": "DATA",
+    "src": "R",
+    "dst": "M",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 3.4242202532,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "4624dc16-f031-4e8e-859d-98ed1ecbae45",
+    "type": "DATA",
+    "src": "R",
+    "dst": "M",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 3.4242202532,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "4624dc16-f031-4e8e-859d-98ed1ecbae45",
+    "type": "DATA",
+    "src": "R",
+    "dst": "M",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 3.572924333307542,
+    "event": "wait_for_slot",
+    "node": "M",
+    "wait_time": 5.209245802034726e-08
+  },
+  {
+    "time": 3.572924333307542,
+    "event": "wait_for_slot",
+    "node": "M",
+    "wait_time": 5.209245802034726e-08
+  },
+  {
+    "time": 3.5729243854,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "a0834722-ffe8-490a-a359-e6631648d9e3",
+    "type": "DATA",
+    "src": "M",
+    "dst": "E",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 3.5729243854,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "a0834722-ffe8-490a-a359-e6631648d9e3",
+    "type": "DATA",
+    "src": "M",
+    "dst": "E",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 3.5729243854,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "a0834722-ffe8-490a-a359-e6631648d9e3",
+    "type": "DATA",
+    "src": "M",
+    "dst": "E",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 3.5729243854,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "a0834722-ffe8-490a-a359-e6631648d9e3",
+    "type": "DATA",
+    "src": "M",
+    "dst": "E",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 3.7067421194033563,
+    "event": "wait_for_slot",
+    "node": "F",
+    "wait_time": 2.9796643726032214e-08
+  },
+  {
+    "time": 3.7067421194033563,
+    "event": "wait_for_slot",
+    "node": "F",
+    "wait_time": 2.9796643726032214e-08
+  },
+  {
+    "time": 3.7067421492,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "459d4b67-5a96-498a-abc8-57c42afc3bfc",
+    "type": "DATA",
+    "src": "F",
+    "dst": "A",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 3.7067421492,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "459d4b67-5a96-498a-abc8-57c42afc3bfc",
+    "type": "DATA",
+    "src": "F",
+    "dst": "A",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 3.7067421492,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "459d4b67-5a96-498a-abc8-57c42afc3bfc",
+    "type": "DATA",
+    "src": "F",
+    "dst": "A",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 3.7067421492,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "459d4b67-5a96-498a-abc8-57c42afc3bfc",
+    "type": "DATA",
+    "src": "F",
+    "dst": "A",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1199999795414897e-08
+  },
+  {
+    "time": 4.891544754054912,
+    "event": "wait_for_slot",
+    "node": "R",
+    "wait_time": 6.545087624659979e-09
+  },
+  {
+    "time": 4.891544754054912,
+    "event": "wait_for_slot",
+    "node": "R",
+    "wait_time": 6.545087624659979e-09
+  },
+  {
+    "time": 4.8915447606,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "62f08776-bda6-4cd8-8fd5-f12d1c5e67cc",
+    "type": "DATA",
+    "src": "R",
+    "dst": "D",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 4.8915447606,
+    "event": "start_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "62f08776-bda6-4cd8-8fd5-f12d1c5e67cc",
+    "type": "DATA",
+    "src": "R",
+    "dst": "D",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 4.8915447606,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "62f08776-bda6-4cd8-8fd5-f12d1c5e67cc",
+    "type": "DATA",
+    "src": "R",
+    "dst": "D",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1200000683593316e-08
+  },
+  {
+    "time": 4.8915447606,
+    "event": "end_tx",
+    "chan": "aloha_ether",
+    "pkt_id": "62f08776-bda6-4cd8-8fd5-f12d1c5e67cc",
+    "type": "DATA",
+    "src": "R",
+    "dst": "D",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 5.1200000683593316e-08
+  },
+  {
+    "time": 5.0,
+    "event": "simulation_end",
+    "protocol": "Slotted ALOHA"
+  },
+  {
+    "time": 5.0,
+    "event": "simulation_end",
+    "protocol": "Slotted ALOHA"
+  }
+]

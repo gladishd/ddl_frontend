@@ -24,6 +24,9 @@ from math import cos, sin, pi
 import random
 import enum
 import simpy
+from datetime import datetime
+import re
+import sys
 
 # These imports may not be available; mock implementations are provided below.
 try:
@@ -46,37 +49,93 @@ except ImportError:
 
 
 # -----------------------------------------------------------------------------
-# Logging setup: Packet & link logs (capture all modules)
+# Dædælus Philosophy: Comprehensive Logging for Verifiable Proof
 #
-# A unified logging stream is crucial for creating a cohesive view of the
-# entire system, from the lowest-level link events to the highest-level
-# application logic. This allows for comprehensive analysis in tools like Mathematica.
+# The logging system is architected to be a primary artifact of the simulation.
+# Every significant event, state change, and decision is captured as a structured
+# JSON object. This creates a rich, analyzable dataset, allowing the behavior
+# of the entire system—from low-level link contention to high-level protocol
+# handshakes—to be rigorously inspected and visualized. This is not merely
+# for debugging; it is the raw data for our "Code as Proof."
 # -----------------------------------------------------------------------------
+LOG_DIRECTORY = "logs"
+log_buffer = io.StringIO() # A temporary buffer for each simulation run.
+
+# Configure the root logger to write to our buffer.
+# We will control the file output manually after each simulation.
 logger = logging.getLogger("net_sim")
 if not logger.handlers:
     logger.setLevel(logging.INFO)
-    log_buffer = io.StringIO()
     handler = logging.StreamHandler(log_buffer)
+    # The formatter ensures each log entry is a raw, self-contained JSON string.
     formatter = logging.Formatter('%(message)s')
     handler.setFormatter(formatter)
     logger.addHandler(handler)
+    # Capture logs from other libraries (like simpy if it used logging)
     root_logger = logging.getLogger()
     root_logger.addHandler(handler)
 
-def export_logs(path: str):
-    """Write the entire logging buffer to a JSON file for Mathematica."""
+def _sanitize_protocol_name(protocol_name: str) -> str:
+    """Converts a protocol name into a valid directory name."""
+    s = protocol_name.lower()
+    s = re.sub(r'[\s\(\),]+', '_', s) # Replace spaces and punctuation with underscores
+    s = re.sub(r'[^a-z0-9_]', '', s)   # Remove any remaining invalid characters
+    s = s.strip('_')
+    return s
+
+def export_logs_to_file(protocol_name: str):
+    """
+    Writes the entire logging buffer to a structured, protocol-specific JSON file.
+    This function embodies the principle of producing verifiable artifacts from
+    our simulations. Each log file is a self-contained proof of a single run.
+    """
+    # Create the main logs directory if it doesn't exist
+    os.makedirs(LOG_DIRECTORY, exist_ok=True)
+
+    # Create the protocol-specific subdirectory
+    protocol_dir = os.path.join(LOG_DIRECTORY, _sanitize_protocol_name(protocol_name))
+    os.makedirs(protocol_dir, exist_ok=True)
+
+    # Generate a unique, timestamped filename
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_filename = f"log_{timestamp}.json"
+    log_path = os.path.join(protocol_dir, log_filename)
+
     raw_content = log_buffer.getvalue()
     raw_lines = raw_content.strip().splitlines()
     records = []
     for line in raw_lines:
         try:
-            records.append(json.loads(line))
+            # Dædælus: A robust parser that handles log prefixes.
+            # We find the beginning of the JSON object ('{') and parse from there,
+            # ignoring any timestamp or log-level prefixes that cause decoding errors.
+            json_start_index = line.find('{')
+            if json_start_index != -1:
+                json_str = line[json_start_index:]
+                records.append(json.loads(json_str))
         except json.JSONDecodeError:
-            print(f"Skipping malformed log line: {line}")
-            
-    with open(path, 'w') as f:
-        json.dump(records, f, indent=2)
-    logger.info(json.dumps({"event": "export_logs", "path": path, "records_exported": len(records)}))
+            # This is a critical check for data integrity. If a log line is malformed,
+            # it indicates a bug in the serialization of an event and must be noted.
+            print(f"Warning: Skipping malformed log line during export: {line}")
+
+    try:
+        with open(log_path, 'w') as f:
+            json.dump(records, f, indent=2)
+        
+        # Log the export event itself to the console for user feedback.
+        # This confirms the creation of the verifiable artifact.
+        export_event_log = {
+            "event": "export_logs_success",
+            "protocol": protocol_name,
+            "path": log_path,
+            "records_exported": len(records)
+        }
+        print(json.dumps(export_event_log))
+        return log_path
+    except IOError as e:
+        print(f"Error exporting logs to {log_path}: {e}")
+        return None
+
 
 # -----------------------------------------------------------------------------
 # Core Networking Primitives & Enums
@@ -107,22 +166,22 @@ class Packet:
         # Clear visualization is essential for making the system's behavior intelligible.
         self.color = {
             "SYN": "#00BFFF",           # DeepSkyBlue
-            "SYN_ACK": "#00FFFF",       # Cyan
+            "SYN_ACK": "#00FFFF",        # Cyan
             "ACK": "#32CD32",           # LimeGreen
             "DATA": "#FFD700",          # Gold
             "JAM": "#FF0000",           # Red
             "LIVENESS_TOKEN": "#FF00FF", # Magenta
-            "TSN_MSG": "#FFA500",        # Orange
-            "IOT_DATA": "#98FB98",       # PaleGreen
-            "CREDIT": "#D8BFD8"          # Thistle
+            "TSN_MSG": "#FFA500",       # Orange
+            "IOT_DATA": "#98FB98",      # PaleGreen
+            "CREDIT": "#D8BFD8"         # Thistle
         }.get(ptype.value, "#FFFFFF")   # White for default
 
     def bits(self): return self.size * 8
     def to_dict(self):
         d = {
-            "time": getattr(self, 'start_time', None), "pkt_id": self.id, 
-            "type": self.ptype.value, "src": self.src, "dst": self.dst, 
-            "seq": self.seq, "ack": self.ack, "size": self.size, 
+            "time": getattr(self, 'start_time', None), "pkt_id": self.id,
+            "type": self.ptype.value, "src": self.src, "dst": self.dst,
+            "seq": self.seq, "ack": self.ack, "size": self.size,
             "success": self.success, "collisions": self.collision_count,
             "color": self.color
         }
@@ -150,16 +209,26 @@ class CongestedLink:
         self.packets_dropped = 0
         self.receivers = {}
         self.total_bytes_transferred = 0
+        logger.info(json.dumps({
+            "time": self.env.now, "event": "component_init", "type": "CongestedLink", "name": self.name,
+            "params": {"buffer_capacity": buffer_capacity, "prop_delay": prop_delay, "bandwidth_bps": bandwidth_bps}
+        }))
 
     def put(self, packet):
         if len(self.buffer.items) < self.buffer.capacity:
+            log_entry = {
+                "time": self.env.now, "event": "buffer_enq", "chan": self.name,
+                "buffer_occupancy": len(self.buffer.items), **packet.to_dict()
+            }
+            logger.info(json.dumps(log_entry))
             return self.buffer.put(packet)
         else:
             self.packets_dropped += 1
             packet.success = False
             log_entry = {
                 "time": self.env.now, "event": "pkt_drop", "chan": self.name,
-                "reason": "buffer_full", **packet.to_dict()
+                "reason": "buffer_full", "buffer_occupancy": len(self.buffer.items),
+                **packet.to_dict()
             }
             logger.info(json.dumps(log_entry))
             return self.env.timeout(0)
@@ -167,6 +236,11 @@ class CongestedLink:
     def start_delivering(self):
         while True:
             packet = yield self.buffer.get()
+            log_entry = {
+                "time": self.env.now, "event": "buffer_deq", "chan": self.name,
+                "buffer_occupancy": len(self.buffer.items), **packet.to_dict()
+            }
+            logger.info(json.dumps(log_entry))
             receiver_node = self.receivers.get(packet.dst)
             if receiver_node:
                 self.env.process(self.deliver(packet, receiver_node))
@@ -200,37 +274,44 @@ class TCPNode:
 
         self.state = "CLOSED"
         self.next_seq = 0
-        self.send_base = 0 
+        self.send_base = 0
         self.rcv_next = 0
-        
+
         self.mss = 1024
-        self.cwnd = 1.0 
+        self.cwnd = 1.0
         self.ssthresh = 64
         self.rto = 0.1
         self.dupacks = 0
-        
+
         self.inbox = simpy.Store(env)
         self.action = env.process(self.run())
+        logger.info(json.dumps({
+            "time": self.env.now, "event": "component_init", "type": "TCPNode", "name": self.name,
+            "params": {"peer": self.peer_name, "is_sender": is_sender, "data_size": data_size}
+        }))
 
     def receive_packet(self, packet):
         self.inbox.put(packet)
 
     def handle_congestion_event(self, reason):
         """Multiplicative Decrease: The core of TCP's reaction to congestion."""
+        old_cwnd, old_ssthresh = self.cwnd, self.ssthresh
         self.ssthresh = max(self.cwnd / 2, 2)
         self.cwnd = 1.0
         self.next_seq = self.send_base
         self.dupacks = 0
         log_entry = {
             "time": self.env.now, "event": "congestion_event", "node": self.name,
-            "reason": reason, "new_cwnd": round(self.cwnd, 2), "new_ssthresh": round(self.ssthresh, 2)
+            "reason": reason,
+            "old_cwnd": round(old_cwnd, 2), "new_cwnd": round(self.cwnd, 2),
+            "old_ssthresh": round(old_ssthresh, 2), "new_ssthresh": round(self.ssthresh, 2)
         }
         logger.info(json.dumps(log_entry))
 
     def run(self):
         """Main lifecycle process for the node."""
         self.state = "ESTABLISHED"
-        logger.info(json.dumps({"time": self.env.now, "event": "state_change", "node": self.name, "new_state": self.state}))
+        logger.info(json.dumps({"time": self.env.now, "event": "state_change", "node": self.name, "old_state": "CLOSED", "new_state": self.state}))
 
         if self.is_sender:
             data_proc = self.env.process(self.transmit_data())
@@ -247,21 +328,22 @@ class TCPNode:
             while self.send_base < self.data_to_send:
                 yield self.env.timeout(self.rto)
                 if self.next_seq > self.send_base:
+                    logger.info(json.dumps({"time": self.env.now, "event": "rto_fired", "node": self.name, "send_base": self.send_base, "next_seq": self.next_seq}))
                     self.handle_congestion_event("timeout")
         except simpy.Interrupt:
-            pass 
+            pass
 
     def transmit_data(self):
         while self.send_base < self.data_to_send:
             while self.next_seq < self.send_base + (self.cwnd * self.mss):
                 if self.next_seq >= self.data_to_send: break
-                
+
                 packet = Packet(PacketType.DATA, src=self.name, dst=self.peer_name, size=self.mss, seq=self.next_seq)
                 packet.start_time = self.env.now
                 logger.info(json.dumps({"event": "start_tx", "node": self.name, **packet.to_dict(), "cwnd": round(self.cwnd, 2)}))
                 yield self.forward_link.put(packet)
                 self.next_seq += self.mss
-            
+
             yield self.env.timeout(0.00001)
 
     def receive_acks(self):
@@ -270,18 +352,28 @@ class TCPNode:
             while True:
                 ack_pkt = yield self.inbox.get()
                 if ack_pkt.ptype == PacketType.ACK and ack_pkt.dst == self.name:
-                    if ack_pkt.ack > self.send_base: 
+                    logger.info(json.dumps({"time": self.env.now, "event": "ack_received", "node": self.name, "ack_val": ack_pkt.ack, "send_base": self.send_base}))
+                    if ack_pkt.ack > self.send_base: # New ACK
                         bytes_acked = ack_pkt.ack - self.send_base
                         pkts_acked = bytes_acked / self.mss
                         self.send_base = ack_pkt.ack
                         self.dupacks = 0
                         
-                        if self.cwnd < self.ssthresh:
+                        old_cwnd = self.cwnd
+                        if self.cwnd < self.ssthresh: # Slow Start
                             self.cwnd += pkts_acked
-                        else:
+                            log_reason = "slow_start"
+                        else: # Congestion Avoidance
                             self.cwnd += pkts_acked / self.cwnd
-                    elif ack_pkt.ack == last_ack_seq: 
+                            log_reason = "congestion_avoidance"
+                        
+                        logger.info(json.dumps({"time": self.env.now, "event": "cwnd_increase", "node": self.name, "reason": log_reason, "old_cwnd": round(old_cwnd, 2), "new_cwnd": round(self.cwnd, 2)}))
+
+                    elif ack_pkt.ack == last_ack_seq: # Duplicate ACK
                         self.dupacks += 1
+                        logger.info(json.dumps({"time": self.env.now, "event": "dup_ack", "node": self.name, "ack_val": ack_pkt.ack, "dup_count": self.dupacks}))
+                        if self.dupacks == 3:
+                            self.handle_congestion_event("triple_dup_ack")
                     
                     last_ack_seq = ack_pkt.ack
         except simpy.Interrupt:
@@ -293,6 +385,7 @@ class TCPNode:
             while True:
                 data_pkt = yield self.inbox.get()
                 if data_pkt.ptype == PacketType.DATA and data_pkt.dst == self.name:
+                    logger.info(json.dumps({"time": self.env.now, "event": "data_received", "node": self.name, "seq": data_pkt.seq, "expected_seq": expected_seq}))
                     if data_pkt.seq >= expected_seq:
                         if data_pkt.seq == expected_seq:
                             expected_seq += data_pkt.size
@@ -322,14 +415,20 @@ class FibreChannelNode:
         self.send_base = 0
         self.inbox = simpy.Store(env)
         self.action = env.process(self.run())
+        logger.info(json.dumps({
+            "time": self.env.now, "event": "component_init", "type": "FibreChannelNode", "name": self.name,
+            "params": {"peer": self.peer_name, "is_sender": is_sender, "initial_credits": initial_credits, "data_size": data_size}
+        }))
 
     def receive_packet(self, packet):
         self.inbox.put(packet)
 
     def run(self):
         if self.is_sender:
-            yield self.env.process(self.transmit_data())
-            yield self.env.process(self.receive_credits())
+            tx_proc = self.env.process(self.transmit_data())
+            rx_proc = self.env.process(self.receive_credits())
+            yield tx_proc
+            if not rx_proc.triggered: rx_proc.interrupt()
         else: # Receiver logic
             yield self.env.process(self.receive_data_and_grant_credits())
 
@@ -340,32 +439,37 @@ class FibreChannelNode:
                 self.credits -= 1
                 packet = Packet(PacketType.DATA, src=self.name, dst=self.peer_name, size=1024, seq=self.next_seq)
                 packet.start_time = self.env.now
-                logger.info(json.dumps({"event": "start_tx", "node": self.name, "credits": self.credits, **packet.to_dict()}))
+                logger.info(json.dumps({"event": "start_tx", "node": self.name, "credits_rem": self.credits, **packet.to_dict()}))
                 yield self.forward_link.put(packet)
                 self.next_seq += packet.size
             else:
                 # This is where the sender throttles its flow, waiting for credits.
-                logger.info(json.dumps({"time": self.env.now, "event": "credit_stall", "node": self.name}))
+                # This is the core mechanism of lossless, back-pressured networks.
+                logger.info(json.dumps({"time": self.env.now, "event": "credit_stall", "node": self.name, "reason": "no_credits_available"}))
                 yield self.env.timeout(0.0001) # Small delay to prevent busy-waiting
 
     def receive_credits(self):
         """Listens for incoming credit packets."""
-        while True:
-            credit_pkt = yield self.inbox.get()
-            if credit_pkt.ptype == PacketType.CREDIT and credit_pkt.dst == self.name:
-                self.credits += credit_pkt.credit_val
-                logger.info(json.dumps({"time": self.env.now, "event": "credit_received", "node": self.name, "new_credits": self.credits, **credit_pkt.to_dict()}))
-                # ACK the data implicitly by receiving a credit
-                self.send_base = credit_pkt.ack
+        try:
+            while True:
+                credit_pkt = yield self.inbox.get()
+                if credit_pkt.ptype == PacketType.CREDIT and credit_pkt.dst == self.name:
+                    self.credits += credit_pkt.credit_val
+                    logger.info(json.dumps({"time": self.env.now, "event": "credit_received", "node": self.name, "credits_added": credit_pkt.credit_val, "new_total_credits": self.credits, **credit_pkt.to_dict()}))
+                    # ACK the data implicitly by receiving a credit
+                    self.send_base = credit_pkt.ack
+        except simpy.Interrupt:
+            pass
 
     def receive_data_and_grant_credits(self):
         """Receives data and sends back credit packets, simulating processing."""
         while True:
             data_pkt = yield self.inbox.get()
             if data_pkt.ptype == PacketType.DATA and data_pkt.dst == self.name:
+                logger.info(json.dumps({"time": self.env.now, "event": "data_received", "node": self.name, **data_pkt.to_dict()}))
                 # Simulate processing time before granting a new credit
-                yield self.env.timeout(0.00005) 
-                
+                yield self.env.timeout(0.00005)
+
                 # In Fibre Channel, credits are returned to the sender. This represents
                 # the promise that the receiver has buffer space available.
                 credit_packet = Packet(PacketType.CREDIT, src=self.name, dst=data_pkt.src, credit_val=1, ack=data_pkt.seq + data_pkt.size)
@@ -377,31 +481,36 @@ class MockDaedaelusFabric:
     def __init__(self, env, num_nodes=2):
         self.env = env
         self.num_nodes = num_nodes
+        logger.info(json.dumps({
+            "time": self.env.now, "event": "component_init", "type": "DaedaelusFabric",
+            "params": {"num_nodes": num_nodes}
+        }))
 
     def setup_processes(self):
-        # The exchange of liveness tokens represents the establishment of mutual 
+        # The exchange of liveness tokens represents the establishment of mutual
         # knowledge, the "I Know That You Know That I Know" (IKTYKTIK) property,
         # across each individual N2N link in the fabric.
         def link_formation(node1_name, node2_name):
             # Each link formation is an independent, atomic transaction.
             p1 = Packet(PacketType.LIVENESS_TOKEN, src=node1_name, dst=node2_name)
             p1.start_time = self.env.now
-            logger.info(json.dumps({"event": "start_tx", **p1.to_dict()}))
+            logger.info(json.dumps({"event": "start_tx", "protocol": "Daedaelus Fabric", "tx_type": "liveness_probe", **p1.to_dict()}))
             yield self.env.timeout(random.uniform(0.8, 1.2))
 
             p2 = Packet(PacketType.LIVENESS_TOKEN, src=node2_name, dst=node1_name)
             p2.start_time = self.env.now
-            logger.info(json.dumps({"event": "start_tx", **p2.to_dict()}))
+            logger.info(json.dumps({"event": "start_tx", "protocol": "Daedaelus Fabric", "tx_type": "liveness_response", **p2.to_dict()}))
             yield self.env.timeout(random.uniform(0.8, 1.2))
-            
+
             p3 = Packet(PacketType.ACK, src=node1_name, dst=node2_name)
             p3.start_time = self.env.now
-            logger.info(json.dumps({"event": "start_tx", **p3.to_dict()}))
+            logger.info(json.dumps({"event": "start_tx", "protocol": "Daedaelus Fabric", "tx_type": "liveness_confirm", **p3.to_dict()}))
             yield self.env.timeout(random.uniform(0.8, 1.2))
+            logger.info(json.dumps({"time": self.env.now, "event": "link_established", "protocol": "Daedaelus Fabric", "nodes": [node1_name, node2_name]}))
 
         node_names = [chr(ord('A') + i) for i in range(self.num_nodes)]
         if not node_names: return
-        
+
         for i in range(self.num_nodes):
             node1_name = node_names[i]
             node2_name = node_names[(i + 1) % self.num_nodes]
@@ -410,6 +519,7 @@ class MockDaedaelusFabric:
 class MockAutomotiveTSN:
     def __init__(self, env):
         self.env = env
+        logger.info(json.dumps({"time": self.env.now, "event": "component_init", "type": "AutomotiveTSN"}))
 
     def setup_processes(self):
         bus = simpy.Store(self.env)
@@ -419,15 +529,15 @@ class MockAutomotiveTSN:
                 p = Packet(PacketType.TSN_MSG, src=source, dst=dest, size=size)
                 p.start_time = self.env.now
                 bus.put(p)
-                logger.info(json.dumps({"event": "start_tx", **p.to_dict()}))
+                logger.info(json.dumps({"event": "start_tx", "protocol": "Automotive TSN", **p.to_dict()}))
 
         def receiver(bus, propagation_delay=0.0001):
             while True:
                 p = yield bus.get()
                 yield self.env.timeout(propagation_delay)
                 p.success = True
-                logger.info(json.dumps({"event": "end_tx", **p.to_dict()}))
-        
+                logger.info(json.dumps({"event": "end_tx", "protocol": "Automotive TSN", **p.to_dict()}))
+
         flows_config = {"CameraF":[("HU",1/60,1500)],"ME":[("RS1",1/100,100),("S1",1/100,100)],"US":[("CU",1/2,64)],"Lidar":[("CU",1/30,1500)],"RC":[("HU",1/100,100)]}
         for src, destinations in flows_config.items():
             for dst, rate, size in destinations:
@@ -437,13 +547,14 @@ class MockAutomotiveTSN:
 class MockActiveBuilding:
     def __init__(self, env):
         self.env = env
+        logger.info(json.dumps({"time": self.env.now, "event": "component_init", "type": "ActiveBuilding"}))
 
     def setup_processes(self):
         def temp_sensor(thermostat_name):
             while True:
                 p = Packet(PacketType.IOT_DATA, src="TempSensor", dst=thermostat_name, size=8)
                 p.start_time = self.env.now
-                logger.info(json.dumps({"event": "start_tx", **p.to_dict()}))
+                logger.info(json.dumps({"event": "start_tx", "protocol": "Active Building", **p.to_dict()}))
                 yield self.env.timeout(5)
 
         def thermostat():
@@ -451,7 +562,7 @@ class MockActiveBuilding:
                 yield self.env.timeout(5.1)
                 p = Packet(PacketType.IOT_DATA, src="Thermostat", dst="HVAC_Unit", size=4)
                 p.start_time = self.env.now
-                logger.info(json.dumps({"event": "start_tx", **p.to_dict()}))
+                logger.info(json.dumps({"event": "start_tx", "protocol": "Active Building", **p.to_dict()}))
 
         self.env.process(temp_sensor("Thermostat"))
         self.env.process(thermostat())
@@ -461,6 +572,10 @@ class Ether:
     def __init__(self, env, name="ether", bandwidth_bps=1e6, propagation_delay_s=5e-9, contention=True):
         self.env, self.name, self.bandwidth, self.prop_delay = env, name, bandwidth_bps, propagation_delay_s
         self.contention, self.transmitting_packets, self.log = contention, [], []
+        logger.info(json.dumps({
+            "time": self.env.now, "event": "component_init", "type": "Ether", "name": self.name,
+            "params": {"bandwidth_bps": bandwidth_bps, "propagation_delay_s": propagation_delay_s, "contention": contention}
+        }))
 
     def is_busy(self): return len(self.transmitting_packets) > 0
 
@@ -470,39 +585,52 @@ class Ether:
     def _csma_cd_transmit(self, packet: Packet, source_node, all_nodes):
         transmission_time = packet.bits() / self.bandwidth
         packet.start_time = self.env.now
-        
-        while self.is_busy():
-            yield self.env.timeout(self.prop_delay / 10)
-        
+
+        if self.is_busy():
+            logger.info(json.dumps({"time": self.env.now, "event": "carrier_sense_defer", "chan": self.name, "node": source_node.name}))
+            while self.is_busy():
+                yield self.env.timeout(self.prop_delay / 10)
+
         self.transmitting_packets.append(packet)
         log_entry = {"time": self.env.now, "event": "start_tx", "chan": self.name, **packet.to_dict()}
         logger.info(json.dumps(log_entry)); self.log.append(log_entry)
 
+        # Propagation delay to detect collision
         yield self.env.timeout(self.prop_delay)
 
         if self.contention and len(self.transmitting_packets) > 1:
+            # This is the "Collision Consensus Enforcement" mechanism. When a station detects
+            # a collision, it jams the Ether to ensure all other participants also see it.
             packet.success = False
-            jam_packet = Packet(PacketType.JAM, src=source_node)
-            logger.info(json.dumps({"time": self.env.now, "event": "jam_signal", "chan": self.name, **jam_packet.to_dict()}))
+            colliding_pkt_ids = [p.id for p in self.transmitting_packets]
+            jam_packet = Packet(PacketType.JAM, src=source_node.name)
+            logger.info(json.dumps({
+                "time": self.env.now, "event": "collision_detected", "chan": self.name,
+                "jamming_node": source_node.name, "colliding_packets": colliding_pkt_ids
+            }))
+            # The JAM signal propagates for a short duration
             yield self.env.timeout(self.prop_delay)
         else:
             # In the Daedalus model, with short, neighbor-to-neighbor links, it's common
             # for a packet to be "longer than the wire." This means the transmission
-            # time can be less than the propagation delay. This logic correctly handles
+            # time can be greater than the propagation delay. This logic correctly handles
             # that case by ensuring the timeout is never negative. This is the foundation
             # of our argument for why "reliability is almost free," as an acknowledgment can
             # be processed and returned before the sender has even finished transmitting.
-            yield self.env.timeout(max(0, transmission_time - self.prop_delay))
+            remaining_tx_time = max(0, transmission_time - self.prop_delay)
+            yield self.env.timeout(remaining_tx_time)
             packet.success = True
             for node in all_nodes:
                 if node != source_node: node.receive_packet(packet)
-        
+
+        # Clear packet from the Ether
         if packet in self.transmitting_packets:
             self.transmitting_packets.remove(packet)
         packet.end_time = self.env.now
         end_log = {"time": self.env.now, "event": "end_tx", "chan": self.name, **packet.to_dict(), "latency": packet.end_time - packet.start_time}
         logger.info(json.dumps(end_log)); self.log.append(end_log)
-        
+
+        # Notify the sender's process of the outcome
         if hasattr(source_node, 'active_tx_proc') and source_node.active_tx_proc and not source_node.active_tx_proc.triggered:
             source_node.active_tx_proc.succeed(packet)
 
@@ -515,6 +643,11 @@ class Node:
         self.state, self.send_una, self.next_seq, self.rcv_nxt, self.acked_data = "CLOSED", 0, 0, 0, set()
         self.backoff_attempts, self.active_tx_proc, self.inbox = 0, None, simpy.Store(env)
         self.action = env.process(self.run())
+        logger.info(json.dumps({
+            "time": self.env.now, "event": "component_init", "type": "Node", "name": self.name,
+            "params": {"peer": self.peer, "is_sender": is_sender, "data_size": data_size}
+        }))
+
 
     def receive_packet(self, packet): self.inbox.put(packet)
 
@@ -525,42 +658,47 @@ class Node:
             yield self.env.process(self.ether.transmit(packet, self, self.all_nodes))
             result_packet = yield self.active_tx_proc
             if result_packet.success: return result_packet
-            
+
             self.backoff_attempts += 1
+            # Implements "Binary Exponential Backoff"
             k = min(self.backoff_attempts, 10)
-            slot_time = 2 * self.ether.prop_delay
-            backoff_duration = random.randint(0, (2**k) - 1) * slot_time
-            logger.info(json.dumps({"time": self.env.now, "event": "backoff", "node": self.name, "attempts": self.backoff_attempts, "delay": backoff_duration}))
+            slot_time = 2 * self.ether.prop_delay # A slot is the round-trip propagation time
+            backoff_slots = random.randint(0, (2**k) - 1)
+            backoff_duration = backoff_slots * slot_time
+            logger.info(json.dumps({"time": self.env.now, "event": "backoff", "node": self.name, "attempts": self.backoff_attempts, "backoff_slots": backoff_slots, "delay": backoff_duration}))
             yield self.env.timeout(backoff_duration)
         packet.success = False
         return packet
 
     def run(self):
+        # TCP-like Handshake
         if self.is_sender:
-            self.state = "SYN_SENT"
-            logger.info(json.dumps({"time": self.env.now, "event": "state_change", "node": self.name, "new_state": self.state}))
+            old_state, self.state = self.state, "SYN_SENT"
+            logger.info(json.dumps({"time": self.env.now, "event": "state_change", "node": self.name, "old_state": old_state, "new_state": self.state}))
             yield self.env.process(self.send_with_backoff(Packet(PacketType.SYN, src=self, dst=self.peer, seq=self.next_seq)))
             self.next_seq += 1
 
         while self.state != "ESTABLISHED":
             pkt = yield self.inbox.get()
             if pkt.dst != self.name: continue
-
+            
+            old_state = self.state
             if self.state == "CLOSED" and pkt.ptype == PacketType.SYN:
                 self.state = "SYN_RCVD"
                 self.rcv_nxt = pkt.seq + 1
-                logger.info(json.dumps({"time": self.env.now, "event": "state_change", "node": self.name, "new_state": self.state}))
+                logger.info(json.dumps({"time": self.env.now, "event": "state_change", "node": self.name, "old_state": old_state, "new_state": self.state}))
                 yield self.env.process(self.send_with_backoff(Packet(PacketType.SYN_ACK, src=self, dst=pkt.src, seq=self.next_seq, ack=self.rcv_nxt)))
                 self.next_seq += 1
             elif self.state == "SYN_SENT" and pkt.ptype == PacketType.SYN_ACK:
                 self.state = "ESTABLISHED"
                 self.rcv_nxt, self.send_una = pkt.seq + 1, pkt.ack
-                logger.info(json.dumps({"time": self.env.now, "event": "state_change", "node": self.name, "new_state": self.state}))
+                logger.info(json.dumps({"time": self.env.now, "event": "state_change", "node": self.name, "old_state": old_state, "new_state": self.state}))
                 yield self.env.process(self.send_with_backoff(Packet(PacketType.ACK, src=self, dst=pkt.src, seq=self.next_seq, ack=self.rcv_nxt)))
             elif self.state == "SYN_RCVD" and pkt.ptype == PacketType.ACK and pkt.ack == self.next_seq:
                 self.state = "ESTABLISHED"
-                logger.info(json.dumps({"time": self.env.now, "event": "state_change", "node": self.name, "new_state": self.state}))
+                logger.info(json.dumps({"time": self.env.now, "event": "state_change", "node": self.name, "old_state": old_state, "new_state": self.state}))
 
+        # Data Transfer
         if self.is_sender and self.data_size > 0:
             while self.send_una < self.data_size:
                 data_pkt = Packet(PacketType.DATA, src=self, dst=self.peer, size=512, seq=self.next_seq)
@@ -586,6 +724,10 @@ class MetcalfeNode:
         self.inbox = simpy.Store(env)
         self.active_tx_proc = None
         self.action = env.process(self.run())
+        logger.info(json.dumps({
+            "time": self.env.now, "event": "component_init", "type": "MetcalfeNode", "name": self.name,
+            "params": {"peer": getattr(peer, 'name', peer), "is_sender": is_sender}
+        }))
 
     def receive_packet(self, packet):
         self.inbox.put(packet)
@@ -593,42 +735,50 @@ class MetcalfeNode:
     def run(self):
         if self.is_sender:
             while True:
+                # Wait for some data to arrive to be sent
                 yield self.env.timeout(random.expovariate(0.5))
-                packet_to_send = Packet(PacketType.DATA, src=self, dst=self.peer)
+                packet_to_send = Packet(PacketType.DATA, src=self.name, dst=self.peer)
                 self.env.process(self.send_packet(packet_to_send))
-        else:
+        else: # Receiver
             while True:
                 received_packet = yield self.inbox.get()
                 if received_packet.ptype == PacketType.DATA and received_packet.dst == self.name:
-                    ack_packet = Packet(PacketType.ACK, src=self, dst=received_packet.src)
+                    logger.info(json.dumps({"time": self.env.now, "event": "data_received", "node": self.name, "from": received_packet.src}))
+                    ack_packet = Packet(PacketType.ACK, src=self.name, dst=received_packet.src)
                     self.env.process(self.send_packet(ack_packet))
 
     def send_packet(self, packet):
         packet.collision_count = 0
-        while packet.collision_count < 16:
-            while self.ether.is_busy():
-                yield self.env.timeout(self.ether.prop_delay / 10)
-            
+        while packet.collision_count < 16: # Max retransmission attempts
+            # Carrier Sense: wait for the Ether to be free.
+            if self.ether.is_busy():
+                logger.info(json.dumps({"time": self.env.now, "event": "carrier_sense_defer", "chan": self.ether.name, "node": self.name}))
+                while self.ether.is_busy():
+                    yield self.env.timeout(self.ether.prop_delay / 10)
+
             self.active_tx_proc = self.env.event()
             yield self.env.process(self.ether.transmit(packet, self, self.all_nodes))
             result_packet = yield self.active_tx_proc
-            
+
             if result_packet.success:
                 return
-            
+
+            # Collision occurred, perform exponential backoff.
             packet.collision_count += 1
-            k = min(packet.collision_count, 10)
+            k = min(packet.collision_count, 10) # Truncated backoff
             slot_time = 2 * self.ether.prop_delay
-            backoff_duration = random.randint(0, (2**k) - 1) * slot_time
-            
+            backoff_slots = random.randint(0, (2**k) - 1)
+            backoff_duration = backoff_slots * slot_time
+
             log_entry = {
-                "time": self.env.now, "event": "backoff", "node": self.name, 
-                "attempts": packet.collision_count, "delay": backoff_duration
+                "time": self.env.now, "event": "backoff", "node": self.name,
+                "reason": "collision", "attempts": packet.collision_count,
+                "backoff_slots": backoff_slots, "delay": backoff_duration
             }
             logger.info(json.dumps(log_entry))
             yield self.env.timeout(backoff_duration)
-            
-        logger.info(json.dumps({"time": self.env.now, "event": "tx_abort", "node": self.name, "pkt_id": packet.id}))
+
+        logger.info(json.dumps({"time": self.env.now, "event": "tx_abort", "node": self.name, "reason": "max_retries_exceeded", "pkt_id": packet.id}))
 
 
 class AlohaNode:
@@ -638,6 +788,10 @@ class AlohaNode:
         self.arrival_rate, self.protocol_type = arrival_rate, protocol_type
         self.active_tx_proc = None
         self.action = env.process(self.run())
+        logger.info(json.dumps({
+            "time": self.env.now, "event": "component_init", "type": "AlohaNode", "name": self.name,
+            "params": {"arrival_rate": arrival_rate, "protocol": protocol_type}
+        }))
 
     def receive_packet(self, packet):
         pass
@@ -645,26 +799,30 @@ class AlohaNode:
     def run(self):
         while True:
             yield self.env.timeout(random.expovariate(self.arrival_rate))
-            packet_to_send = Packet(PacketType.DATA, src=self, dst=random.choice([n.name for n in self.all_nodes if n.name != self.name]))
+            packet_to_send = Packet(PacketType.DATA, src=self.name, dst=random.choice([n.name for n in self.all_nodes if n.name != self.name]))
             yield self.env.process(self.send_with_backoff(packet_to_send))
-            
+
     def send_with_backoff(self, packet):
         attempts = 0
         while attempts < 16:
             if self.protocol_type == 'Slotted ALOHA':
                 transmission_time = packet.bits() / self.ether.bandwidth
                 slot_size = transmission_time + self.ether.prop_delay
-                yield self.env.timeout(slot_size - (self.env.now % slot_size))
+                wait_time = slot_size - (self.env.now % slot_size)
+                logger.info(json.dumps({"time": self.env.now, "event": "wait_for_slot", "node": self.name, "wait_time": wait_time}))
+                yield self.env.timeout(wait_time)
             elif self.protocol_type == 'CSMA/CD (ALOHA)':
-                while self.ether.is_busy():
-                    yield self.env.timeout(self.ether.prop_delay / 10)
+                if self.ether.is_busy():
+                    logger.info(json.dumps({"time": self.env.now, "event": "carrier_sense_defer", "chan": self.ether.name, "node": self.name}))
+                    while self.ether.is_busy():
+                        yield self.env.timeout(self.ether.prop_delay / 10)
 
             self.active_tx_proc = self.env.event()
             yield self.env.process(self.ether.transmit(packet, self, self.all_nodes))
             result_packet = yield self.active_tx_proc
-            
+
             if result_packet.success: return
-            
+
             attempts += 1
             packet.collision_count = attempts
             k = min(attempts, 10)
@@ -679,18 +837,18 @@ class AlohaNode:
 
 def setup_and_run(env, protocol, **kwargs):
     """A unified function to set up and run different simulation scenarios."""
-    
+    logger.info(json.dumps({"time": env.now, "event": "simulation_start", "protocol": protocol, "params": kwargs}))
     nodes = []
     if protocol == "Fibre Channel (STRETCH)":
-        bw = kwargs.get('bandwidth_bps', 10e9) 
-        prop_delay = 5e-6 
-        buffer_size = 20 
+        bw = kwargs.get('bandwidth_bps', 10e9)
+        prop_delay = 5e-6
+        buffer_size = 20
         num_pairs = kwargs['num_nodes'] // 2
-        
+
         # In this model, the "CongestedLink" represents the Fibre Channel switch fabric.
         forward_fabric = CongestedLink(env, "FC_Forward_Fabric", buffer_capacity=buffer_size, prop_delay=prop_delay, bandwidth_bps=bw)
         reverse_fabric = CongestedLink(env, "FC_Reverse_Fabric", buffer_capacity=buffer_size, prop_delay=prop_delay, bandwidth_bps=bw)
-        
+
         nodes_map = {}
         for i in range(num_pairs):
             sender = FibreChannelNode(env, f'S{i}', forward_fabric, reverse_fabric, is_sender=True, initial_credits=kwargs.get('data_size', 512*1024)//1024)
@@ -705,24 +863,24 @@ def setup_and_run(env, protocol, **kwargs):
             receiver.peer_name = sender_name
             forward_fabric.receivers[receiver_name] = receiver
             reverse_fabric.receivers[sender_name] = sender
-            
+
         env.process(forward_fabric.start_delivering())
         env.process(reverse_fabric.start_delivering())
-        
+
         nodes = list(nodes_map.values())
 
     elif protocol == "Metcalfe Full-Duplex":
-        bw = kwargs.get('bandwidth_bps', 10e9) 
-        prop_delay = 5e-6 
-        buffer_size = 20 
+        bw = kwargs.get('bandwidth_bps', 10e9)
+        prop_delay = 5e-6
+        buffer_size = 20
         num_pairs = kwargs['num_nodes'] // 2
 
         forward_link = CongestedLink(env, "ForwardChannel", buffer_capacity=buffer_size, prop_delay=prop_delay, bandwidth_bps=bw)
         reverse_link = CongestedLink(env, "ReverseChannel", buffer_capacity=buffer_size, prop_delay=prop_delay, bandwidth_bps=bw)
-        
+
         nodes_map = {}
         for i in range(num_pairs):
-            sender = TCPNode(env, f'S{i}', forward_link, reverse_link)
+            sender = TCPNode(env, f'S{i}', forward_link, reverse_link, data_size=kwargs.get('data_size', 512*1024))
             receiver = TCPNode(env, f'R{i}', reverse_link, forward_link)
             nodes_map[sender.name] = sender
             nodes_map[receiver.name] = receiver
@@ -732,14 +890,13 @@ def setup_and_run(env, protocol, **kwargs):
             sender, receiver = nodes_map[sender_name], nodes_map[receiver_name]
             sender.is_sender = True
             sender.peer_name = receiver_name
-            sender.data_to_send = kwargs.get('data_size', 512*1024)
             receiver.peer_name = sender_name
             forward_link.receivers[receiver_name] = receiver
             reverse_link.receivers[sender_name] = sender
-            
+
         env.process(forward_link.start_delivering())
         env.process(reverse_link.start_delivering())
-        
+
         nodes = list(nodes_map.values())
 
     elif "ALOHA" in protocol:
@@ -757,12 +914,13 @@ def setup_and_run(env, protocol, **kwargs):
             receiver = MetcalfeNode(env, receiver_name, ether, [], peer=sender_name, is_sender=False)
             nodes.extend([sender, receiver])
         for node in nodes: node.all_nodes = nodes
-    
+
     elif "Ethernet" in protocol or "Handshake" in protocol:
         bw, num_nodes = kwargs.get('bandwidth_bps', 1e6), kwargs.get('num_nodes', 2)
         prop_delay = 5e-7
-        
+
         if protocol == "Full-Duplex Ethernet" or "FD" in protocol:
+            # Full-duplex implies two independent, non-contended channels.
             ether_ab = Ether(env, "ether_A->B", bandwidth_bps=bw, contention=False)
             ether_ba = Ether(env, "ether_B->A", bandwidth_bps=bw, contention=False)
             node_B = Node(env, 'B', ether_ba, [], is_sender=False, data_size=kwargs.get('data_size', 5120))
@@ -770,7 +928,7 @@ def setup_and_run(env, protocol, **kwargs):
             nodes = [node_A, node_B]
             node_A.all_nodes = nodes
             node_B.all_nodes = nodes
-        else:
+        else: # Half-duplex or shared medium protocols
             contention = "no contention" not in protocol
             ether = Ether(env, name="shared_ether", bandwidth_bps=bw, propagation_delay_s=prop_delay, contention=contention)
             nodes = [Node(env, chr(ord('A') + i), ether, [], is_sender=(i==0), data_size=kwargs.get('data_size', 5120 if "Ethernet" in protocol else 0)) for i in range(num_nodes)]
@@ -778,19 +936,20 @@ def setup_and_run(env, protocol, **kwargs):
                 node.all_nodes = nodes
                 possible_peers = [p for p in nodes if p != node]
                 if possible_peers: node.peer = random.choice(possible_peers).name
-    
+
     elif protocol == "Daedaelus Fabric":
         fabric = MockDaedaelusFabric(env, num_nodes=kwargs['num_nodes'])
         fabric.setup_processes()
-    elif protocol == "Automotive TSN": 
+    elif protocol == "Automotive TSN":
         MockAutomotiveTSN(env).setup_processes()
-    elif protocol == "Active Building": 
+    elif protocol == "Active Building":
         MockActiveBuilding(env).setup_processes()
-    
+
     if hasattr(env, 'root_tk'):
         env.root_tk.sim_nodes = nodes
 
     env.run(until=kwargs['duration'])
+    logger.info(json.dumps({"time": env.now, "event": "simulation_end", "protocol": protocol}))
 
 
 class SimulationFramework:
@@ -805,10 +964,10 @@ class SimulationFramework:
         self.root.columnconfigure(0, weight=1); self.root.rowconfigure(0, weight=1)
         lf = ttk.LabelFrame(mf, text="Controls", padding="10"); lf.grid(row=0, column=0, sticky="w")
         ttk.Label(lf, text="Protocol:").grid(row=0, column=0, sticky=tk.W, pady=2)
-        
+
         protocol_list = ["Fibre Channel (STRETCH)", "Metcalfe Full-Duplex", "Metcalfe Half-Duplex","TCP Handshake (HD, no contention)","TCP Handshake (HD, contention)","TCP Handshake (FD)","CSMA/CD (ALOHA)","Pure ALOHA","Slotted ALOHA","Half-Duplex Ethernet","Full-Duplex Ethernet","Daedaelus Fabric","Automotive TSN","Active Building"]
         self.proto = ttk.Combobox(lf, width=35, values=protocol_list, state="readonly")
-        
+
         self.proto.current(0); self.proto.grid(row=0, column=1, sticky=tk.W)
         self.proto.bind("<<ComboboxSelected>>", self.draw_network_layout)
         self.entries = {}
@@ -845,7 +1004,7 @@ class SimulationFramework:
             num_nodes_total = self.get_sim_params()['num_nodes']
         except (ValueError, KeyError):
             num_nodes_total = 24
-            
+
         nodes_per_quadrant = max(1, num_nodes_total // 4)
         y_pos = {'tx_fwd': 100, 'rx_fwd': 150, 'tx_rev': 250, 'rx_rev': 300}
         quadrants = {
@@ -885,7 +1044,7 @@ class SimulationFramework:
         self.canvas.create_line(hub_x, hub_tx_y, quadrants['rx_fwd']['x_start'], quadrants['rx_fwd']['y'], arrow=tk.LAST, fill="#BF616A")
         self.canvas.create_line(quadrants['tx_rev']['x_end'], quadrants['tx_rev']['y'], hub_x, hub_rx_y, arrow=tk.LAST, fill="#A3BE8C")
         self.canvas.create_line(hub_x, hub_rx_y, quadrants['rx_rev']['x_start'], quadrants['rx_rev']['y'], arrow=tk.LAST, fill="#A3BE8C")
-    
+
     def draw_full_duplex_layout(self, channel_text="Bandwidth-Multiplexed\nChannel"):
         """Draws the layout for full-duplex, centrally switched simulations."""
         self.canvas.delete("all")
@@ -911,14 +1070,14 @@ class SimulationFramework:
             self.canvas.create_text(right_x, y_pos, text=r_name, fill="#2E3440")
 
         channel_height = (num_pairs) * y_step
-        self.canvas.create_rectangle(channel_x-50, start_y-30, channel_x+50, start_y-30+channel_height, fill="#434C5E", outline="#D8DEE9")
+        self.canvas.create_rectangle(channel_x-70, start_y-30, channel_x+70, start_y-30+channel_height, fill="#434C5E", outline="#D8DEE9")
         self.canvas.create_text(channel_x, start_y+(channel_height/2)-30, text=channel_text, fill="#ECEFF4", justify=tk.CENTER)
-        
+
         for node in self.nodes:
             if node['name'].startswith('S'):
-                self.canvas.create_line(node['x']+20, node['y'], channel_x-50, node['y'], arrow=tk.LAST, fill="#D8DEE9")
+                self.canvas.create_line(node['x']+20, node['y'], channel_x-70, node['y'], arrow=tk.LAST, fill="#D8DEE9")
             else: # is a Receiver
-                self.canvas.create_line(channel_x+50, node['y'], node['x']-20, node['y'], arrow=tk.LAST, fill="#D8DEE9")
+                self.canvas.create_line(channel_x+70, node['y'], node['x']-20, node['y'], arrow=tk.LAST, fill="#D8DEE9")
 
     def draw_network_layout(self, event=None):
         proto = self.proto.get()
@@ -929,13 +1088,13 @@ class SimulationFramework:
             self.draw_full_duplex_layout()
             return
         elif proto == "Fibre Channel (STRETCH)":
-            self.draw_full_duplex_layout(channel_text="Fibre Channel\nSwitch")
+            self.draw_full_duplex_layout(channel_text="Fibre Channel\nSwitch Fabric")
             return
 
         self.canvas.delete("all")
         self.nodes = []
         node_names = []
-        
+
         try:
             num_nodes_param = self.get_sim_params()['num_nodes']
         except (ValueError, KeyError):
@@ -945,11 +1104,11 @@ class SimulationFramework:
         elif proto == "Automotive TSN": node_names = ["CameraF", "ME", "US", "Lidar", "RC", "HU", "CU", "RS1", "S1"]
         elif proto == "Active Building": node_names = ["TempSensor", "Thermostat", "HVAC_Unit"]
         else: node_names = [chr(ord('A') + i) for i in range(num_nodes_param)]
-        
+
         num_nd = len(node_names)
         is_bus = "Ethernet" in proto or "ALOHA" in proto
         cx, cy, rad = 400, 200, 150
-        
+
         for i, name in enumerate(node_names):
             if is_bus:
                 x, y = (100 + (600 / (num_nd - 1) * i if num_nd > 1 else 300)), cy
@@ -959,12 +1118,14 @@ class SimulationFramework:
             self.nodes.append({'id': i, 'name': name, 'x': x, 'y': y})
 
         if "Daedaelus Fabric" in proto and len(self.nodes) > 1:
+            # Daedalus N2N Lattice is visualized as a ring for simplicity,
+            # representing direct neighbor-to-neighbor connections.
             for i in range(len(self.nodes)):
                 node1 = self.nodes[i]
                 node2 = self.nodes[(i + 1) % len(self.nodes)]
                 self.canvas.create_line(node1['x'], node1['y'], node2['x'], node2['y'], fill="#B48EAD", width=3, tags="fabric_link")
         elif is_bus: self.canvas.create_line(100, cy, 700, cy, fill="#88C0D0", width=4, tags="ether_bus")
-        
+
         for node in self.nodes:
             if is_bus: self.canvas.create_line(node['x'], node['y']-20, node['x'], cy, fill="#81A1C1", width=2)
             self.canvas.create_rectangle(node['x']-20, node['y']-20, node['x']+20, node['y']+20, fill="#4C566A", outline="#D8DEE9", width=2)
@@ -976,20 +1137,40 @@ class SimulationFramework:
         self.export_btn.config(state="disabled")
         try:
             sim_params = self.get_sim_params()
-        except (ValueError, KeyError) as e: 
+            protocol_name = self.proto.get()
+        except (ValueError, KeyError) as e:
             messagebox.showerror("Invalid Input", f"Please check parameters.\nError: {e}"); return
-        
+
         self.draw_network_layout(); self.status.config(text="Running simulation..."); self.root.update()
+        # Reset the log buffer for a new simulation run
         log_buffer.truncate(0); log_buffer.seek(0)
-        
+
         env = simpy.Environment()
-        env.root_tk = self 
-        setup_and_run(env, self.proto.get(), **sim_params)
-        
-        logs = [json.loads(line) for line in log_buffer.getvalue().strip().splitlines() if "{" in line]
+        env.root_tk = self
+        setup_and_run(env, protocol_name, **sim_params)
+
+        if sim_params['do_export']:
+            export_logs_to_file(protocol_name)
+
+        # FIX: The JSONDecodeError occurs here because log lines contain non-JSON prefixes.
+        # This loop now robustly extracts the JSON object from each line.
+        all_lines = log_buffer.getvalue().strip().splitlines()
+        logs = []
+        for line in all_lines:
+            try:
+                # Find the beginning of the JSON object ('{') and parse from there.
+                json_start_index = line.find('{')
+                if json_start_index != -1:
+                    json_str = line[json_start_index:]
+                    logs.append(json.loads(json_str))
+            except json.JSONDecodeError as e:
+                # This indicates a potential bug in how an event is logged.
+                print(f"Critical Error: Could not parse log line for animation: {line}")
+                print(f"--> Error: {e}")
+
         self.status.config(text=f"Simulation complete. Animating {len(logs)} events..."); self.root.update()
         if logs: self.animate_log(logs)
-        else: self.status.config(text=f"Simulation for '{self.proto.get()}' complete. No animation events.")
+        else: self.status.config(text=f"Simulation for '{protocol_name}' complete. No animation events.")
 
     def stop_animation(self):
         if not self.is_animating: return
@@ -1007,7 +1188,7 @@ class SimulationFramework:
         self.start_btn.config(state="disabled")
         self.stop_btn.config(state="normal")
         self.export_btn.config(state="disabled")
-        
+
         events = sorted(log, key=lambda e: e.get("time", 0))
         t_start, t_end = events[0].get("time", 0), events[-1].get("time", 0)
         duration = t_end - t_start or 1.0
@@ -1022,9 +1203,9 @@ class SimulationFramework:
                 if self.get_sim_params()['do_export'] and Image:
                     self.export_btn.config(state="normal")
                 self.status.config(text="Animation finished."); return
-            
+
             event = events[event_idx]
-            
+
             src_node = next((n for n in self.nodes if n['name'] == event.get("src")), None)
             dst_node = next((n for n in self.nodes if n['name'] == event.get("dst")), None)
 
@@ -1042,10 +1223,10 @@ class SimulationFramework:
         proto = self.proto.get()
         color = event.get('color', '#4C566A')
         if not event.get('success', True): color = '#BF616A'
-        
+
         packet_size = 12
         pkt_obj = self.canvas.create_rectangle(0,0,0,0, fill=color, outline="#ECEFF4", tags="packet_anim")
-        
+
         steps, step_delay = 20, max(1, duration_ms // 20)
         is_bus = "Ethernet" in proto or "ALOHA" in proto
         is_metcalfe_hd = proto == "Metcalfe Half-Duplex"
@@ -1062,29 +1243,26 @@ class SimulationFramework:
 
             prog = step_num / steps
             x_curr, y_curr = (src_node['x'], src_node['y']) if src_node else (0,0)
-            
+
             if is_full_duplex and src_node and dst_node:
                 channel_x = 400
-                is_reverse = event.get('type') in ['ACK', 'CREDIT']
-                
-                # Senders are on the left, Receivers on the right.
                 if src_node['x'] < channel_x: # Forward path S->R
-                    if prog <= 0.5: # Animate from Sender to Channel
+                    if prog <= 0.5:
                         p = prog * 2
-                        x_curr = src_node['x'] + (channel_x - 50 - src_node['x']) * p
+                        x_curr = src_node['x'] + (channel_x - 70 - src_node['x']) * p
                         y_curr = src_node['y']
-                    else: # Animate from Channel to Receiver
+                    else:
                         p = (prog - 0.5) * 2
-                        x_curr = (channel_x + 50) + (dst_node['x'] - (channel_x + 50)) * p
+                        x_curr = (channel_x + 70) + (dst_node['x'] - (channel_x + 70)) * p
                         y_curr = dst_node['y']
                 else: # Reverse path R->S
-                    if prog <= 0.5: # Animate from Receiver to Channel
+                    if prog <= 0.5:
                         p = prog * 2
-                        x_curr = src_node['x'] + (channel_x + 50 - src_node['x']) * p
+                        x_curr = src_node['x'] + (channel_x + 70 - src_node['x']) * p
                         y_curr = src_node['y']
-                    else: # Animate from Channel to Sender
+                    else:
                         p = (prog - 0.5) * 2
-                        x_curr = (channel_x - 50) + (dst_node['x'] - (channel_x - 50)) * p
+                        x_curr = (channel_x - 70) + (dst_node['x'] - (channel_x - 70)) * p
                         y_curr = dst_node['y']
 
             elif is_metcalfe_hd:
@@ -1093,8 +1271,8 @@ class SimulationFramework:
 
                 tx_path_start = next((n for n in self.nodes if (is_ack and n['quad']=='tx_rev' and n['label']=='DESTINATION') or (not is_ack and n['quad']=='tx_fwd' and n['label']=='INFO SRC')), None)
                 rx_path_end = next((n for n in self.nodes if (is_ack and n['quad']=='rx_rev' and n['label']=='INFO SRC') or (not is_ack and n['quad']=='rx_fwd' and n['label']=='DESTINATION')), None)
-                
-                if not tx_path_start or not rx_path_end: 
+
+                if not tx_path_start or not rx_path_end:
                     self.canvas.delete(pkt_obj); return
 
                 x_start, y_start = tx_path_start['x'], tx_path_start['y']
@@ -1109,12 +1287,12 @@ class SimulationFramework:
                     p = (prog - 0.5) * 2
                     x_curr = x_mid + (x_end - x_mid) * p
                     y_curr = y_mid + (y_end - y_mid) * p
-            
+
             elif is_bus and src_node and dst_node:
                 y_bus = src_node['y']
                 x_start, y_start = src_node['x'], src_node['y']
                 x_end, y_end = dst_node['x'], dst_node['y']
-                
+
                 if prog <= 0.2:
                     x_curr = x_start
                     y_curr = y_start - (y_start - y_bus) * (prog / 0.2)
@@ -1129,11 +1307,11 @@ class SimulationFramework:
                 x_start, y_start = src_node['x'], src_node['y']
                 x_end, y_end = dst_node['x'], dst_node['y']
                 x_curr, y_curr = x_start + (x_end - x_start) * prog, y_start + (y_end - y_start) * prog
-            
-            else: 
+
+            else:
                 self.canvas.delete(pkt_obj)
                 return
-            
+
             self.canvas.coords(pkt_obj, x_curr-packet_size/2, y_curr-packet_size/2, x_curr+packet_size/2, y_curr+packet_size/2)
             self.root.after(step_delay, lambda: _move(step_num + 1))
         _move(0)
@@ -1153,7 +1331,9 @@ class SimulationFramework:
 def main():
     root = tk.Tk()
     root.sim_nodes = []
-    SimulationFramework(root)
+    app = SimulationFramework(root)
+    # This lambda was causing issues and isn't strictly necessary with the fix.
+    # app.log_export_func = lambda proto: export_logs_to_file(proto)
     root.mainloop()
 
 if __name__ == "__main__":
