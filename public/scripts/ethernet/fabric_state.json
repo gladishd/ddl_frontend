@@ -1,1 +1,56 @@
-[]
+[
+  {
+    "time": 0,
+    "event": "LinkInitiation",
+    "link": "A<->B",
+    "detail": "Attempting to establish a reversible transaction channel."
+  },
+  {
+    "time": 0,
+    "event": "LinkInitiation",
+    "link": "A<->B",
+    "detail": "Attempting to establish a reversible transaction channel."
+  },
+  {
+    "time": 1.2967958067821161,
+    "event": "TokenExchange",
+    "link": "A<->B",
+    "owner": "A",
+    "state": "SENT_LIVENESS_TOKEN"
+  },
+  {
+    "time": 1.2967958067821161,
+    "event": "TokenExchange",
+    "link": "A<->B",
+    "owner": "A",
+    "state": "SENT_LIVENESS_TOKEN"
+  },
+  {
+    "time": 1.8091356390878492,
+    "event": "TokenExchange",
+    "link": "A<->B",
+    "owner": "B",
+    "state": "RECEIVED_LIVENESS_TOKEN"
+  },
+  {
+    "time": 1.8091356390878492,
+    "event": "TokenExchange",
+    "link": "A<->B",
+    "owner": "B",
+    "state": "RECEIVED_LIVENESS_TOKEN"
+  },
+  {
+    "time": 2.6708986732535998,
+    "event": "ConservedQuantityTransfer",
+    "link": "A<->B",
+    "size": 1024,
+    "status": "SUCCESS"
+  },
+  {
+    "time": 2.6708986732535998,
+    "event": "ConservedQuantityTransfer",
+    "link": "A<->B",
+    "size": 1024,
+    "status": "SUCCESS"
+  }
+]
