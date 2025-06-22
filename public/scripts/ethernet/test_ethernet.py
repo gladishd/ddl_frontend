@@ -93,36 +93,42 @@ class PacketType(enum.Enum):
     LIVENESS_TOKEN = "LIVENESS_TOKEN"
     TSN_MSG = "TSN_MSG"
     IOT_DATA = "IOT_DATA"
+    CREDIT = "CREDIT" # Added for Fibre Channel
 
 class Packet:
-    def __init__(self, ptype: PacketType, src=None, dst=None, size=64, seq=0, ack=0):
+    def __init__(self, ptype: PacketType, src=None, dst=None, size=64, seq=0, ack=0, credit_val=0):
         self.id, self.ptype = str(uuid.uuid4()), ptype
         self.src = getattr(src, 'name', src) # Handle both node objects and string names
         self.dst = getattr(dst, 'name', dst)
         self.size, self.seq, self.ack = size, seq, ack
+        self.credit_val = credit_val
         self.success, self.collision_count = True, 0
         # A high-contrast color palette to ensure visual clarity of different packet types.
         # Clear visualization is essential for making the system's behavior intelligible.
         self.color = {
             "SYN": "#00BFFF",           # DeepSkyBlue
-            "SYN_ACK": "#00FFFF",        # Cyan
+            "SYN_ACK": "#00FFFF",       # Cyan
             "ACK": "#32CD32",           # LimeGreen
             "DATA": "#FFD700",          # Gold
             "JAM": "#FF0000",           # Red
             "LIVENESS_TOKEN": "#FF00FF", # Magenta
             "TSN_MSG": "#FFA500",        # Orange
-            "IOT_DATA": "#98FB98"        # PaleGreen
+            "IOT_DATA": "#98FB98",       # PaleGreen
+            "CREDIT": "#D8BFD8"          # Thistle
         }.get(ptype.value, "#FFFFFF")   # White for default
 
     def bits(self): return self.size * 8
     def to_dict(self):
-        return {
+        d = {
             "time": getattr(self, 'start_time', None), "pkt_id": self.id, 
             "type": self.ptype.value, "src": self.src, "dst": self.dst, 
             "seq": self.seq, "ack": self.ack, "size": self.size, 
             "success": self.success, "collisions": self.collision_count,
             "color": self.color
         }
+        if self.ptype == PacketType.CREDIT:
+            d["credit_val"] = self.credit_val
+        return d
     def __repr__(self): return f"<{self.ptype.value} id={self.id[:4]} src={self.src}->dst={self.dst}>"
 
 # -----------------------------------------------------------------------------
@@ -143,6 +149,7 @@ class CongestedLink:
         self.bandwidth = bandwidth_bps
         self.packets_dropped = 0
         self.receivers = {}
+        self.total_bytes_transferred = 0
 
     def put(self, packet):
         if len(self.buffer.items) < self.buffer.capacity:
@@ -171,6 +178,8 @@ class CongestedLink:
         transmission_time = packet.bits() / self.bandwidth
         yield self.env.timeout(transmission_time)
         yield self.env.timeout(self.prop_delay)
+        if packet.ptype == PacketType.DATA and packet.success:
+            self.total_bytes_transferred += packet.size
         receiver_node.receive_packet(packet)
 
 class TCPNode:
@@ -292,6 +301,77 @@ class TCPNode:
                         yield self.reverse_link.put(ack)
         except simpy.Interrupt:
             pass
+
+class FibreChannelNode:
+    """
+    Represents a node in a Fibre Channel fabric. Senders are throttled by credits,
+    and receivers (switches) issue credits as they process packets.
+    This model demonstrates how promise-based networks avoid congestion-driven
+    packet loss by design, instead managing flow through explicit credits.
+    """
+    def __init__(self, env, name, forward_link, reverse_link, peer=None, is_sender=False, initial_credits=10, data_size=1024*100):
+        self.env = env
+        self.name = name
+        self.peer_name = getattr(peer, 'name', peer)
+        self.is_sender = is_sender
+        self.data_to_send = data_size
+        self.forward_link = forward_link
+        self.reverse_link = reverse_link
+        self.credits = initial_credits if is_sender else 0
+        self.next_seq = 0
+        self.send_base = 0
+        self.inbox = simpy.Store(env)
+        self.action = env.process(self.run())
+
+    def receive_packet(self, packet):
+        self.inbox.put(packet)
+
+    def run(self):
+        if self.is_sender:
+            yield self.env.process(self.transmit_data())
+            yield self.env.process(self.receive_credits())
+        else: # Receiver logic
+            yield self.env.process(self.receive_data_and_grant_credits())
+
+    def transmit_data(self):
+        """Sends data only when credits are available."""
+        while self.send_base < self.data_to_send:
+            if self.credits > 0:
+                self.credits -= 1
+                packet = Packet(PacketType.DATA, src=self.name, dst=self.peer_name, size=1024, seq=self.next_seq)
+                packet.start_time = self.env.now
+                logger.info(json.dumps({"event": "start_tx", "node": self.name, "credits": self.credits, **packet.to_dict()}))
+                yield self.forward_link.put(packet)
+                self.next_seq += packet.size
+            else:
+                # This is where the sender throttles its flow, waiting for credits.
+                logger.info(json.dumps({"time": self.env.now, "event": "credit_stall", "node": self.name}))
+                yield self.env.timeout(0.0001) # Small delay to prevent busy-waiting
+
+    def receive_credits(self):
+        """Listens for incoming credit packets."""
+        while True:
+            credit_pkt = yield self.inbox.get()
+            if credit_pkt.ptype == PacketType.CREDIT and credit_pkt.dst == self.name:
+                self.credits += credit_pkt.credit_val
+                logger.info(json.dumps({"time": self.env.now, "event": "credit_received", "node": self.name, "new_credits": self.credits, **credit_pkt.to_dict()}))
+                # ACK the data implicitly by receiving a credit
+                self.send_base = credit_pkt.ack
+
+    def receive_data_and_grant_credits(self):
+        """Receives data and sends back credit packets, simulating processing."""
+        while True:
+            data_pkt = yield self.inbox.get()
+            if data_pkt.ptype == PacketType.DATA and data_pkt.dst == self.name:
+                # Simulate processing time before granting a new credit
+                yield self.env.timeout(0.00005) 
+                
+                # In Fibre Channel, credits are returned to the sender. This represents
+                # the promise that the receiver has buffer space available.
+                credit_packet = Packet(PacketType.CREDIT, src=self.name, dst=data_pkt.src, credit_val=1, ack=data_pkt.seq + data_pkt.size)
+                credit_packet.start_time = self.env.now
+                logger.info(json.dumps({"event": "grant_credit", "node": self.name, **credit_packet.to_dict()}))
+                yield self.reverse_link.put(credit_packet)
 
 class MockDaedaelusFabric:
     def __init__(self, env, num_nodes=2):
@@ -601,7 +681,37 @@ def setup_and_run(env, protocol, **kwargs):
     """A unified function to set up and run different simulation scenarios."""
     
     nodes = []
-    if protocol == "Metcalfe Full-Duplex":
+    if protocol == "Fibre Channel (STRETCH)":
+        bw = kwargs.get('bandwidth_bps', 10e9) 
+        prop_delay = 5e-6 
+        buffer_size = 20 
+        num_pairs = kwargs['num_nodes'] // 2
+        
+        # In this model, the "CongestedLink" represents the Fibre Channel switch fabric.
+        forward_fabric = CongestedLink(env, "FC_Forward_Fabric", buffer_capacity=buffer_size, prop_delay=prop_delay, bandwidth_bps=bw)
+        reverse_fabric = CongestedLink(env, "FC_Reverse_Fabric", buffer_capacity=buffer_size, prop_delay=prop_delay, bandwidth_bps=bw)
+        
+        nodes_map = {}
+        for i in range(num_pairs):
+            sender = FibreChannelNode(env, f'S{i}', forward_fabric, reverse_fabric, is_sender=True, initial_credits=kwargs.get('data_size', 512*1024)//1024)
+            receiver = FibreChannelNode(env, f'R{i}', reverse_fabric, forward_fabric)
+            nodes_map[sender.name] = sender
+            nodes_map[receiver.name] = receiver
+
+        for i in range(num_pairs):
+            sender_name, receiver_name = f'S{i}', f'R{i}'
+            sender, receiver = nodes_map[sender_name], nodes_map[receiver_name]
+            sender.peer_name = receiver_name
+            receiver.peer_name = sender_name
+            forward_fabric.receivers[receiver_name] = receiver
+            reverse_fabric.receivers[sender_name] = sender
+            
+        env.process(forward_fabric.start_delivering())
+        env.process(reverse_fabric.start_delivering())
+        
+        nodes = list(nodes_map.values())
+
+    elif protocol == "Metcalfe Full-Duplex":
         bw = kwargs.get('bandwidth_bps', 10e9) 
         prop_delay = 5e-6 
         buffer_size = 20 
@@ -696,7 +806,7 @@ class SimulationFramework:
         lf = ttk.LabelFrame(mf, text="Controls", padding="10"); lf.grid(row=0, column=0, sticky="w")
         ttk.Label(lf, text="Protocol:").grid(row=0, column=0, sticky=tk.W, pady=2)
         
-        protocol_list = ["Metcalfe Full-Duplex", "Metcalfe Half-Duplex","TCP Handshake (HD, no contention)","TCP Handshake (HD, contention)","TCP Handshake (FD)","CSMA/CD (ALOHA)","Pure ALOHA","Slotted ALOHA","Half-Duplex Ethernet","Full-Duplex Ethernet","Daedaelus Fabric","Automotive TSN","Active Building"]
+        protocol_list = ["Fibre Channel (STRETCH)", "Metcalfe Full-Duplex", "Metcalfe Half-Duplex","TCP Handshake (HD, no contention)","TCP Handshake (HD, contention)","TCP Handshake (FD)","CSMA/CD (ALOHA)","Pure ALOHA","Slotted ALOHA","Half-Duplex Ethernet","Full-Duplex Ethernet","Daedaelus Fabric","Automotive TSN","Active Building"]
         self.proto = ttk.Combobox(lf, width=35, values=protocol_list, state="readonly")
         
         self.proto.current(0); self.proto.grid(row=0, column=1, sticky=tk.W)
@@ -776,8 +886,8 @@ class SimulationFramework:
         self.canvas.create_line(quadrants['tx_rev']['x_end'], quadrants['tx_rev']['y'], hub_x, hub_rx_y, arrow=tk.LAST, fill="#A3BE8C")
         self.canvas.create_line(hub_x, hub_rx_y, quadrants['rx_rev']['x_start'], quadrants['rx_rev']['y'], arrow=tk.LAST, fill="#A3BE8C")
     
-    def draw_metcalfe_fd_layout(self):
-        """Draws the layout for the Metcalfe Full-Duplex simulation."""
+    def draw_full_duplex_layout(self, channel_text="Bandwidth-Multiplexed\nChannel"):
+        """Draws the layout for full-duplex, centrally switched simulations."""
         self.canvas.delete("all")
         self.nodes = []
         try:
@@ -802,12 +912,12 @@ class SimulationFramework:
 
         channel_height = (num_pairs) * y_step
         self.canvas.create_rectangle(channel_x-50, start_y-30, channel_x+50, start_y-30+channel_height, fill="#434C5E", outline="#D8DEE9")
-        self.canvas.create_text(channel_x, start_y+(channel_height/2)-30, text="Bandwidth-Multiplexed\nChannel", fill="#ECEFF4", justify=tk.CENTER)
+        self.canvas.create_text(channel_x, start_y+(channel_height/2)-30, text=channel_text, fill="#ECEFF4", justify=tk.CENTER)
         
         for node in self.nodes:
             if node['name'].startswith('S'):
                 self.canvas.create_line(node['x']+20, node['y'], channel_x-50, node['y'], arrow=tk.LAST, fill="#D8DEE9")
-            else:
+            else: # is a Receiver
                 self.canvas.create_line(channel_x+50, node['y'], node['x']-20, node['y'], arrow=tk.LAST, fill="#D8DEE9")
 
     def draw_network_layout(self, event=None):
@@ -816,7 +926,10 @@ class SimulationFramework:
             self.draw_metcalfe_channel_layout()
             return
         elif proto == "Metcalfe Full-Duplex":
-            self.draw_metcalfe_fd_layout()
+            self.draw_full_duplex_layout()
+            return
+        elif proto == "Fibre Channel (STRETCH)":
+            self.draw_full_duplex_layout(channel_text="Fibre Channel\nSwitch")
             return
 
         self.canvas.delete("all")
@@ -936,13 +1049,13 @@ class SimulationFramework:
         steps, step_delay = 20, max(1, duration_ms // 20)
         is_bus = "Ethernet" in proto or "ALOHA" in proto
         is_metcalfe_hd = proto == "Metcalfe Half-Duplex"
-        is_metcalfe_fd = proto == "Metcalfe Full-Duplex"
+        is_full_duplex = proto in ["Metcalfe Full-Duplex", "Fibre Channel (STRETCH)"]
 
         def _move(step_num):
             if not self.is_animating or step_num > steps:
                 self.canvas.delete(pkt_obj)
                 if step_num > steps and event.get('success') and event.get('type') != 'JAM_SIGNAL' and dst_node:
-                    if not (is_metcalfe_hd or is_metcalfe_fd):
+                    if not (is_metcalfe_hd or is_full_duplex):
                         self.canvas.create_oval(dst_node['x']-4, dst_node['y']-4, dst_node['x']+4, dst_node['y']+4, fill=color, tags="packet_delivered", outline="")
                         self.root.after(200, lambda: self.canvas.delete("packet_delivered"))
                 return
@@ -950,16 +1063,29 @@ class SimulationFramework:
             prog = step_num / steps
             x_curr, y_curr = (src_node['x'], src_node['y']) if src_node else (0,0)
             
-            if is_metcalfe_fd and src_node and dst_node:
+            if is_full_duplex and src_node and dst_node:
                 channel_x = 400
-                if prog <= 0.5:
-                    p = prog * 2
-                    x_curr = src_node['x'] + (channel_x - 50 - src_node['x']) * p
-                    y_curr = src_node['y']
-                else:
-                    p = (prog - 0.5) * 2
-                    x_curr = (channel_x + 50) + (dst_node['x'] - (channel_x + 50)) * p
-                    y_curr = dst_node['y']
+                is_reverse = event.get('type') in ['ACK', 'CREDIT']
+                
+                # Senders are on the left, Receivers on the right.
+                if src_node['x'] < channel_x: # Forward path S->R
+                    if prog <= 0.5: # Animate from Sender to Channel
+                        p = prog * 2
+                        x_curr = src_node['x'] + (channel_x - 50 - src_node['x']) * p
+                        y_curr = src_node['y']
+                    else: # Animate from Channel to Receiver
+                        p = (prog - 0.5) * 2
+                        x_curr = (channel_x + 50) + (dst_node['x'] - (channel_x + 50)) * p
+                        y_curr = dst_node['y']
+                else: # Reverse path R->S
+                    if prog <= 0.5: # Animate from Receiver to Channel
+                        p = prog * 2
+                        x_curr = src_node['x'] + (channel_x + 50 - src_node['x']) * p
+                        y_curr = src_node['y']
+                    else: # Animate from Channel to Sender
+                        p = (prog - 0.5) * 2
+                        x_curr = (channel_x - 50) + (dst_node['x'] - (channel_x - 50)) * p
+                        y_curr = dst_node['y']
 
             elif is_metcalfe_hd:
                 hub_x, hub_y = 400, 200
