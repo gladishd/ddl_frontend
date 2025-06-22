@@ -2,7 +2,7 @@
   {
     "event": "start_tx",
     "time": 0,
-    "pkt_id": "c4437e36-44c8-4519-9d5c-56441068abd4",
+    "pkt_id": "b92714c5-37a3-4fe0-a3da-eac5e7a44f1b",
     "type": "LIVENESS_TOKEN",
     "src": "A",
     "dst": "B",
@@ -16,7 +16,7 @@
   {
     "event": "start_tx",
     "time": 0,
-    "pkt_id": "c4437e36-44c8-4519-9d5c-56441068abd4",
+    "pkt_id": "b92714c5-37a3-4fe0-a3da-eac5e7a44f1b",
     "type": "LIVENESS_TOKEN",
     "src": "A",
     "dst": "B",
@@ -29,8 +29,8 @@
   },
   {
     "event": "start_tx",
-    "time": 1.4634720431800408,
-    "pkt_id": "4dbb59c9-f5ab-417b-a5f0-12cfd1c1a22e",
+    "time": 1.2821628090369663,
+    "pkt_id": "d2a387ac-0162-4375-ae67-626eb2e46807",
     "type": "LIVENESS_TOKEN",
     "src": "B",
     "dst": "A",
@@ -43,8 +43,8 @@
   },
   {
     "event": "start_tx",
-    "time": 1.4634720431800408,
-    "pkt_id": "4dbb59c9-f5ab-417b-a5f0-12cfd1c1a22e",
+    "time": 1.2821628090369663,
+    "pkt_id": "d2a387ac-0162-4375-ae67-626eb2e46807",
     "type": "LIVENESS_TOKEN",
     "src": "B",
     "dst": "A",
@@ -57,8 +57,8 @@
   },
   {
     "event": "start_tx",
-    "time": 2.6215318638177467,
-    "pkt_id": "41e8e528-5632-40e4-8512-c933b8217617",
+    "time": 2.2534914505351944,
+    "pkt_id": "45279c24-4adc-4439-bc92-ce7f9ce8294b",
     "type": "ACK",
     "src": "A",
     "dst": "B",
@@ -71,8 +71,8 @@
   },
   {
     "event": "start_tx",
-    "time": 2.6215318638177467,
-    "pkt_id": "41e8e528-5632-40e4-8512-c933b8217617",
+    "time": 2.2534914505351944,
+    "pkt_id": "45279c24-4adc-4439-bc92-ce7f9ce8294b",
     "type": "ACK",
     "src": "A",
     "dst": "B",

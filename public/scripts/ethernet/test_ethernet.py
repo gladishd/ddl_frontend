@@ -66,9 +66,6 @@ if not logger.handlers:
 def export_logs(path: str):
     """Write the entire logging buffer to a JSON file for Mathematica."""
     raw_content = log_buffer.getvalue()
-    log_buffer.truncate(0)
-    log_buffer.seek(0)
-    
     raw_lines = raw_content.strip().splitlines()
     records = []
     for line in raw_lines:
@@ -112,8 +109,6 @@ class Packet:
 
     def bits(self): return self.size * 8
     def to_dict(self):
-        # Ensure all packet attributes, including presentation data, are serialized into the event log.
-        # This creates a self-contained record for downstream analysis and visualization.
         return {
             "time": getattr(self, 'start_time', None), "pkt_id": self.id, 
             "type": self.ptype.value, "src": self.src, "dst": self.dst, 
@@ -128,47 +123,35 @@ class Packet:
 # -----------------------------------------------------------------------------
 
 class MockDaedaelusFabric:
-    """
-    Mocks the Daedaelus Fabric simulation. This does not model statistical
-    contention but rather the deterministic establishment of a reliable link.
-    It simulates the exchange of tokens to create a shared state between two
-    agents, reflecting the principle of "Interaction-Multiplexing" over
-    "Bandwidth-Multiplexing." The output demonstrates a system where the
-    epistemic knowledge of an event is preserved.
-    """
     def __init__(self, env):
         self.env = env
 
-    def run(self, until):
+    def setup_processes(self):
+        # The exchange of tokens represents the establishment of mutual knowledge, 
+        # the "I Know That You Know That I Know" (IKTYKTIK) property.
         def link_formation(node1_name, node2_name):
-            # The exchange of tokens represents the establishment of mutual knowledge, 
-            # the "I Know That You Know That I Know" (IKTYKTIK) property.
             p1 = Packet(PacketType.LIVENESS_TOKEN, src=node1_name, dst=node2_name)
             p1.start_time = self.env.now
             logger.info(json.dumps({"event": "start_tx", **p1.to_dict()}))
-            yield self.env.timeout(random.uniform(0.5, 1.5))
+            yield self.env.timeout(random.uniform(0.8, 1.2))
 
             p2 = Packet(PacketType.LIVENESS_TOKEN, src=node2_name, dst=node1_name)
             p2.start_time = self.env.now
             logger.info(json.dumps({"event": "start_tx", **p2.to_dict()}))
-            yield self.env.timeout(random.uniform(0.5, 1.5))
+            yield self.env.timeout(random.uniform(0.8, 1.2))
             
             p3 = Packet(PacketType.ACK, src=node1_name, dst=node2_name)
             p3.start_time = self.env.now
             logger.info(json.dumps({"event": "start_tx", **p3.to_dict()}))
-            yield self.env.timeout(random.uniform(0.5, 1.5))
-
-
+            yield self.env.timeout(random.uniform(0.8, 1.2))
+        
         self.env.process(link_formation('A', 'B'))
-        self.env.run(until=until)
-        export_logs(os.path.join(os.getcwd(), "fabric_state.json"))
 
 class MockAutomotiveTSN:
     def __init__(self, env):
         self.env = env
-        self.results = {}
 
-    def run(self, until):
+    def setup_processes(self):
         bus = simpy.Store(self.env)
         def sender(source, dest, period, size):
             while True:
@@ -182,42 +165,36 @@ class MockAutomotiveTSN:
             while True:
                 p = yield bus.get()
                 yield self.env.timeout(propagation_delay)
-                p.success = True # TSN assumes reliable delivery
+                p.success = True
                 logger.info(json.dumps({"event": "end_tx", **p.to_dict()}))
         
         flows_config = {"CameraF":[("HU",1/60,1500)],"ME":[("RS1",1/100,100),("S1",1/100,100)],"US":[("CU",1/2,64)],"Lidar":[("CU",1/30,1500)],"RC":[("HU",1/100,100)]}
         for src, destinations in flows_config.items():
             for dst, rate, size in destinations:
                 self.env.process(sender(src, dst, rate, size))
-        
         self.env.process(receiver(bus))
-        self.env.run(until=until)
-
 
 class MockActiveBuilding:
-    def __init__(self, sim_duration, tick_interval):
-        self.env = simpy.Environment()
-        self.sim_duration = sim_duration
+    def __init__(self, env):
+        self.env = env
 
-    def start(self):
-        def temp_sensor(env, thermostat_name):
+    def setup_processes(self):
+        def temp_sensor(thermostat_name):
             while True:
-                temp = round(random.uniform(20.0, 22.0), 1)
                 p = Packet(PacketType.IOT_DATA, src="TempSensor", dst=thermostat_name, size=8)
-                p.start_time = env.now
-                logger.info(json.dumps({"event": "start_tx", "payload": {"temperature": temp}, **p.to_dict()}))
-                yield env.timeout(5)
+                p.start_time = self.env.now
+                logger.info(json.dumps({"event": "start_tx", **p.to_dict()}))
+                yield self.env.timeout(5)
 
-        def thermostat(env):
+        def thermostat():
             while True:
-                yield env.timeout(5.1)
+                yield self.env.timeout(5.1)
                 p = Packet(PacketType.IOT_DATA, src="Thermostat", dst="HVAC_Unit", size=4)
-                p.start_time = env.now
-                logger.info(json.dumps({"event": "start_tx", "payload": {"command": "ACTIVATE_AC"}, **p.to_dict()}))
+                p.start_time = self.env.now
+                logger.info(json.dumps({"event": "start_tx", **p.to_dict()}))
 
-        self.env.process(temp_sensor(self.env, "Thermostat"))
-        self.env.process(thermostat(self.env))
-        self.env.run(until=self.sim_duration)
+        self.env.process(temp_sensor("Thermostat"))
+        self.env.process(thermostat())
 
 class Ether:
     """Represents the shared communication medium, the "Ether" from Metcalfe's paper."""
@@ -327,9 +304,48 @@ class Node:
                     ack_data = yield self.inbox.get()
                     if ack_data.dst == self.name and ack_data.ptype == PacketType.ACK: self.send_una = ack_data.ack
         else:
-            # Receiver data handling logic
             pass
+
+class AlohaNode:
+    """A simplified node for demonstrating ALOHA-family contention protocols."""
+    def __init__(self, env, name, ether, all_nodes, arrival_rate, protocol_type):
+        self.env, self.name, self.ether, self.all_nodes = env, name, ether, all_nodes
+        self.arrival_rate, self.protocol_type = arrival_rate, protocol_type
+        self.active_tx_proc = None
+        self.action = env.process(self.run())
+
+    def receive_packet(self, packet):
+        pass
+
+    def run(self):
+        while True:
+            yield self.env.timeout(random.expovariate(self.arrival_rate))
+            packet_to_send = Packet(PacketType.DATA, src=self)
+            yield self.env.process(self.send_with_backoff(packet_to_send))
             
+    def send_with_backoff(self, packet):
+        attempts = 0
+        while attempts < 16:
+            if self.protocol_type == 'Slotted ALOHA':
+                slot_size = 2 * self.ether.prop_delay
+                yield self.env.timeout(slot_size - (self.env.now % slot_size))
+            elif self.protocol_type == 'CSMA/CD (ALOHA)':
+                while self.ether.is_busy():
+                    yield self.env.timeout(self.ether.prop_delay / 10)
+
+            self.active_tx_proc = self.env.event()
+            yield self.env.process(self.ether.transmit(packet, self, self.all_nodes))
+            result_packet = yield self.active_tx_proc
+            
+            if result_packet.success: return
+            
+            attempts += 1
+            k = min(attempts, 10)
+            slot_time = 2 * self.ether.prop_delay
+            backoff_duration = random.randint(0, (2**k) - 1) * slot_time
+            logger.info(json.dumps({"time": self.env.now, "event": "backoff", "node": self.name, "attempts": attempts, "delay": backoff_duration}))
+            yield self.env.timeout(backoff_duration)
+
 # -----------------------------------------------------------------------------
 # Simulation Orchestrator & UI Framework
 # -----------------------------------------------------------------------------
@@ -361,54 +377,11 @@ def setup_and_run(env, protocol, **kwargs):
                 possible_peers = [p for p in all_nodes_list if p != node]
                 if possible_peers: node.peer = random.choice(possible_peers)
     
-    elif protocol == "Daedaelus Fabric": MockDaedaelusFabric(env).run(until=kwargs['duration'])
-    elif protocol == "Automotive TSN": MockAutomotiveTSN(env).run(until=kwargs['duration'])
-    elif protocol == "Active Building": MockActiveBuilding(kwargs['duration'], 0.1).start()
+    elif protocol == "Daedaelus Fabric": MockDaedaelusFabric(env).setup_processes()
+    elif protocol == "Automotive TSN": MockAutomotiveTSN(env).setup_processes()
+    elif protocol == "Active Building": MockActiveBuilding(env).setup_processes()
     
-    if "ALOHA" in protocol or "Ethernet" in protocol or "Handshake" in protocol:
-        env.run(until=kwargs['duration'])
-
-class AlohaNode:
-    """A simplified node for demonstrating ALOHA-family contention protocols."""
-    def __init__(self, env, name, ether, all_nodes, arrival_rate, protocol_type):
-        self.env, self.name, self.ether, self.all_nodes = env, name, ether, all_nodes
-        self.arrival_rate, self.protocol_type = arrival_rate, protocol_type
-        self.active_tx_proc = None
-        self.action = env.process(self.run())
-
-    def receive_packet(self, packet):
-        # In this simplified ALOHA model, nodes do not process received packets.
-        # This method exists to satisfy the Ether's broadcast interface.
-        pass
-
-    def run(self):
-        while True:
-            yield self.env.timeout(random.expovariate(self.arrival_rate))
-            packet_to_send = Packet(PacketType.DATA, src=self)
-            yield self.env.process(self.send_with_backoff(packet_to_send))
-            
-    def send_with_backoff(self, packet):
-        attempts = 0
-        while attempts < 16:
-            if self.protocol_type == 'Slotted ALOHA':
-                slot_size = 2 * self.ether.prop_delay
-                yield self.env.timeout(slot_size - (self.env.now % slot_size))
-            elif self.protocol_type == 'CSMA/CD (ALOHA)':
-                while self.ether.is_busy():
-                    yield self.env.timeout(self.ether.prop_delay / 10)
-
-            self.active_tx_proc = self.env.event()
-            yield self.env.process(self.ether.transmit(packet, self, self.all_nodes))
-            result_packet = yield self.active_tx_proc
-            
-            if result_packet.success: return
-            
-            attempts += 1
-            k = min(attempts, 10)
-            slot_time = 2 * self.ether.prop_delay
-            backoff_duration = random.randint(0, (2**k) - 1) * slot_time
-            logger.info(json.dumps({"time": self.env.now, "event": "backoff", "node": self.name, "attempts": attempts, "delay": backoff_duration}))
-            yield self.env.timeout(backoff_duration)
+    env.run(until=kwargs['duration'])
 
 
 class SimulationFramework:
@@ -476,7 +449,10 @@ class SimulationFramework:
                 x, y = cx + rad * cos(angle), cy + rad * sin(angle)
             self.nodes.append({'id': i, 'name': name, 'x': x, 'y': y})
 
-        if is_bus: self.canvas.create_line(100, cy, 700, cy, fill="#88C0D0", width=4, tags="ether_bus")
+        if "Daedaelus Fabric" in proto:
+            self.canvas.create_line(self.nodes[0]['x'], self.nodes[0]['y'], self.nodes[1]['x'], self.nodes[1]['y'], fill="#B48EAD", width=3)
+        elif is_bus: self.canvas.create_line(100, cy, 700, cy, fill="#88C0D0", width=4, tags="ether_bus")
+        
         for node in self.nodes:
             if is_bus: self.canvas.create_line(node['x'], node['y']-20, node['x'], cy, fill="#81A1C1", width=2)
             self.canvas.create_rectangle(node['x']-20, node['y']-20, node['x']+20, node['y']+20, fill="#4C566A", outline="#D8DEE9", width=2)
