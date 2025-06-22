@@ -503,12 +503,11 @@ class SimulationFramework:
         self.root.columnconfigure(0, weight=1); self.root.rowconfigure(0, weight=1)
         lf = ttk.LabelFrame(mf, text="Controls", padding="10"); lf.grid(row=0, column=0, sticky="w")
         ttk.Label(lf, text="Protocol:").grid(row=0, column=0, sticky=tk.W, pady=2)
-        # Added "Metcalfe Half-Duplex" to the list of available protocols.
         self.proto = ttk.Combobox(lf, width=35, values=["Metcalfe Half-Duplex","TCP Handshake (HD, no contention)","TCP Handshake (HD, contention)","TCP Handshake (FD)","CSMA/CD (ALOHA)","Pure ALOHA","Slotted ALOHA","Half-Duplex Ethernet","Full-Duplex Ethernet","Daedaelus Fabric","Automotive TSN","Active Building"], state="readonly")
         self.proto.current(0); self.proto.grid(row=0, column=1, sticky=tk.W)
         self.proto.bind("<<ComboboxSelected>>", self.draw_network_layout)
         self.entries = {}
-        labels_and_defaults = {"Pkt Size":"1024","Bandwidth":"1e6","Arrival λ":"0.1","Sim Time":"20","Priorities":"1,1,1","Num Nodes":"4","Export Logs?":"True"}
+        labels_and_defaults = {"Pkt Size":"1024","Bandwidth":"1e6","Arrival λ":"0.1","Sim Time":"20","Priorities":"1,1,1","Num Nodes":"24","Export Logs?":"True"}
         for i, (text, default_val) in enumerate(labels_and_defaults.items(), start=1):
             key = text.lower().split()[0].replace('?', '')
             ttk.Label(lf, text=f"{text}:").grid(row=i, column=0, sticky=tk.W, pady=2)
@@ -545,23 +544,21 @@ class SimulationFramework:
         
         # Define the four quadrants for the chains
         quadrants = {
-            'tx_fwd': {'y': y_pos['tx_fwd'], 'x_start': 50, 'x_end': 350, 'flow': 'right'},
-            'rx_fwd': {'y': y_pos['rx_fwd'], 'x_start': 450, 'x_end': 750, 'flow': 'right'},
-            'tx_rev': {'y': y_pos['tx_rev'], 'x_start': 750, 'x_end': 450, 'flow': 'left'},
-            'rx_rev': {'y': y_pos['rx_rev'], 'x_start': 350, 'x_end': 50, 'flow': 'left'},
+            'tx_fwd': {'y': y_pos['tx_fwd'], 'x_start': 50, 'x_end': 350, 'flow': 'right', 'labels': ("INFO SRC", "TRANSMITTER")},
+            'rx_fwd': {'y': y_pos['rx_fwd'], 'x_start': 450, 'x_end': 750, 'flow': 'right', 'labels': ("RECEIVER", "DESTINATION")},
+            'tx_rev': {'y': y_pos['tx_rev'], 'x_start': 750, 'x_end': 450, 'flow': 'left', 'labels': ("DESTINATION", "RECEIVER")},
+            'rx_rev': {'y': y_pos['rx_rev'], 'x_start': 350, 'x_end': 50, 'flow': 'left', 'labels': ("TRANSMITTER", "INFO SRC")},
         }
 
         # Populate nodes for the visual layout
         for quad_name, props in quadrants.items():
             for i in range(nodes_per_quadrant):
-                prog = i / (nodes_per_quadrant -1) if nodes_per_quadrant > 1 else 0.5
+                prog = i / (nodes_per_quadrant - 1) if nodes_per_quadrant > 1 else 0.5
                 x = props['x_start'] + (props['x_end'] - props['x_start']) * prog
                 
                 label = ""
-                if i == 0 and quad_name == 'tx_fwd': label = "INFO SRC"
-                elif i == nodes_per_quadrant - 1 and quad_name == 'tx_fwd': label = "TRANSMITTER"
-                elif i == 0 and quad_name == 'rx_fwd': label = "RECEIVER"
-                elif i == nodes_per_quadrant - 1 and quad_name == 'rx_fwd': label = "DESTINATION"
+                if i == 0: label = props['labels'][0]
+                elif i == nodes_per_quadrant - 1: label = props['labels'][1]
                 
                 self.nodes.append({'name': f"{quad_name}_{i}", 'label': label, 'x': x, 'y': props['y'], 'quad': quad_name})
 
@@ -576,17 +573,20 @@ class SimulationFramework:
 
         for node in self.nodes:
              self.canvas.create_rectangle(node['x']-20, node['y']-10, node['x']+20, node['y']+10, fill="#434C5E", outline="#D8DEE9")
-             if node['label']: self.canvas.create_text(node['x'], node['y'] + 20, text=node['label'], font=("Helvetica", 8), fill="#ECEFF4")
+             if node['label']: self.canvas.create_text(node['x'], node['y'] + 20, text=node['label'], font=("Helvetica", 8, "italic"), fill="#ECEFF4")
 
-        # Draw central hub and connections
-        hub_x, hub_y = 400, 200
-        self.canvas.create_rectangle(hub_x - 15, hub_y - 15, hub_x + 15, hub_y + 15, fill="#4C566A", outline="#D8DEE9")
-        self.canvas.create_text(hub_x, hub_y + 25, text="ETHERNET", fill="#ECEFF4", font=("Helvetica", 9))
+        # Draw central "split" hub
+        hub_x, hub_y, hub_gap = 400, 200, 10
+        hub_tx_y, hub_rx_y = hub_y - hub_gap, hub_y + hub_gap
+        self.canvas.create_rectangle(hub_x - 10, hub_tx_y - 5, hub_x + 10, hub_tx_y + 5, fill="#4C566A", outline="#D8DEE9")
+        self.canvas.create_rectangle(hub_x - 10, hub_rx_y - 5, hub_x + 10, hub_rx_y + 5, fill="#4C566A", outline="#D8DEE9")
+        self.canvas.create_line(hub_x, hub_tx_y, hub_x, hub_rx_y, fill="#D8DEE9", width=4)
+        self.canvas.create_text(hub_x, hub_y + 35, text="ETHERNET", fill="#ECEFF4", font=("Helvetica", 9))
         
-        self.canvas.create_line(quadrants['tx_fwd']['x_end'], quadrants['tx_fwd']['y'], hub_x, hub_y, arrow=tk.LAST, fill="#BF616A")
-        self.canvas.create_line(hub_x, hub_y, quadrants['rx_fwd']['x_start'], quadrants['rx_fwd']['y'], arrow=tk.LAST, fill="#BF616A")
-        self.canvas.create_line(quadrants['tx_rev']['x_end'], quadrants['tx_rev']['y'], hub_x, hub_y, arrow=tk.LAST, fill="#A3BE8C")
-        self.canvas.create_line(hub_x, hub_y, quadrants['rx_rev']['x_start'], quadrants['rx_rev']['y'], arrow=tk.LAST, fill="#A3BE8C")
+        self.canvas.create_line(quadrants['tx_fwd']['x_end'], quadrants['tx_fwd']['y'], hub_x, hub_tx_y, arrow=tk.LAST, fill="#BF616A")
+        self.canvas.create_line(hub_x, hub_tx_y, quadrants['rx_fwd']['x_start'], quadrants['rx_fwd']['y'], arrow=tk.LAST, fill="#BF616A")
+        self.canvas.create_line(quadrants['tx_rev']['x_end'], quadrants['tx_rev']['y'], hub_x, hub_rx_y, arrow=tk.LAST, fill="#A3BE8C")
+        self.canvas.create_line(hub_x, hub_rx_y, quadrants['rx_rev']['x_start'], quadrants['rx_rev']['y'], arrow=tk.LAST, fill="#A3BE8C")
 
     def draw_network_layout(self, event=None):
         proto = self.proto.get()
@@ -684,6 +684,7 @@ class SimulationFramework:
             
             event = events[event_idx]
             
+            # This logic connects the abstract simulation nodes to the visual layout
             sim_node_names = [n.name for n in getattr(self, 'sim_nodes', [])]
             src_node, dst_node = None, None
             if event.get("src") in sim_node_names:
@@ -718,7 +719,7 @@ class SimulationFramework:
             if not self.is_animating or step_num > steps:
                 self.canvas.delete(pkt_obj)
                 if step_num > steps and event.get('success') and event.get('type') != 'JAM_SIGNAL' and dst_node:
-                     if is_metcalfe_channel: # Don't draw ovals for metcalfe channel
+                     if is_metcalfe_channel:
                          pass
                      else:
                          self.canvas.create_oval(dst_node['x']-4, dst_node['y']-4, dst_node['x']+4, dst_node['y']+4, fill=color, tags="packet_delivered", outline="")
@@ -731,21 +732,23 @@ class SimulationFramework:
                 hub_x, hub_y = 400, 200
                 is_ack = "ACK" in event.get('type', "")
 
-                # Get the chains based on direction
-                tx_path_nodes = sorted([n for n in self.nodes if n['quad'] == ('tx_rev' if is_ack else 'tx_fwd')], key=lambda n: n['x'], reverse=is_ack)
-                rx_path_nodes = sorted([n for n in self.nodes if n['quad'] == ('rx_rev' if is_ack else 'rx_fwd')], key=lambda n: n['x'], reverse=is_ack)
+                # Select the correct chains for the animation path
+                tx_quad = 'tx_rev' if is_ack else 'tx_fwd'
+                rx_quad = 'rx_rev' if is_ack else 'rx_fwd'
+                tx_path_nodes = sorted([n for n in self.nodes if n['quad'] == tx_quad], key=lambda n: n['x'], reverse=is_ack)
+                rx_path_nodes = sorted([n for n in self.nodes if n['quad'] == rx_quad], key=lambda n: n['x'], reverse=is_ack)
                 
                 path = tx_path_nodes + [None] + rx_path_nodes # Insert hub placeholder
                 path_len = len(path)
-                current_segment = int(prog * (path_len - 1))
+                current_segment_idx = int(prog * (path_len - 1))
                 
-                if current_segment + 1 >= path_len: self.canvas.delete(pkt_obj); return
+                if current_segment_idx + 1 >= path_len: self.canvas.delete(pkt_obj); return
                 
-                start_pos, end_pos = path[current_segment], path[current_segment+1]
-                segment_prog = (prog * (path_len - 1)) - current_segment
+                start_pos, end_pos = path[current_segment_idx], path[current_segment_idx+1]
+                segment_prog = (prog * (path_len - 1)) - current_segment_idx
 
-                if start_pos is None: start_pos = {'x': hub_x, 'y': hub_y}
-                if end_pos is None: end_pos = {'x': hub_x, 'y': hub_y}
+                if start_pos is None: start_pos = {'x': hub_x, 'y': hub_y - 10 if is_ack else hub_y + 10}
+                if end_pos is None: end_pos = {'x': hub_x, 'y': hub_y + 10 if is_ack else hub_y - 10 }
                 
                 x_curr = start_pos['x'] + (end_pos['x'] - start_pos['x']) * segment_prog
                 y_curr = start_pos['y'] + (end_pos['y'] - start_pos['y']) * segment_prog
@@ -783,6 +786,8 @@ class SimulationFramework:
 
 def main():
     root = tk.Tk()
+    # Store a reference to the simulation nodes on the root Tk object
+    # so the animation logic can find it later.
     root.sim_nodes = []
     SimulationFramework(root)
     root.mainloop()
