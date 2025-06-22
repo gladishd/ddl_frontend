@@ -123,13 +123,16 @@ class Packet:
 # -----------------------------------------------------------------------------
 
 class MockDaedaelusFabric:
-    def __init__(self, env):
+    def __init__(self, env, num_nodes=2):
         self.env = env
+        self.num_nodes = num_nodes
 
     def setup_processes(self):
-        # The exchange of tokens represents the establishment of mutual knowledge, 
-        # the "I Know That You Know That I Know" (IKTYKTIK) property.
+        # The exchange of liveness tokens represents the establishment of mutual 
+        # knowledge, the "I Know That You Know That I Know" (IKTYKTIK) property,
+        # across each individual N2N link in the fabric.
         def link_formation(node1_name, node2_name):
+            # Each link formation is an independent, atomic transaction.
             p1 = Packet(PacketType.LIVENESS_TOKEN, src=node1_name, dst=node2_name)
             p1.start_time = self.env.now
             logger.info(json.dumps({"event": "start_tx", **p1.to_dict()}))
@@ -144,8 +147,15 @@ class MockDaedaelusFabric:
             p3.start_time = self.env.now
             logger.info(json.dumps({"event": "start_tx", **p3.to_dict()}))
             yield self.env.timeout(random.uniform(0.8, 1.2))
+
+        # Create a ring topology to model a scalable fabric of N2N links.
+        node_names = [chr(ord('A') + i) for i in range(self.num_nodes)]
+        if not node_names: return
         
-        self.env.process(link_formation('A', 'B'))
+        for i in range(self.num_nodes):
+            node1_name = node_names[i]
+            node2_name = node_names[(i + 1) % self.num_nodes] # Next node in the ring
+            self.env.process(link_formation(node1_name, node2_name))
 
 class MockAutomotiveTSN:
     def __init__(self, env):
@@ -377,7 +387,7 @@ def setup_and_run(env, protocol, **kwargs):
                 possible_peers = [p for p in all_nodes_list if p != node]
                 if possible_peers: node.peer = random.choice(possible_peers)
     
-    elif protocol == "Daedaelus Fabric": MockDaedaelusFabric(env).setup_processes()
+    elif protocol == "Daedaelus Fabric": MockDaedaelusFabric(env, num_nodes=kwargs['num_nodes']).setup_processes()
     elif protocol == "Automotive TSN": MockAutomotiveTSN(env).setup_processes()
     elif protocol == "Active Building": MockActiveBuilding(env).setup_processes()
     
@@ -432,7 +442,7 @@ class SimulationFramework:
         self.nodes = []
         node_names = []
 
-        if proto == "Daedaelus Fabric": node_names = ['A', 'B']
+        if proto == "Daedaelus Fabric": node_names = [chr(ord('A') + i) for i in range(self.get_sim_params()['num_nodes'])]
         elif proto == "Automotive TSN": node_names = ["CameraF", "ME", "US", "Lidar", "RC", "HU", "CU", "RS1", "S1"]
         elif proto == "Active Building": node_names = ["TempSensor", "Thermostat", "HVAC_Unit"]
         else: node_names = [chr(ord('A') + i) for i in range(self.get_sim_params()['num_nodes'])]
@@ -449,8 +459,11 @@ class SimulationFramework:
                 x, y = cx + rad * cos(angle), cy + rad * sin(angle)
             self.nodes.append({'id': i, 'name': name, 'x': x, 'y': y})
 
-        if "Daedaelus Fabric" in proto:
-            self.canvas.create_line(self.nodes[0]['x'], self.nodes[0]['y'], self.nodes[1]['x'], self.nodes[1]['y'], fill="#B48EAD", width=3)
+        if "Daedaelus Fabric" in proto and len(self.nodes) > 1:
+            for i in range(len(self.nodes)):
+                node1 = self.nodes[i]
+                node2 = self.nodes[(i + 1) % len(self.nodes)]
+                self.canvas.create_line(node1['x'], node1['y'], node2['x'], node2['y'], fill="#B48EAD", width=3, tags="fabric_link")
         elif is_bus: self.canvas.create_line(100, cy, 700, cy, fill="#88C0D0", width=4, tags="ether_bus")
         
         for node in self.nodes:
@@ -477,8 +490,6 @@ class SimulationFramework:
         else: self.status.config(text=f"Simulation for '{self.proto.get()}' complete. No animation events.")
 
     def stop_animation(self):
-        # This method provides deterministic control over the animation loop, a key
-        # feature for a responsive and reliable user interface.
         if not self.is_animating: return
         self.is_animating = False
         self.start_btn.config(state="normal")
