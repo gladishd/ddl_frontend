@@ -104,14 +104,14 @@ class Packet:
         # A high-contrast color palette to ensure visual clarity of different packet types.
         # Clear visualization is essential for making the system's behavior intelligible.
         self.color = {
-            "SYN": "#00BFFF",            # DeepSkyBlue
-            "SYN_ACK": "#00FFFF",         # Cyan
-            "ACK": "#32CD32",            # LimeGreen
-            "DATA": "#FFD700",           # Gold
-            "JAM": "#FF0000",            # Red
+            "SYN": "#00BFFF",           # DeepSkyBlue
+            "SYN_ACK": "#00FFFF",        # Cyan
+            "ACK": "#32CD32",           # LimeGreen
+            "DATA": "#FFD700",          # Gold
+            "JAM": "#FF0000",           # Red
             "LIVENESS_TOKEN": "#FF00FF", # Magenta
-            "TSN_MSG": "#FFA500",         # Orange
-            "IOT_DATA": "#98FB98"         # PaleGreen
+            "TSN_MSG": "#FFA500",        # Orange
+            "IOT_DATA": "#98FB98"        # PaleGreen
         }.get(ptype.value, "#FFFFFF")   # White for default
 
     def bits(self): return self.size * 8
@@ -126,8 +126,172 @@ class Packet:
     def __repr__(self): return f"<{self.ptype.value} id={self.id[:4]} src={self.src}->dst={self.dst}>"
 
 # -----------------------------------------------------------------------------
-# Mock Implementations for External Modules
+# Protocol-Specific Classes
 # -----------------------------------------------------------------------------
+
+class CongestedLink:
+    """
+    Models a congested, buffered link (like a switch) that can drop packets.
+    It uses a SimPy Store to represent a finite buffer. This is key for the
+    Metcalfe Full-Duplex simulation to model a central bottleneck.
+    """
+    def __init__(self, env, name, buffer_capacity=20, prop_delay=1e-6, bandwidth_bps=10e9):
+        self.env = env
+        self.name = name
+        self.buffer = simpy.Store(env, capacity=buffer_capacity)
+        self.prop_delay = prop_delay
+        self.bandwidth = bandwidth_bps
+        self.packets_dropped = 0
+        self.receivers = {}
+
+    def put(self, packet):
+        if len(self.buffer.items) < self.buffer.capacity:
+            return self.buffer.put(packet)
+        else:
+            self.packets_dropped += 1
+            packet.success = False
+            log_entry = {
+                "time": self.env.now, "event": "pkt_drop", "chan": self.name,
+                "reason": "buffer_full", **packet.to_dict()
+            }
+            logger.info(json.dumps(log_entry))
+            return self.env.timeout(0)
+
+    def start_delivering(self):
+        while True:
+            packet = yield self.buffer.get()
+            receiver_node = self.receivers.get(packet.dst)
+            if receiver_node:
+                self.env.process(self.deliver(packet, receiver_node))
+            else:
+                log_entry = {"time": self.env.now, "event": "pkt_drop", "chan": self.name, "reason": "no_receiver", **packet.to_dict()}
+                logger.info(json.dumps(log_entry))
+
+    def deliver(self, packet, receiver_node):
+        transmission_time = packet.bits() / self.bandwidth
+        yield self.env.timeout(transmission_time)
+        yield self.env.timeout(self.prop_delay)
+        receiver_node.receive_packet(packet)
+
+class TCPNode:
+    """
+    Represents a node using a simplified TCP Reno-like congestion control.
+    - Implements Additive Increase, Multiplicative Decrease (AIMD).
+    - Reacts to timeouts by reducing cwnd and retransmitting.
+    """
+    def __init__(self, env, name, forward_link, reverse_link, peer=None, is_sender=False, data_size=1024*100):
+        self.env = env
+        self.name = name
+        self.peer_name = getattr(peer, 'name', peer)
+        self.is_sender = is_sender
+        self.data_to_send = data_size
+
+        self.forward_link = forward_link
+        self.reverse_link = reverse_link
+
+        self.state = "CLOSED"
+        self.next_seq = 0
+        self.send_base = 0 
+        self.rcv_next = 0
+        
+        self.mss = 1024
+        self.cwnd = 1.0 
+        self.ssthresh = 64
+        self.rto = 0.1
+        self.dupacks = 0
+        
+        self.inbox = simpy.Store(env)
+        self.action = env.process(self.run())
+
+    def receive_packet(self, packet):
+        self.inbox.put(packet)
+
+    def handle_congestion_event(self, reason):
+        """Multiplicative Decrease: The core of TCP's reaction to congestion."""
+        self.ssthresh = max(self.cwnd / 2, 2)
+        self.cwnd = 1.0
+        self.next_seq = self.send_base
+        self.dupacks = 0
+        log_entry = {
+            "time": self.env.now, "event": "congestion_event", "node": self.name,
+            "reason": reason, "new_cwnd": round(self.cwnd, 2), "new_ssthresh": round(self.ssthresh, 2)
+        }
+        logger.info(json.dumps(log_entry))
+
+    def run(self):
+        """Main lifecycle process for the node."""
+        self.state = "ESTABLISHED"
+        logger.info(json.dumps({"time": self.env.now, "event": "state_change", "node": self.name, "new_state": self.state}))
+
+        if self.is_sender:
+            data_proc = self.env.process(self.transmit_data())
+            ack_proc = self.env.process(self.receive_acks())
+            timer_proc = self.env.process(self.retransmit_timer())
+            yield data_proc
+            if not ack_proc.triggered: ack_proc.interrupt()
+            if not timer_proc.triggered: timer_proc.interrupt()
+        else:
+            yield self.env.process(self.receive_data())
+
+    def retransmit_timer(self):
+        try:
+            while self.send_base < self.data_to_send:
+                yield self.env.timeout(self.rto)
+                if self.next_seq > self.send_base:
+                    self.handle_congestion_event("timeout")
+        except simpy.Interrupt:
+            pass 
+
+    def transmit_data(self):
+        while self.send_base < self.data_to_send:
+            while self.next_seq < self.send_base + (self.cwnd * self.mss):
+                if self.next_seq >= self.data_to_send: break
+                
+                packet = Packet(PacketType.DATA, src=self.name, dst=self.peer_name, size=self.mss, seq=self.next_seq)
+                packet.start_time = self.env.now
+                logger.info(json.dumps({"event": "start_tx", "node": self.name, **packet.to_dict(), "cwnd": round(self.cwnd, 2)}))
+                yield self.forward_link.put(packet)
+                self.next_seq += self.mss
+            
+            yield self.env.timeout(0.00001)
+
+    def receive_acks(self):
+        last_ack_seq = -1
+        try:
+            while True:
+                ack_pkt = yield self.inbox.get()
+                if ack_pkt.ptype == PacketType.ACK and ack_pkt.dst == self.name:
+                    if ack_pkt.ack > self.send_base: 
+                        bytes_acked = ack_pkt.ack - self.send_base
+                        pkts_acked = bytes_acked / self.mss
+                        self.send_base = ack_pkt.ack
+                        self.dupacks = 0
+                        
+                        if self.cwnd < self.ssthresh:
+                            self.cwnd += pkts_acked
+                        else:
+                            self.cwnd += pkts_acked / self.cwnd
+                    elif ack_pkt.ack == last_ack_seq: 
+                        self.dupacks += 1
+                    
+                    last_ack_seq = ack_pkt.ack
+        except simpy.Interrupt:
+            pass
+
+    def receive_data(self):
+        expected_seq = 0
+        try:
+            while True:
+                data_pkt = yield self.inbox.get()
+                if data_pkt.ptype == PacketType.DATA and data_pkt.dst == self.name:
+                    if data_pkt.seq >= expected_seq:
+                        if data_pkt.seq == expected_seq:
+                            expected_seq += data_pkt.size
+                        ack = Packet(PacketType.ACK, src=self.name, dst=data_pkt.src, ack=expected_seq)
+                        ack.start_time = self.env.now
+                        yield self.reverse_link.put(ack)
+        except simpy.Interrupt:
+            pass
 
 class MockDaedaelusFabric:
     def __init__(self, env, num_nodes=2):
@@ -155,13 +319,12 @@ class MockDaedaelusFabric:
             logger.info(json.dumps({"event": "start_tx", **p3.to_dict()}))
             yield self.env.timeout(random.uniform(0.8, 1.2))
 
-        # Create a ring topology to model a scalable fabric of N2N links.
         node_names = [chr(ord('A') + i) for i in range(self.num_nodes)]
         if not node_names: return
         
         for i in range(self.num_nodes):
             node1_name = node_names[i]
-            node2_name = node_names[(i + 1) % self.num_nodes] # Next node in the ring
+            node2_name = node_names[(i + 1) % self.num_nodes]
             self.env.process(link_formation(node1_name, node2_name))
 
 class MockAutomotiveTSN:
@@ -228,7 +391,6 @@ class Ether:
         transmission_time = packet.bits() / self.bandwidth
         packet.start_time = self.env.now
         
-        # This models deference: a station delays sending until the Ether is quiet.
         while self.is_busy():
             yield self.env.timeout(self.prop_delay / 10)
         
@@ -236,22 +398,21 @@ class Ether:
         log_entry = {"time": self.env.now, "event": "start_tx", "chan": self.name, **packet.to_dict()}
         logger.info(json.dumps(log_entry)); self.log.append(log_entry)
 
-        # A packet must be on the Ether for one propagation delay to be detected by others.
         yield self.env.timeout(self.prop_delay)
 
-        # This models collision detection. If multiple packets are on the Ether
-        # simultaneously, they interfere and become unrecognizable.
         if self.contention and len(self.transmitting_packets) > 1:
             packet.success = False
-            # To ensure all participants detect interference, a JAM signal is broadcast.
-            # This is Collision Consensus Enforcement.
             jam_packet = Packet(PacketType.JAM, src=source_node)
             logger.info(json.dumps({"time": self.env.now, "event": "jam_signal", "chan": self.name, **jam_packet.to_dict()}))
             yield self.env.timeout(self.prop_delay)
         else:
-            # If no collision is detected after one propagation delay, the Ether is acquired.
-            # The transmission will complete without interference.
-            yield self.env.timeout(transmission_time - self.prop_delay)
+            # In the Daedalus model, with short, neighbor-to-neighbor links, it's common
+            # for a packet to be "longer than the wire." This means the transmission
+            # time can be less than the propagation delay. This logic correctly handles
+            # that case by ensuring the timeout is never negative. This is the foundation
+            # of our argument for why "reliability is almost free," as an acknowledgment can
+            # be processed and returned before the sender has even finished transmitting.
+            yield self.env.timeout(max(0, transmission_time - self.prop_delay))
             packet.success = True
             for node in all_nodes:
                 if node != source_node: node.receive_packet(packet)
@@ -262,11 +423,9 @@ class Ether:
         end_log = {"time": self.env.now, "event": "end_tx", "chan": self.name, **packet.to_dict(), "latency": packet.end_time - packet.start_time}
         logger.info(json.dumps(end_log)); self.log.append(end_log)
         
-        # Signal completion to the sending node's process.
         if hasattr(source_node, 'active_tx_proc') and source_node.active_tx_proc and not source_node.active_tx_proc.triggered:
             source_node.active_tx_proc.succeed(packet)
 
-# --- MERGED: Simulation logic classes from Version 2 ---
 class Node:
     """Represents a station or a "Cell Agent," containing logic for TCP handshake and CSMA/CD."""
     def __init__(self, env, name, ether, all_nodes, peer=None, is_sender=False, data_size=5120):
@@ -331,7 +490,6 @@ class Node:
                     ack_data = yield self.inbox.get()
                     if ack_data.dst == self.name and ack_data.ptype == PacketType.ACK: self.send_una = ack_data.ack
         else:
-            # Non-senders listen for data and send ACKs
             while True:
                 pkt = yield self.inbox.get()
                 if pkt.dst == self.name and pkt.ptype == PacketType.DATA:
@@ -339,7 +497,6 @@ class Node:
                     ack_pkt = Packet(PacketType.ACK, src=self, dst=pkt.src, ack=self.rcv_nxt)
                     yield self.env.process(self.send_with_backoff(ack_pkt))
 
-# --- MERGED: Simulation logic class from Version 1 ---
 class MetcalfeNode:
     """A station operating on the classic Metcalfe half-duplex channel, implementing CSMA/CD."""
     def __init__(self, env, name, ether, all_nodes, peer=None, is_sender=False):
@@ -347,7 +504,7 @@ class MetcalfeNode:
         self.is_sender = is_sender
         self.peer = peer
         self.inbox = simpy.Store(env)
-        self.active_tx_proc = None # Add this to be compatible with Ether class
+        self.active_tx_proc = None
         self.action = env.process(self.run())
 
     def receive_packet(self, packet):
@@ -355,13 +512,11 @@ class MetcalfeNode:
 
     def run(self):
         if self.is_sender:
-            # Senders periodically generate data packets
             while True:
                 yield self.env.timeout(random.expovariate(0.5))
                 packet_to_send = Packet(PacketType.DATA, src=self, dst=self.peer)
                 self.env.process(self.send_packet(packet_to_send))
         else:
-            # Receivers wait for data and send ACKs
             while True:
                 received_packet = yield self.inbox.get()
                 if received_packet.ptype == PacketType.DATA and received_packet.dst == self.name:
@@ -369,29 +524,21 @@ class MetcalfeNode:
                     self.env.process(self.send_packet(ack_packet))
 
     def send_packet(self, packet):
-        """Implements the full CSMA/CD with Binary Exponential Backoff logic."""
         packet.collision_count = 0
         while packet.collision_count < 16:
-            # 1. Carrier Sense (Defer): Wait for the Ether to be free.
-            # Transmissions initiated by a station defer to any which may already be in progress.
             while self.ether.is_busy():
                 yield self.env.timeout(self.ether.prop_delay / 10)
             
-            # 2. Transmit: Attempt to send the packet.
             self.active_tx_proc = self.env.event()
-            # The Ether's transmit process will now handle detection and collision logic
             yield self.env.process(self.ether.transmit(packet, self, self.all_nodes))
             result_packet = yield self.active_tx_proc
             
             if result_packet.success:
-                return # Success
+                return
             
-            # 3. Collision Detected: Backoff and retry.
             packet.collision_count += 1
-            # A station recovers from a detected collision by abandoning the attempt
-            # and retransmitting the packet after some dynamically chosen random time period.
             k = min(packet.collision_count, 10)
-            slot_time = 2 * self.ether.prop_delay # Slot time is the round trip time
+            slot_time = 2 * self.ether.prop_delay
             backoff_duration = random.randint(0, (2**k) - 1) * slot_time
             
             log_entry = {
@@ -450,12 +597,42 @@ class AlohaNode:
 # Simulation Orchestrator & UI Framework
 # -----------------------------------------------------------------------------
 
-# --- MERGED: setup_and_run with logic from both versions ---
 def setup_and_run(env, protocol, **kwargs):
     """A unified function to set up and run different simulation scenarios."""
     
     nodes = []
-    if "ALOHA" in protocol:
+    if protocol == "Metcalfe Full-Duplex":
+        bw = kwargs.get('bandwidth_bps', 10e9) 
+        prop_delay = 5e-6 
+        buffer_size = 20 
+        num_pairs = kwargs['num_nodes'] // 2
+
+        forward_link = CongestedLink(env, "ForwardChannel", buffer_capacity=buffer_size, prop_delay=prop_delay, bandwidth_bps=bw)
+        reverse_link = CongestedLink(env, "ReverseChannel", buffer_capacity=buffer_size, prop_delay=prop_delay, bandwidth_bps=bw)
+        
+        nodes_map = {}
+        for i in range(num_pairs):
+            sender = TCPNode(env, f'S{i}', forward_link, reverse_link)
+            receiver = TCPNode(env, f'R{i}', reverse_link, forward_link)
+            nodes_map[sender.name] = sender
+            nodes_map[receiver.name] = receiver
+
+        for i in range(num_pairs):
+            sender_name, receiver_name = f'S{i}', f'R{i}'
+            sender, receiver = nodes_map[sender_name], nodes_map[receiver_name]
+            sender.is_sender = True
+            sender.peer_name = receiver_name
+            sender.data_to_send = kwargs.get('data_size', 512*1024)
+            receiver.peer_name = sender_name
+            forward_link.receivers[receiver_name] = receiver
+            reverse_link.receivers[sender_name] = sender
+            
+        env.process(forward_link.start_delivering())
+        env.process(reverse_link.start_delivering())
+        
+        nodes = list(nodes_map.values())
+
+    elif "ALOHA" in protocol:
         ether = Ether(env, name="aloha_ether", bandwidth_bps=kwargs['bandwidth_bps'], contention=True)
         nodes = [AlohaNode(env, name=chr(ord('A') + i), ether=ether, all_nodes=[], arrival_rate=kwargs['arrival_rate'], protocol_type=protocol) for i in range(kwargs['num_nodes'])]
         for node in nodes: node.all_nodes = nodes
@@ -470,7 +647,7 @@ def setup_and_run(env, protocol, **kwargs):
             receiver = MetcalfeNode(env, receiver_name, ether, [], peer=sender_name, is_sender=False)
             nodes.extend([sender, receiver])
         for node in nodes: node.all_nodes = nodes
-        
+    
     elif "Ethernet" in protocol or "Handshake" in protocol:
         bw, num_nodes = kwargs.get('bandwidth_bps', 1e6), kwargs.get('num_nodes', 2)
         prop_delay = 5e-7
@@ -483,7 +660,7 @@ def setup_and_run(env, protocol, **kwargs):
             nodes = [node_A, node_B]
             node_A.all_nodes = nodes
             node_B.all_nodes = nodes
-        else: # Half-Duplex cases
+        else:
             contention = "no contention" not in protocol
             ether = Ether(env, name="shared_ether", bandwidth_bps=bw, propagation_delay_s=prop_delay, contention=contention)
             nodes = [Node(env, chr(ord('A') + i), ether, [], is_sender=(i==0), data_size=kwargs.get('data_size', 5120 if "Ethernet" in protocol else 0)) for i in range(num_nodes)]
@@ -494,13 +671,12 @@ def setup_and_run(env, protocol, **kwargs):
     
     elif protocol == "Daedaelus Fabric":
         fabric = MockDaedaelusFabric(env, num_nodes=kwargs['num_nodes'])
-        fabric.setup_processes() # Mocks don't populate the 'nodes' list for animation
+        fabric.setup_processes()
     elif protocol == "Automotive TSN": 
         MockAutomotiveTSN(env).setup_processes()
     elif protocol == "Active Building": 
         MockActiveBuilding(env).setup_processes()
     
-    # Store simulation nodes on the environment object for the animator to access
     if hasattr(env, 'root_tk'):
         env.root_tk.sim_nodes = nodes
 
@@ -520,13 +696,13 @@ class SimulationFramework:
         lf = ttk.LabelFrame(mf, text="Controls", padding="10"); lf.grid(row=0, column=0, sticky="w")
         ttk.Label(lf, text="Protocol:").grid(row=0, column=0, sticky=tk.W, pady=2)
         
-        protocol_list = ["Metcalfe Half-Duplex","TCP Handshake (HD, no contention)","TCP Handshake (HD, contention)","TCP Handshake (FD)","CSMA/CD (ALOHA)","Pure ALOHA","Slotted ALOHA","Half-Duplex Ethernet","Full-Duplex Ethernet","Daedaelus Fabric","Automotive TSN","Active Building"]
+        protocol_list = ["Metcalfe Full-Duplex", "Metcalfe Half-Duplex","TCP Handshake (HD, no contention)","TCP Handshake (HD, contention)","TCP Handshake (FD)","CSMA/CD (ALOHA)","Pure ALOHA","Slotted ALOHA","Half-Duplex Ethernet","Full-Duplex Ethernet","Daedaelus Fabric","Automotive TSN","Active Building"]
         self.proto = ttk.Combobox(lf, width=35, values=protocol_list, state="readonly")
         
         self.proto.current(0); self.proto.grid(row=0, column=1, sticky=tk.W)
         self.proto.bind("<<ComboboxSelected>>", self.draw_network_layout)
         self.entries = {}
-        labels_and_defaults = {"Pkt Size":"1024","Bandwidth":"1e6","Arrival λ":"0.1","Sim Time":"20","Priorities":"1,1,1","Num Nodes":"24","Export Logs?":"True"}
+        labels_and_defaults = {"Pkt Size":"1024","Bandwidth":"10e9","Arrival λ":"0.1","Sim Time":"5","Priorities":"1,1,1","Num Nodes":"8","Export Logs?":"True"}
         for i, (text, default_val) in enumerate(labels_and_defaults.items(), start=1):
             key = text.lower().split()[0].replace('?', '')
             ttk.Label(lf, text=f"{text}:").grid(row=i, column=0, sticky=tk.W, pady=2)
@@ -556,15 +732,12 @@ class SimulationFramework:
         self.canvas.delete("all")
         self.nodes = []
         try:
-            sim_params = self.get_sim_params()
-            num_nodes_total = sim_params['num_nodes']
+            num_nodes_total = self.get_sim_params()['num_nodes']
         except (ValueError, KeyError):
-            num_nodes_total = 24 # Default if UI entry is invalid
+            num_nodes_total = 24
             
         nodes_per_quadrant = max(1, num_nodes_total // 4)
-
         y_pos = {'tx_fwd': 100, 'rx_fwd': 150, 'tx_rev': 250, 'rx_rev': 300}
-        
         quadrants = {
             'tx_fwd': {'y': y_pos['tx_fwd'], 'x_start': 50, 'x_end': 350, 'flow': 'right', 'labels': ("INFO SRC", "TRANSMITTER")},
             'rx_fwd': {'y': y_pos['rx_fwd'], 'x_start': 450, 'x_end': 750, 'flow': 'right', 'labels': ("RECEIVER", "DESTINATION")},
@@ -576,24 +749,21 @@ class SimulationFramework:
             for i in range(nodes_per_quadrant):
                 prog = i / (nodes_per_quadrant - 1) if nodes_per_quadrant > 1 else 0.5
                 x = props['x_start'] + (props['x_end'] - props['x_start']) * prog
-                
                 label = ""
                 if i == 0: label = props['labels'][0]
                 elif i == nodes_per_quadrant - 1: label = props['labels'][1]
-                
                 self.nodes.append({'name': f"{quad_name}_{i}", 'label': label, 'x': x, 'y': props['y'], 'quad': quad_name})
 
         for quad_name, props in quadrants.items():
             quad_nodes = sorted([n for n in self.nodes if n['quad'] == quad_name], key=lambda n: n['x'])
             if props['flow'] == 'left': quad_nodes.reverse()
-            
             for i in range(len(quad_nodes) - 1):
                 n1, n2 = quad_nodes[i], quad_nodes[i+1]
                 self.canvas.create_line(n1['x'], n1['y'], n2['x'], n2['y'], arrow=tk.LAST, fill="#D8DEE9", width=1.5)
 
         for node in self.nodes:
-              self.canvas.create_rectangle(node['x']-20, node['y']-10, node['x']+20, node['y']+10, fill="#434C5E", outline="#D8DEE9")
-              if node['label']: self.canvas.create_text(node['x'], node['y'] + 20, text=node['label'], font=("Helvetica", 8, "italic"), fill="#ECEFF4")
+                self.canvas.create_rectangle(node['x']-20, node['y']-10, node['x']+20, node['y']+10, fill="#434C5E", outline="#D8DEE9")
+                if node['label']: self.canvas.create_text(node['x'], node['y'] + 20, text=node['label'], font=("Helvetica", 8, "italic"), fill="#ECEFF4")
 
         hub_x, hub_y, hub_gap = 400, 200, 10
         hub_tx_y, hub_rx_y = hub_y - hub_gap, hub_y + hub_gap
@@ -601,18 +771,54 @@ class SimulationFramework:
         self.canvas.create_rectangle(hub_x - 10, hub_rx_y - 5, hub_x + 10, hub_rx_y + 5, fill="#4C566A", outline="#D8DEE9")
         self.canvas.create_line(hub_x, hub_tx_y, hub_x, hub_rx_y, fill="#D8DEE9", width=4)
         self.canvas.create_text(hub_x, hub_y + 35, text="ETHERNET", fill="#ECEFF4", font=("Helvetica", 9))
-        
         self.canvas.create_line(quadrants['tx_fwd']['x_end'], quadrants['tx_fwd']['y'], hub_x, hub_tx_y, arrow=tk.LAST, fill="#BF616A")
         self.canvas.create_line(hub_x, hub_tx_y, quadrants['rx_fwd']['x_start'], quadrants['rx_fwd']['y'], arrow=tk.LAST, fill="#BF616A")
         self.canvas.create_line(quadrants['tx_rev']['x_end'], quadrants['tx_rev']['y'], hub_x, hub_rx_y, arrow=tk.LAST, fill="#A3BE8C")
         self.canvas.create_line(hub_x, hub_rx_y, quadrants['rx_rev']['x_start'], quadrants['rx_rev']['y'], arrow=tk.LAST, fill="#A3BE8C")
+    
+    def draw_metcalfe_fd_layout(self):
+        """Draws the layout for the Metcalfe Full-Duplex simulation."""
+        self.canvas.delete("all")
+        self.nodes = []
+        try:
+            num_pairs = self.get_sim_params()['num_nodes'] // 2
+        except (ValueError, KeyError):
+            num_pairs = 4
+
+        y_step = 70
+        canvas_height = self.canvas.winfo_height() or 400
+        start_y = (canvas_height - (num_pairs - 1) * y_step) / 2
+        left_x, right_x, channel_x = 150, 650, 400
+
+        for i in range(num_pairs):
+            y_pos = start_y + i * y_step
+            s_name, r_name = f'S{i}', f'R{i}'
+            self.nodes.append({'name': s_name, 'x': left_x, 'y': y_pos})
+            self.nodes.append({'name': r_name, 'x': right_x, 'y': y_pos})
+            self.canvas.create_rectangle(left_x-20, y_pos-15, left_x+20, y_pos+15, fill="#5E81AC", outline="#ECEFF4")
+            self.canvas.create_text(left_x, y_pos, text=s_name, fill="#ECEFF4")
+            self.canvas.create_rectangle(right_x-20, y_pos-15, right_x+20, y_pos+15, fill="#A3BE8C", outline="#ECEFF4")
+            self.canvas.create_text(right_x, y_pos, text=r_name, fill="#2E3440")
+
+        channel_height = (num_pairs) * y_step
+        self.canvas.create_rectangle(channel_x-50, start_y-30, channel_x+50, start_y-30+channel_height, fill="#434C5E", outline="#D8DEE9")
+        self.canvas.create_text(channel_x, start_y+(channel_height/2)-30, text="Bandwidth-Multiplexed\nChannel", fill="#ECEFF4", justify=tk.CENTER)
+        
+        for node in self.nodes:
+            if node['name'].startswith('S'):
+                self.canvas.create_line(node['x']+20, node['y'], channel_x-50, node['y'], arrow=tk.LAST, fill="#D8DEE9")
+            else:
+                self.canvas.create_line(channel_x+50, node['y'], node['x']-20, node['y'], arrow=tk.LAST, fill="#D8DEE9")
 
     def draw_network_layout(self, event=None):
         proto = self.proto.get()
         if proto == "Metcalfe Half-Duplex":
             self.draw_metcalfe_channel_layout()
             return
-            
+        elif proto == "Metcalfe Full-Duplex":
+            self.draw_metcalfe_fd_layout()
+            return
+
         self.canvas.delete("all")
         self.nodes = []
         node_names = []
@@ -620,7 +826,7 @@ class SimulationFramework:
         try:
             num_nodes_param = self.get_sim_params()['num_nodes']
         except (ValueError, KeyError):
-            num_nodes_param = 2 # Default if UI entry is invalid
+            num_nodes_param = 2
 
         if proto == "Daedaelus Fabric": node_names = [chr(ord('A') + i) for i in range(num_nodes_param)]
         elif proto == "Automotive TSN": node_names = ["CameraF", "ME", "US", "Lidar", "RC", "HU", "CU", "RS1", "S1"]
@@ -664,7 +870,7 @@ class SimulationFramework:
         log_buffer.truncate(0); log_buffer.seek(0)
         
         env = simpy.Environment()
-        env.root_tk = self # Give environment access to the GUI root
+        env.root_tk = self 
         setup_and_run(env, self.proto.get(), **sim_params)
         
         logs = [json.loads(line) for line in log_buffer.getvalue().strip().splitlines() if "{" in line]
@@ -696,9 +902,7 @@ class SimulationFramework:
         time_scale = anim_total_duration_ms / duration
 
         def _step(event_idx):
-            if not self.is_animating: return
-
-            if event_idx >= len(events):
+            if not self.is_animating or event_idx >= len(events):
                 self.is_animating = False
                 self.start_btn.config(state="normal")
                 self.stop_btn.config(state="disabled")
@@ -717,12 +921,10 @@ class SimulationFramework:
                 delay_to_next_ms = max(10, int(delay_s * time_scale))
 
             self.animate_packet_movement(event, src_node, dst_node, delay_to_next_ms)
-            
             if Image: self.frames.append(self.capture_frame_as_image())
             self.root.after(delay_to_next_ms, lambda: _step(event_idx + 1))
         _step(0)
 
-    # --- MERGED: Animation logic with correct branching ---
     def animate_packet_movement(self, event, src_node, dst_node, duration_ms):
         proto = self.proto.get()
         color = event.get('color', '#4C566A')
@@ -733,13 +935,14 @@ class SimulationFramework:
         
         steps, step_delay = 20, max(1, duration_ms // 20)
         is_bus = "Ethernet" in proto or "ALOHA" in proto
-        is_metcalfe_channel = proto == "Metcalfe Half-Duplex"
+        is_metcalfe_hd = proto == "Metcalfe Half-Duplex"
+        is_metcalfe_fd = proto == "Metcalfe Full-Duplex"
 
         def _move(step_num):
             if not self.is_animating or step_num > steps:
                 self.canvas.delete(pkt_obj)
                 if step_num > steps and event.get('success') and event.get('type') != 'JAM_SIGNAL' and dst_node:
-                    if not is_metcalfe_channel:
+                    if not (is_metcalfe_hd or is_metcalfe_fd):
                         self.canvas.create_oval(dst_node['x']-4, dst_node['y']-4, dst_node['x']+4, dst_node['y']+4, fill=color, tags="packet_delivered", outline="")
                         self.root.after(200, lambda: self.canvas.delete("packet_delivered"))
                 return
@@ -747,10 +950,18 @@ class SimulationFramework:
             prog = step_num / steps
             x_curr, y_curr = (src_node['x'], src_node['y']) if src_node else (0,0)
             
-            # --- Correct animation branching ---
-            if is_metcalfe_channel:
-                # This logic is self-contained and path-based for the Metcalfe diagram.
-                # It doesn't use src_node/dst_node, relying on the event type to choose the path.
+            if is_metcalfe_fd and src_node and dst_node:
+                channel_x = 400
+                if prog <= 0.5:
+                    p = prog * 2
+                    x_curr = src_node['x'] + (channel_x - 50 - src_node['x']) * p
+                    y_curr = src_node['y']
+                else:
+                    p = (prog - 0.5) * 2
+                    x_curr = (channel_x + 50) + (dst_node['x'] - (channel_x + 50)) * p
+                    y_curr = dst_node['y']
+
+            elif is_metcalfe_hd:
                 hub_x, hub_y = 400, 200
                 is_ack = "ACK" in event.get('type', "")
 
@@ -764,17 +975,16 @@ class SimulationFramework:
                 x_mid, y_mid = hub_x, hub_y - (10 if not is_ack else -10)
                 x_end, y_end = rx_path_end['x'], rx_path_end['y']
 
-                if prog <= 0.5: # Animate from source to hub
+                if prog <= 0.5:
                     p = prog * 2
                     x_curr = x_start + (x_mid - x_start) * p
                     y_curr = y_start + (y_mid - y_start) * p
-                else: # Animate from hub to destination
+                else:
                     p = (prog - 0.5) * 2
                     x_curr = x_mid + (x_end - x_mid) * p
                     y_curr = y_mid + (y_end - y_mid) * p
             
             elif is_bus and src_node and dst_node:
-                # Logic for bus-based topologies (Ethernet, ALOHA)
                 y_bus = src_node['y']
                 x_start, y_start = src_node['x'], src_node['y']
                 x_end, y_end = dst_node['x'], dst_node['y']
@@ -790,12 +1000,11 @@ class SimulationFramework:
                     y_curr = y_bus + (y_end - y_bus) * ((prog - 0.8) / 0.2)
 
             elif src_node and dst_node:
-                # Logic for point-to-point or ring topologies
                 x_start, y_start = src_node['x'], src_node['y']
                 x_end, y_end = dst_node['x'], dst_node['y']
                 x_curr, y_curr = x_start + (x_end - x_start) * prog, y_start + (y_end - y_start) * prog
             
-            else: # Fallback if nodes aren't found
+            else: 
                 self.canvas.delete(pkt_obj)
                 return
             
