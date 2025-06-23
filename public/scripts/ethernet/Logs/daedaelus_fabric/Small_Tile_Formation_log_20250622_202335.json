@@ -1,0 +1,192 @@
+[
+  {
+    "time": 0,
+    "event": "simulation_start",
+    "protocol": "Daedaelus Fabric",
+    "params": {
+      "num_nodes": 4,
+      "duration": 0.1,
+      "bandwidth_bps": 100000000000.0,
+      "data_size": 64,
+      "arrival_rate": 0.1,
+      "priorities": [
+        1,
+        1,
+        1
+      ],
+      "do_export": true
+    }
+  },
+  {
+    "time": 0,
+    "event": "simulation_start",
+    "protocol": "Daedaelus Fabric",
+    "params": {
+      "num_nodes": 4,
+      "duration": 0.1,
+      "bandwidth_bps": 100000000000.0,
+      "data_size": 64,
+      "arrival_rate": 0.1,
+      "priorities": [
+        1,
+        1,
+        1
+      ],
+      "do_export": true
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "DaedaelusFabric",
+    "params": {
+      "num_nodes": 4
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "DaedaelusFabric",
+    "params": {
+      "num_nodes": 4
+    }
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Daedaelus Fabric",
+    "tx_type": "liveness_probe",
+    "time": 0,
+    "pkt_id": "72b190bf-74b9-4456-bc0c-9f06cd7c2be2",
+    "type": "LIVENESS_TOKEN",
+    "src": "A",
+    "dst": "B",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FF00FF"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Daedaelus Fabric",
+    "tx_type": "liveness_probe",
+    "time": 0,
+    "pkt_id": "72b190bf-74b9-4456-bc0c-9f06cd7c2be2",
+    "type": "LIVENESS_TOKEN",
+    "src": "A",
+    "dst": "B",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FF00FF"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Daedaelus Fabric",
+    "tx_type": "liveness_probe",
+    "time": 0,
+    "pkt_id": "95b2acee-b8c5-4149-b456-b7ae3232cf57",
+    "type": "LIVENESS_TOKEN",
+    "src": "B",
+    "dst": "C",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FF00FF"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Daedaelus Fabric",
+    "tx_type": "liveness_probe",
+    "time": 0,
+    "pkt_id": "95b2acee-b8c5-4149-b456-b7ae3232cf57",
+    "type": "LIVENESS_TOKEN",
+    "src": "B",
+    "dst": "C",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FF00FF"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Daedaelus Fabric",
+    "tx_type": "liveness_probe",
+    "time": 0,
+    "pkt_id": "6cd79b96-7861-4f76-a290-c6c257dcd9bd",
+    "type": "LIVENESS_TOKEN",
+    "src": "C",
+    "dst": "D",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FF00FF"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Daedaelus Fabric",
+    "tx_type": "liveness_probe",
+    "time": 0,
+    "pkt_id": "6cd79b96-7861-4f76-a290-c6c257dcd9bd",
+    "type": "LIVENESS_TOKEN",
+    "src": "C",
+    "dst": "D",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FF00FF"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Daedaelus Fabric",
+    "tx_type": "liveness_probe",
+    "time": 0,
+    "pkt_id": "30cfe752-b911-43cb-9a25-85da54a87801",
+    "type": "LIVENESS_TOKEN",
+    "src": "D",
+    "dst": "A",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FF00FF"
+  },
+  {
+    "event": "start_tx",
+    "protocol": "Daedaelus Fabric",
+    "tx_type": "liveness_probe",
+    "time": 0,
+    "pkt_id": "30cfe752-b911-43cb-9a25-85da54a87801",
+    "type": "LIVENESS_TOKEN",
+    "src": "D",
+    "dst": "A",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FF00FF"
+  },
+  {
+    "time": 0.1,
+    "event": "simulation_end",
+    "protocol": "Daedaelus Fabric"
+  },
+  {
+    "time": 0.1,
+    "event": "simulation_end",
+    "protocol": "Daedaelus Fabric"
+  }
+]

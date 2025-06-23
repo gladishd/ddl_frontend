@@ -1,0 +1,1088 @@
+[
+  {
+    "time": 0,
+    "event": "simulation_start",
+    "protocol": "TCP Handshake (HD, no contention)",
+    "params": {
+      "num_nodes": 24,
+      "duration": 2.0,
+      "bandwidth_bps": 10000000000.0,
+      "data_size": 1024,
+      "arrival_rate": 0.1,
+      "priorities": [
+        1,
+        1,
+        1
+      ],
+      "do_export": true
+    }
+  },
+  {
+    "time": 0,
+    "event": "simulation_start",
+    "protocol": "TCP Handshake (HD, no contention)",
+    "params": {
+      "num_nodes": 24,
+      "duration": 2.0,
+      "bandwidth_bps": 10000000000.0,
+      "data_size": 1024,
+      "arrival_rate": 0.1,
+      "priorities": [
+        1,
+        1,
+        1
+      ],
+      "do_export": true
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Ether",
+    "name": "shared_ether",
+    "params": {
+      "bandwidth_bps": 10000000000.0,
+      "propagation_delay_s": 5e-07,
+      "contention": false
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Ether",
+    "name": "shared_ether",
+    "params": {
+      "bandwidth_bps": 10000000000.0,
+      "propagation_delay_s": 5e-07,
+      "contention": false
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "A",
+    "params": {
+      "peer": null,
+      "is_sender": true,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "A",
+    "params": {
+      "peer": null,
+      "is_sender": true,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "B",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "B",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "C",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "C",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "D",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "D",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "E",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "E",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "F",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "F",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "G",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "G",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "H",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "H",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "I",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "I",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "J",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "J",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "K",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "K",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "L",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "L",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "M",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "M",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "N",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "N",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "O",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "O",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "P",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "P",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "Q",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "Q",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "R",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "R",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "S",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "S",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "T",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "T",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "U",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "U",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "V",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "V",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "W",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "W",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "X",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "Node",
+    "name": "X",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "data_size": 1024
+    }
+  },
+  {
+    "time": 0,
+    "event": "state_change",
+    "node": "A",
+    "old_state": "CLOSED",
+    "new_state": "SYN_SENT"
+  },
+  {
+    "time": 0,
+    "event": "state_change",
+    "node": "A",
+    "old_state": "CLOSED",
+    "new_state": "SYN_SENT"
+  },
+  {
+    "time": 0,
+    "event": "start_tx",
+    "chan": "shared_ether",
+    "pkt_id": "e1c0a969-4c46-40bb-89a4-69786e2f4cb8",
+    "type": "SYN",
+    "src": "A",
+    "dst": "X",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#00BFFF"
+  },
+  {
+    "time": 0,
+    "event": "start_tx",
+    "chan": "shared_ether",
+    "pkt_id": "e1c0a969-4c46-40bb-89a4-69786e2f4cb8",
+    "type": "SYN",
+    "src": "A",
+    "dst": "X",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#00BFFF"
+  },
+  {
+    "time": 0,
+    "event": "end_tx",
+    "chan": "shared_ether",
+    "pkt_id": "e1c0a969-4c46-40bb-89a4-69786e2f4cb8",
+    "type": "SYN",
+    "src": "A",
+    "dst": "X",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#00BFFF",
+    "latency": 5e-07
+  },
+  {
+    "time": 0,
+    "event": "end_tx",
+    "chan": "shared_ether",
+    "pkt_id": "e1c0a969-4c46-40bb-89a4-69786e2f4cb8",
+    "type": "SYN",
+    "src": "A",
+    "dst": "X",
+    "seq": 0,
+    "ack": 0,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#00BFFF",
+    "latency": 5e-07
+  },
+  {
+    "time": 5e-07,
+    "event": "state_change",
+    "node": "X",
+    "old_state": "CLOSED",
+    "new_state": "SYN_RCVD"
+  },
+  {
+    "time": 5e-07,
+    "event": "state_change",
+    "node": "X",
+    "old_state": "CLOSED",
+    "new_state": "SYN_RCVD"
+  },
+  {
+    "time": 5e-07,
+    "event": "start_tx",
+    "chan": "shared_ether",
+    "pkt_id": "8411530a-94a3-480e-a118-9a67a8cb0c15",
+    "type": "SYN-ACK",
+    "src": "X",
+    "dst": "A",
+    "seq": 0,
+    "ack": 1,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFFFFF"
+  },
+  {
+    "time": 5e-07,
+    "event": "start_tx",
+    "chan": "shared_ether",
+    "pkt_id": "8411530a-94a3-480e-a118-9a67a8cb0c15",
+    "type": "SYN-ACK",
+    "src": "X",
+    "dst": "A",
+    "seq": 0,
+    "ack": 1,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFFFFF"
+  },
+  {
+    "time": 5e-07,
+    "event": "end_tx",
+    "chan": "shared_ether",
+    "pkt_id": "8411530a-94a3-480e-a118-9a67a8cb0c15",
+    "type": "SYN-ACK",
+    "src": "X",
+    "dst": "A",
+    "seq": 0,
+    "ack": 1,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFFFFF",
+    "latency": 5e-07
+  },
+  {
+    "time": 5e-07,
+    "event": "end_tx",
+    "chan": "shared_ether",
+    "pkt_id": "8411530a-94a3-480e-a118-9a67a8cb0c15",
+    "type": "SYN-ACK",
+    "src": "X",
+    "dst": "A",
+    "seq": 0,
+    "ack": 1,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFFFFF",
+    "latency": 5e-07
+  },
+  {
+    "time": 1e-06,
+    "event": "state_change",
+    "node": "A",
+    "old_state": "SYN_SENT",
+    "new_state": "ESTABLISHED"
+  },
+  {
+    "time": 1e-06,
+    "event": "state_change",
+    "node": "A",
+    "old_state": "SYN_SENT",
+    "new_state": "ESTABLISHED"
+  },
+  {
+    "time": 1e-06,
+    "event": "start_tx",
+    "chan": "shared_ether",
+    "pkt_id": "b0bfe228-dd55-4e75-bbcc-68865a547afb",
+    "type": "ACK",
+    "src": "A",
+    "dst": "X",
+    "seq": 1,
+    "ack": 1,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#32CD32"
+  },
+  {
+    "time": 1e-06,
+    "event": "start_tx",
+    "chan": "shared_ether",
+    "pkt_id": "b0bfe228-dd55-4e75-bbcc-68865a547afb",
+    "type": "ACK",
+    "src": "A",
+    "dst": "X",
+    "seq": 1,
+    "ack": 1,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#32CD32"
+  },
+  {
+    "time": 1e-06,
+    "event": "end_tx",
+    "chan": "shared_ether",
+    "pkt_id": "b0bfe228-dd55-4e75-bbcc-68865a547afb",
+    "type": "ACK",
+    "src": "A",
+    "dst": "X",
+    "seq": 1,
+    "ack": 1,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#32CD32",
+    "latency": 5.000000000000001e-07
+  },
+  {
+    "time": 1e-06,
+    "event": "end_tx",
+    "chan": "shared_ether",
+    "pkt_id": "b0bfe228-dd55-4e75-bbcc-68865a547afb",
+    "type": "ACK",
+    "src": "A",
+    "dst": "X",
+    "seq": 1,
+    "ack": 1,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#32CD32",
+    "latency": 5.000000000000001e-07
+  },
+  {
+    "time": 1.5e-06,
+    "event": "state_change",
+    "node": "X",
+    "old_state": "SYN_RCVD",
+    "new_state": "ESTABLISHED"
+  },
+  {
+    "time": 1.5e-06,
+    "event": "state_change",
+    "node": "X",
+    "old_state": "SYN_RCVD",
+    "new_state": "ESTABLISHED"
+  },
+  {
+    "time": 1.5e-06,
+    "event": "start_tx",
+    "chan": "shared_ether",
+    "pkt_id": "03987c36-dbb3-405b-8391-6306b99cef51",
+    "type": "DATA",
+    "src": "A",
+    "dst": "X",
+    "seq": 1,
+    "ack": 0,
+    "size": 512,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 1.5e-06,
+    "event": "start_tx",
+    "chan": "shared_ether",
+    "pkt_id": "03987c36-dbb3-405b-8391-6306b99cef51",
+    "type": "DATA",
+    "src": "A",
+    "dst": "X",
+    "seq": 1,
+    "ack": 0,
+    "size": 512,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 1.5e-06,
+    "event": "end_tx",
+    "chan": "shared_ether",
+    "pkt_id": "03987c36-dbb3-405b-8391-6306b99cef51",
+    "type": "DATA",
+    "src": "A",
+    "dst": "X",
+    "seq": 1,
+    "ack": 0,
+    "size": 512,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 4.999999999999999e-07
+  },
+  {
+    "time": 1.5e-06,
+    "event": "end_tx",
+    "chan": "shared_ether",
+    "pkt_id": "03987c36-dbb3-405b-8391-6306b99cef51",
+    "type": "DATA",
+    "src": "A",
+    "dst": "X",
+    "seq": 1,
+    "ack": 0,
+    "size": 512,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 4.999999999999999e-07
+  },
+  {
+    "time": 2e-06,
+    "event": "start_tx",
+    "chan": "shared_ether",
+    "pkt_id": "b9b50af6-0bec-4b3f-8880-b559dbcd6f11",
+    "type": "ACK",
+    "src": "X",
+    "dst": "A",
+    "seq": 0,
+    "ack": 513,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#32CD32"
+  },
+  {
+    "time": 2e-06,
+    "event": "start_tx",
+    "chan": "shared_ether",
+    "pkt_id": "b9b50af6-0bec-4b3f-8880-b559dbcd6f11",
+    "type": "ACK",
+    "src": "X",
+    "dst": "A",
+    "seq": 0,
+    "ack": 513,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#32CD32"
+  },
+  {
+    "time": 2e-06,
+    "event": "end_tx",
+    "chan": "shared_ether",
+    "pkt_id": "b9b50af6-0bec-4b3f-8880-b559dbcd6f11",
+    "type": "ACK",
+    "src": "X",
+    "dst": "A",
+    "seq": 0,
+    "ack": 513,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#32CD32",
+    "latency": 4.999999999999999e-07
+  },
+  {
+    "time": 2e-06,
+    "event": "end_tx",
+    "chan": "shared_ether",
+    "pkt_id": "b9b50af6-0bec-4b3f-8880-b559dbcd6f11",
+    "type": "ACK",
+    "src": "X",
+    "dst": "A",
+    "seq": 0,
+    "ack": 513,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#32CD32",
+    "latency": 4.999999999999999e-07
+  },
+  {
+    "time": 2.4999999999999998e-06,
+    "event": "start_tx",
+    "chan": "shared_ether",
+    "pkt_id": "c5fb33a5-78bf-4ec3-b85a-6e1d2b355a6a",
+    "type": "DATA",
+    "src": "A",
+    "dst": "X",
+    "seq": 513,
+    "ack": 0,
+    "size": 512,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 2.4999999999999998e-06,
+    "event": "start_tx",
+    "chan": "shared_ether",
+    "pkt_id": "c5fb33a5-78bf-4ec3-b85a-6e1d2b355a6a",
+    "type": "DATA",
+    "src": "A",
+    "dst": "X",
+    "seq": 513,
+    "ack": 0,
+    "size": 512,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 2.4999999999999998e-06,
+    "event": "end_tx",
+    "chan": "shared_ether",
+    "pkt_id": "c5fb33a5-78bf-4ec3-b85a-6e1d2b355a6a",
+    "type": "DATA",
+    "src": "A",
+    "dst": "X",
+    "seq": 513,
+    "ack": 0,
+    "size": 512,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 4.999999999999999e-07
+  },
+  {
+    "time": 2.4999999999999998e-06,
+    "event": "end_tx",
+    "chan": "shared_ether",
+    "pkt_id": "c5fb33a5-78bf-4ec3-b85a-6e1d2b355a6a",
+    "type": "DATA",
+    "src": "A",
+    "dst": "X",
+    "seq": 513,
+    "ack": 0,
+    "size": 512,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700",
+    "latency": 4.999999999999999e-07
+  },
+  {
+    "time": 2.9999999999999997e-06,
+    "event": "start_tx",
+    "chan": "shared_ether",
+    "pkt_id": "6d2a565a-8079-45d3-a548-d4b23986ec6a",
+    "type": "ACK",
+    "src": "X",
+    "dst": "A",
+    "seq": 0,
+    "ack": 1025,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#32CD32"
+  },
+  {
+    "time": 2.9999999999999997e-06,
+    "event": "start_tx",
+    "chan": "shared_ether",
+    "pkt_id": "6d2a565a-8079-45d3-a548-d4b23986ec6a",
+    "type": "ACK",
+    "src": "X",
+    "dst": "A",
+    "seq": 0,
+    "ack": 1025,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#32CD32"
+  },
+  {
+    "time": 2.9999999999999997e-06,
+    "event": "end_tx",
+    "chan": "shared_ether",
+    "pkt_id": "6d2a565a-8079-45d3-a548-d4b23986ec6a",
+    "type": "ACK",
+    "src": "X",
+    "dst": "A",
+    "seq": 0,
+    "ack": 1025,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#32CD32",
+    "latency": 4.999999999999999e-07
+  },
+  {
+    "time": 2.9999999999999997e-06,
+    "event": "end_tx",
+    "chan": "shared_ether",
+    "pkt_id": "6d2a565a-8079-45d3-a548-d4b23986ec6a",
+    "type": "ACK",
+    "src": "X",
+    "dst": "A",
+    "seq": 0,
+    "ack": 1025,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#32CD32",
+    "latency": 4.999999999999999e-07
+  },
+  {
+    "time": 2.0,
+    "event": "simulation_end",
+    "protocol": "TCP Handshake (HD, no contention)"
+  },
+  {
+    "time": 2.0,
+    "event": "simulation_end",
+    "protocol": "TCP Handshake (HD, no contention)"
+  }
+]
