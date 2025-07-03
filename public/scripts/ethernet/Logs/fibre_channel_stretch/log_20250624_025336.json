@@ -1,0 +1,6040 @@
+[
+  {
+    "time": 0,
+    "event": "simulation_start",
+    "protocol": "Fibre Channel (STRETCH)",
+    "params": {
+      "num_nodes": 8,
+      "duration": 0.01,
+      "bandwidth_bps": 10000000000.0,
+      "data_size": 1024,
+      "arrival_rate": 0.1
+    }
+  },
+  {
+    "time": 0,
+    "event": "simulation_start",
+    "protocol": "Fibre Channel (STRETCH)",
+    "params": {
+      "num_nodes": 8,
+      "duration": 0.01,
+      "bandwidth_bps": 10000000000.0,
+      "data_size": 1024,
+      "arrival_rate": 0.1
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "CongestedLink",
+    "name": "FC_Forward_Fabric",
+    "params": {
+      "buffer_capacity": 20,
+      "prop_delay": 5e-06,
+      "bandwidth_bps": 10000000000.0
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "CongestedLink",
+    "name": "FC_Forward_Fabric",
+    "params": {
+      "buffer_capacity": 20,
+      "prop_delay": 5e-06,
+      "bandwidth_bps": 10000000000.0
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "CongestedLink",
+    "name": "FC_Reverse_Fabric",
+    "params": {
+      "buffer_capacity": 20,
+      "prop_delay": 5e-06,
+      "bandwidth_bps": 10000000000.0
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "CongestedLink",
+    "name": "FC_Reverse_Fabric",
+    "params": {
+      "buffer_capacity": 20,
+      "prop_delay": 5e-06,
+      "bandwidth_bps": 10000000000.0
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "FibreChannelNode",
+    "name": "S0",
+    "params": {
+      "peer": null,
+      "is_sender": true,
+      "initial_credits": 1,
+      "data_size": 102400
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "FibreChannelNode",
+    "name": "S0",
+    "params": {
+      "peer": null,
+      "is_sender": true,
+      "initial_credits": 1,
+      "data_size": 102400
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "FibreChannelNode",
+    "name": "S1",
+    "params": {
+      "peer": null,
+      "is_sender": true,
+      "initial_credits": 1,
+      "data_size": 102400
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "FibreChannelNode",
+    "name": "S1",
+    "params": {
+      "peer": null,
+      "is_sender": true,
+      "initial_credits": 1,
+      "data_size": 102400
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "FibreChannelNode",
+    "name": "S2",
+    "params": {
+      "peer": null,
+      "is_sender": true,
+      "initial_credits": 1,
+      "data_size": 102400
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "FibreChannelNode",
+    "name": "S2",
+    "params": {
+      "peer": null,
+      "is_sender": true,
+      "initial_credits": 1,
+      "data_size": 102400
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "FibreChannelNode",
+    "name": "S3",
+    "params": {
+      "peer": null,
+      "is_sender": true,
+      "initial_credits": 1,
+      "data_size": 102400
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "FibreChannelNode",
+    "name": "S3",
+    "params": {
+      "peer": null,
+      "is_sender": true,
+      "initial_credits": 1,
+      "data_size": 102400
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "FibreChannelNode",
+    "name": "R0",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "initial_credits": 10,
+      "data_size": 102400
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "FibreChannelNode",
+    "name": "R0",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "initial_credits": 10,
+      "data_size": 102400
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "FibreChannelNode",
+    "name": "R1",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "initial_credits": 10,
+      "data_size": 102400
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "FibreChannelNode",
+    "name": "R1",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "initial_credits": 10,
+      "data_size": 102400
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "FibreChannelNode",
+    "name": "R2",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "initial_credits": 10,
+      "data_size": 102400
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "FibreChannelNode",
+    "name": "R2",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "initial_credits": 10,
+      "data_size": 102400
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "FibreChannelNode",
+    "name": "R3",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "initial_credits": 10,
+      "data_size": 102400
+    }
+  },
+  {
+    "time": 0,
+    "event": "component_init",
+    "type": "FibreChannelNode",
+    "name": "R3",
+    "params": {
+      "peer": null,
+      "is_sender": false,
+      "initial_credits": 10,
+      "data_size": 102400
+    }
+  },
+  {
+    "event": "start_tx",
+    "node": "S0",
+    "credits_rem": 0,
+    "time": 0,
+    "pkt_id": "6dfe2477-d41d-4c3a-bf44-21be94792985",
+    "type": "DATA",
+    "src": "S0",
+    "dst": "R0",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "event": "start_tx",
+    "node": "S0",
+    "credits_rem": 0,
+    "time": 0,
+    "pkt_id": "6dfe2477-d41d-4c3a-bf44-21be94792985",
+    "type": "DATA",
+    "src": "S0",
+    "dst": "R0",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0,
+    "event": "buffer_enq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 0,
+    "pkt_id": "6dfe2477-d41d-4c3a-bf44-21be94792985",
+    "type": "DATA",
+    "src": "S0",
+    "dst": "R0",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0,
+    "event": "buffer_enq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 0,
+    "pkt_id": "6dfe2477-d41d-4c3a-bf44-21be94792985",
+    "type": "DATA",
+    "src": "S0",
+    "dst": "R0",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "event": "start_tx",
+    "node": "S1",
+    "credits_rem": 0,
+    "time": 0,
+    "pkt_id": "6b393d2b-a264-4638-8dbf-66797fb65e98",
+    "type": "DATA",
+    "src": "S1",
+    "dst": "R1",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "event": "start_tx",
+    "node": "S1",
+    "credits_rem": 0,
+    "time": 0,
+    "pkt_id": "6b393d2b-a264-4638-8dbf-66797fb65e98",
+    "type": "DATA",
+    "src": "S1",
+    "dst": "R1",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0,
+    "event": "buffer_enq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 1,
+    "pkt_id": "6b393d2b-a264-4638-8dbf-66797fb65e98",
+    "type": "DATA",
+    "src": "S1",
+    "dst": "R1",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0,
+    "event": "buffer_enq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 1,
+    "pkt_id": "6b393d2b-a264-4638-8dbf-66797fb65e98",
+    "type": "DATA",
+    "src": "S1",
+    "dst": "R1",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "event": "start_tx",
+    "node": "S2",
+    "credits_rem": 0,
+    "time": 0,
+    "pkt_id": "e7116004-9cd1-493f-a514-7a50c0f0edcd",
+    "type": "DATA",
+    "src": "S2",
+    "dst": "R2",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "event": "start_tx",
+    "node": "S2",
+    "credits_rem": 0,
+    "time": 0,
+    "pkt_id": "e7116004-9cd1-493f-a514-7a50c0f0edcd",
+    "type": "DATA",
+    "src": "S2",
+    "dst": "R2",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0,
+    "event": "buffer_enq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 2,
+    "pkt_id": "e7116004-9cd1-493f-a514-7a50c0f0edcd",
+    "type": "DATA",
+    "src": "S2",
+    "dst": "R2",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0,
+    "event": "buffer_enq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 2,
+    "pkt_id": "e7116004-9cd1-493f-a514-7a50c0f0edcd",
+    "type": "DATA",
+    "src": "S2",
+    "dst": "R2",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "event": "start_tx",
+    "node": "S3",
+    "credits_rem": 0,
+    "time": 0,
+    "pkt_id": "e0fbb932-b122-45ce-8add-69f8caeb0ea8",
+    "type": "DATA",
+    "src": "S3",
+    "dst": "R3",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "event": "start_tx",
+    "node": "S3",
+    "credits_rem": 0,
+    "time": 0,
+    "pkt_id": "e0fbb932-b122-45ce-8add-69f8caeb0ea8",
+    "type": "DATA",
+    "src": "S3",
+    "dst": "R3",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0,
+    "event": "buffer_enq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 3,
+    "pkt_id": "e0fbb932-b122-45ce-8add-69f8caeb0ea8",
+    "type": "DATA",
+    "src": "S3",
+    "dst": "R3",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0,
+    "event": "buffer_enq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 3,
+    "pkt_id": "e0fbb932-b122-45ce-8add-69f8caeb0ea8",
+    "type": "DATA",
+    "src": "S3",
+    "dst": "R3",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0,
+    "event": "buffer_deq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 3,
+    "pkt_id": "6dfe2477-d41d-4c3a-bf44-21be94792985",
+    "type": "DATA",
+    "src": "S0",
+    "dst": "R0",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0,
+    "event": "buffer_deq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 3,
+    "pkt_id": "6dfe2477-d41d-4c3a-bf44-21be94792985",
+    "type": "DATA",
+    "src": "S0",
+    "dst": "R0",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0,
+    "event": "buffer_deq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 2,
+    "pkt_id": "6b393d2b-a264-4638-8dbf-66797fb65e98",
+    "type": "DATA",
+    "src": "S1",
+    "dst": "R1",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0,
+    "event": "buffer_deq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 2,
+    "pkt_id": "6b393d2b-a264-4638-8dbf-66797fb65e98",
+    "type": "DATA",
+    "src": "S1",
+    "dst": "R1",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0,
+    "event": "buffer_deq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 1,
+    "pkt_id": "e7116004-9cd1-493f-a514-7a50c0f0edcd",
+    "type": "DATA",
+    "src": "S2",
+    "dst": "R2",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0,
+    "event": "buffer_deq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 1,
+    "pkt_id": "e7116004-9cd1-493f-a514-7a50c0f0edcd",
+    "type": "DATA",
+    "src": "S2",
+    "dst": "R2",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0,
+    "event": "buffer_deq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 0,
+    "pkt_id": "e0fbb932-b122-45ce-8add-69f8caeb0ea8",
+    "type": "DATA",
+    "src": "S3",
+    "dst": "R3",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "time": 0,
+    "event": "buffer_deq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 0,
+    "pkt_id": "e0fbb932-b122-45ce-8add-69f8caeb0ea8",
+    "type": "DATA",
+    "src": "S3",
+    "dst": "R3",
+    "seq": 0,
+    "ack": 0,
+    "size": 1024,
+    "success": true,
+    "collisions": 0,
+    "color": "#FFD700"
+  },
+  {
+    "event": "grant_credit",
+    "node": "R0",
+    "time": 5.58192e-05,
+    "pkt_id": "e0303a20-9afa-4d16-b633-e52029ed0d31",
+    "type": "CREDIT",
+    "src": "R0",
+    "dst": "S0",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "event": "grant_credit",
+    "node": "R0",
+    "time": 5.58192e-05,
+    "pkt_id": "e0303a20-9afa-4d16-b633-e52029ed0d31",
+    "type": "CREDIT",
+    "src": "R0",
+    "dst": "S0",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "buffer_enq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 0,
+    "pkt_id": "e0303a20-9afa-4d16-b633-e52029ed0d31",
+    "type": "CREDIT",
+    "src": "R0",
+    "dst": "S0",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "buffer_enq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 0,
+    "pkt_id": "e0303a20-9afa-4d16-b633-e52029ed0d31",
+    "type": "CREDIT",
+    "src": "R0",
+    "dst": "S0",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "event": "grant_credit",
+    "node": "R1",
+    "time": 5.58192e-05,
+    "pkt_id": "afb049f7-f916-42ae-8964-60e6460195aa",
+    "type": "CREDIT",
+    "src": "R1",
+    "dst": "S1",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "event": "grant_credit",
+    "node": "R1",
+    "time": 5.58192e-05,
+    "pkt_id": "afb049f7-f916-42ae-8964-60e6460195aa",
+    "type": "CREDIT",
+    "src": "R1",
+    "dst": "S1",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "buffer_enq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 1,
+    "pkt_id": "afb049f7-f916-42ae-8964-60e6460195aa",
+    "type": "CREDIT",
+    "src": "R1",
+    "dst": "S1",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "buffer_enq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 1,
+    "pkt_id": "afb049f7-f916-42ae-8964-60e6460195aa",
+    "type": "CREDIT",
+    "src": "R1",
+    "dst": "S1",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "event": "grant_credit",
+    "node": "R2",
+    "time": 5.58192e-05,
+    "pkt_id": "058b4367-dea3-4e6d-8660-2b035f12b5ae",
+    "type": "CREDIT",
+    "src": "R2",
+    "dst": "S2",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "event": "grant_credit",
+    "node": "R2",
+    "time": 5.58192e-05,
+    "pkt_id": "058b4367-dea3-4e6d-8660-2b035f12b5ae",
+    "type": "CREDIT",
+    "src": "R2",
+    "dst": "S2",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "buffer_enq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 2,
+    "pkt_id": "058b4367-dea3-4e6d-8660-2b035f12b5ae",
+    "type": "CREDIT",
+    "src": "R2",
+    "dst": "S2",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "buffer_enq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 2,
+    "pkt_id": "058b4367-dea3-4e6d-8660-2b035f12b5ae",
+    "type": "CREDIT",
+    "src": "R2",
+    "dst": "S2",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "event": "grant_credit",
+    "node": "R3",
+    "time": 5.58192e-05,
+    "pkt_id": "401aa8a2-ff70-47f0-97e7-23a70b82ba30",
+    "type": "CREDIT",
+    "src": "R3",
+    "dst": "S3",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "event": "grant_credit",
+    "node": "R3",
+    "time": 5.58192e-05,
+    "pkt_id": "401aa8a2-ff70-47f0-97e7-23a70b82ba30",
+    "type": "CREDIT",
+    "src": "R3",
+    "dst": "S3",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "buffer_enq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 3,
+    "pkt_id": "401aa8a2-ff70-47f0-97e7-23a70b82ba30",
+    "type": "CREDIT",
+    "src": "R3",
+    "dst": "S3",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "buffer_enq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 3,
+    "pkt_id": "401aa8a2-ff70-47f0-97e7-23a70b82ba30",
+    "type": "CREDIT",
+    "src": "R3",
+    "dst": "S3",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "buffer_deq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 3,
+    "pkt_id": "e0303a20-9afa-4d16-b633-e52029ed0d31",
+    "type": "CREDIT",
+    "src": "R0",
+    "dst": "S0",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "buffer_deq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 3,
+    "pkt_id": "e0303a20-9afa-4d16-b633-e52029ed0d31",
+    "type": "CREDIT",
+    "src": "R0",
+    "dst": "S0",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "pkt_drop",
+    "chan": "FC_Forward_Fabric",
+    "reason": "no_receiver",
+    "pkt_id": "e0303a20-9afa-4d16-b633-e52029ed0d31",
+    "type": "CREDIT",
+    "src": "R0",
+    "dst": "S0",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "pkt_drop",
+    "chan": "FC_Forward_Fabric",
+    "reason": "no_receiver",
+    "pkt_id": "e0303a20-9afa-4d16-b633-e52029ed0d31",
+    "type": "CREDIT",
+    "src": "R0",
+    "dst": "S0",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "buffer_deq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 2,
+    "pkt_id": "afb049f7-f916-42ae-8964-60e6460195aa",
+    "type": "CREDIT",
+    "src": "R1",
+    "dst": "S1",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "buffer_deq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 2,
+    "pkt_id": "afb049f7-f916-42ae-8964-60e6460195aa",
+    "type": "CREDIT",
+    "src": "R1",
+    "dst": "S1",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "pkt_drop",
+    "chan": "FC_Forward_Fabric",
+    "reason": "no_receiver",
+    "pkt_id": "afb049f7-f916-42ae-8964-60e6460195aa",
+    "type": "CREDIT",
+    "src": "R1",
+    "dst": "S1",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "pkt_drop",
+    "chan": "FC_Forward_Fabric",
+    "reason": "no_receiver",
+    "pkt_id": "afb049f7-f916-42ae-8964-60e6460195aa",
+    "type": "CREDIT",
+    "src": "R1",
+    "dst": "S1",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "buffer_deq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 1,
+    "pkt_id": "058b4367-dea3-4e6d-8660-2b035f12b5ae",
+    "type": "CREDIT",
+    "src": "R2",
+    "dst": "S2",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "buffer_deq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 1,
+    "pkt_id": "058b4367-dea3-4e6d-8660-2b035f12b5ae",
+    "type": "CREDIT",
+    "src": "R2",
+    "dst": "S2",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "pkt_drop",
+    "chan": "FC_Forward_Fabric",
+    "reason": "no_receiver",
+    "pkt_id": "058b4367-dea3-4e6d-8660-2b035f12b5ae",
+    "type": "CREDIT",
+    "src": "R2",
+    "dst": "S2",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "pkt_drop",
+    "chan": "FC_Forward_Fabric",
+    "reason": "no_receiver",
+    "pkt_id": "058b4367-dea3-4e6d-8660-2b035f12b5ae",
+    "type": "CREDIT",
+    "src": "R2",
+    "dst": "S2",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "buffer_deq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 0,
+    "pkt_id": "401aa8a2-ff70-47f0-97e7-23a70b82ba30",
+    "type": "CREDIT",
+    "src": "R3",
+    "dst": "S3",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "buffer_deq",
+    "chan": "FC_Forward_Fabric",
+    "buffer_occupancy": 0,
+    "pkt_id": "401aa8a2-ff70-47f0-97e7-23a70b82ba30",
+    "type": "CREDIT",
+    "src": "R3",
+    "dst": "S3",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "pkt_drop",
+    "chan": "FC_Forward_Fabric",
+    "reason": "no_receiver",
+    "pkt_id": "401aa8a2-ff70-47f0-97e7-23a70b82ba30",
+    "type": "CREDIT",
+    "src": "R3",
+    "dst": "S3",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 5.58192e-05,
+    "event": "pkt_drop",
+    "chan": "FC_Forward_Fabric",
+    "reason": "no_receiver",
+    "pkt_id": "401aa8a2-ff70-47f0-97e7-23a70b82ba30",
+    "type": "CREDIT",
+    "src": "R3",
+    "dst": "S3",
+    "seq": 0,
+    "ack": 1024,
+    "size": 64,
+    "success": true,
+    "collisions": 0,
+    "color": "#D8BFD8",
+    "credit_val": 1
+  },
+  {
+    "time": 0.0001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0002,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0002,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0002,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0002,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0002,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0002,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0002,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0002,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.00030000000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.00030000000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.00030000000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.00030000000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.00030000000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.00030000000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.00030000000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.00030000000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0004,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0004,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0004,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0004,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0004,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0004,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0004,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0004,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0006000000000000001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0006000000000000001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0006000000000000001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0006000000000000001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0006000000000000001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0006000000000000001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0006000000000000001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0006000000000000001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0007000000000000001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0007000000000000001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0007000000000000001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0007000000000000001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0007000000000000001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0007000000000000001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0007000000000000001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0007000000000000001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0008000000000000001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0008000000000000001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0008000000000000001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0008000000000000001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0008000000000000001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0008000000000000001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0008000000000000001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0008000000000000001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0009000000000000002,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0009000000000000002,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0009000000000000002,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0009000000000000002,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0009000000000000002,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0009000000000000002,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0009000000000000002,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0009000000000000002,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0010000000000000002,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0010000000000000002,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0010000000000000002,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0010000000000000002,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0010000000000000002,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0010000000000000002,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0010000000000000002,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0010000000000000002,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0011000000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0011000000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0011000000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0011000000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0011000000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0011000000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0011000000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0011000000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0012000000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0012000000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0012000000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0012000000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0012000000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0012000000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0012000000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0012000000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0013000000000000004,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0013000000000000004,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0013000000000000004,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0013000000000000004,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0013000000000000004,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0013000000000000004,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0013000000000000004,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0013000000000000004,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0014000000000000004,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0014000000000000004,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0014000000000000004,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0014000000000000004,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0014000000000000004,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0014000000000000004,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0014000000000000004,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0014000000000000004,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0015000000000000005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0015000000000000005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0015000000000000005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0015000000000000005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0015000000000000005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0015000000000000005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0015000000000000005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0015000000000000005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0016000000000000005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0016000000000000005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0016000000000000005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0016000000000000005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0016000000000000005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0016000000000000005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0016000000000000005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0016000000000000005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0017000000000000006,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0017000000000000006,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0017000000000000006,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0017000000000000006,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0017000000000000006,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0017000000000000006,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0017000000000000006,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0017000000000000006,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0018000000000000006,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0018000000000000006,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0018000000000000006,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0018000000000000006,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0018000000000000006,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0018000000000000006,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0018000000000000006,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0018000000000000006,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0019000000000000006,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0019000000000000006,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0019000000000000006,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0019000000000000006,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0019000000000000006,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0019000000000000006,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0019000000000000006,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0019000000000000006,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0020000000000000005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0020000000000000005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0020000000000000005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0020000000000000005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0020000000000000005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0020000000000000005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0020000000000000005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0020000000000000005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0021000000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0021000000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0021000000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0021000000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0021000000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0021000000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0021000000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0021000000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0022,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0022,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0022,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0022,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0022,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0022,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0022,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0022,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0023,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0023,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0023,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0023,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0023,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0023,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0023,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0023,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0024,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0024,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0024,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0024,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0024,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0024,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0024,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0024,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0024999999999999996,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0024999999999999996,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0024999999999999996,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0024999999999999996,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0024999999999999996,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0024999999999999996,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0024999999999999996,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0024999999999999996,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0025999999999999994,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0025999999999999994,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0025999999999999994,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0025999999999999994,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0025999999999999994,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0025999999999999994,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0025999999999999994,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0025999999999999994,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0026999999999999993,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0026999999999999993,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0026999999999999993,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0026999999999999993,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0026999999999999993,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0026999999999999993,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0026999999999999993,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0026999999999999993,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.002799999999999999,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.002799999999999999,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.002799999999999999,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.002799999999999999,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.002799999999999999,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.002799999999999999,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.002799999999999999,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.002799999999999999,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.002899999999999999,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.002899999999999999,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.002899999999999999,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.002899999999999999,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.002899999999999999,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.002899999999999999,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.002899999999999999,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.002899999999999999,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0029999999999999988,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0029999999999999988,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0029999999999999988,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0029999999999999988,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0029999999999999988,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0029999999999999988,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0029999999999999988,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0029999999999999988,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0030999999999999986,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0030999999999999986,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0030999999999999986,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0030999999999999986,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0030999999999999986,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0030999999999999986,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0030999999999999986,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0030999999999999986,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0031999999999999984,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0031999999999999984,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0031999999999999984,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0031999999999999984,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0031999999999999984,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0031999999999999984,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0031999999999999984,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0031999999999999984,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0032999999999999982,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0032999999999999982,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0032999999999999982,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0032999999999999982,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0032999999999999982,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0032999999999999982,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0032999999999999982,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0032999999999999982,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.003399999999999998,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.003399999999999998,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.003399999999999998,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.003399999999999998,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.003399999999999998,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.003399999999999998,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.003399999999999998,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.003399999999999998,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.003499999999999998,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.003499999999999998,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.003499999999999998,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.003499999999999998,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.003499999999999998,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.003499999999999998,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.003499999999999998,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.003499999999999998,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0035999999999999977,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0035999999999999977,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0035999999999999977,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0035999999999999977,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0035999999999999977,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0035999999999999977,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0035999999999999977,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0035999999999999977,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0036999999999999976,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0036999999999999976,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0036999999999999976,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0036999999999999976,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0036999999999999976,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0036999999999999976,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0036999999999999976,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0036999999999999976,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0037999999999999974,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0037999999999999974,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0037999999999999974,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0037999999999999974,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0037999999999999974,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0037999999999999974,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0037999999999999974,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0037999999999999974,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0038999999999999972,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0038999999999999972,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0038999999999999972,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0038999999999999972,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0038999999999999972,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0038999999999999972,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0038999999999999972,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0038999999999999972,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0039999999999999975,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0039999999999999975,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0039999999999999975,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0039999999999999975,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0039999999999999975,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0039999999999999975,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0039999999999999975,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0039999999999999975,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004099999999999998,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004099999999999998,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004099999999999998,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004099999999999998,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004099999999999998,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004099999999999998,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004099999999999998,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004099999999999998,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004199999999999998,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004199999999999998,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004199999999999998,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004199999999999998,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004199999999999998,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004199999999999998,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004199999999999998,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004199999999999998,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004299999999999998,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004299999999999998,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004299999999999998,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004299999999999998,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004299999999999998,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004299999999999998,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004299999999999998,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004299999999999998,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0043999999999999985,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0043999999999999985,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0043999999999999985,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0043999999999999985,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0043999999999999985,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0043999999999999985,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0043999999999999985,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0043999999999999985,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004499999999999999,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004499999999999999,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004499999999999999,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004499999999999999,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004499999999999999,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004499999999999999,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004499999999999999,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004499999999999999,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004599999999999999,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004599999999999999,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004599999999999999,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004599999999999999,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004599999999999999,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004599999999999999,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004599999999999999,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004599999999999999,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004699999999999999,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004699999999999999,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004699999999999999,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004699999999999999,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004699999999999999,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004699999999999999,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004699999999999999,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.004699999999999999,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0048,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0048,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0048,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0048,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0048,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0048,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0048,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0048,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0049,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0049,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0049,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0049,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0049,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0049,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0049,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0049,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0051,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0051,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0051,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0051,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0051,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0051,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0051,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0051,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005200000000000001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005200000000000001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005200000000000001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005200000000000001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005200000000000001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005200000000000001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005200000000000001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005200000000000001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005300000000000001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005300000000000001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005300000000000001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005300000000000001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005300000000000001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005300000000000001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005300000000000001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005300000000000001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005400000000000001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005400000000000001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005400000000000001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005400000000000001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005400000000000001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005400000000000001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005400000000000001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005400000000000001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005500000000000001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005500000000000001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005500000000000001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005500000000000001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005500000000000001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005500000000000001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005500000000000001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005500000000000001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005600000000000002,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005600000000000002,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005600000000000002,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005600000000000002,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005600000000000002,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005600000000000002,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005600000000000002,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005600000000000002,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005700000000000002,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005700000000000002,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005700000000000002,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005700000000000002,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005700000000000002,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005700000000000002,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005700000000000002,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005700000000000002,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005800000000000002,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005800000000000002,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005800000000000002,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005800000000000002,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005800000000000002,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005800000000000002,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005800000000000002,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.005800000000000002,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0059000000000000025,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0059000000000000025,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0059000000000000025,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0059000000000000025,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0059000000000000025,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0059000000000000025,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0059000000000000025,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0059000000000000025,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006000000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006000000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006000000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006000000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006000000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006000000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006000000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006000000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006100000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006100000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006100000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006100000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006100000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006100000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006100000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006100000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006200000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006200000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006200000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006200000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006200000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006200000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006200000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006200000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0063000000000000035,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0063000000000000035,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0063000000000000035,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0063000000000000035,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0063000000000000035,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0063000000000000035,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0063000000000000035,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0063000000000000035,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006400000000000004,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006400000000000004,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006400000000000004,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006400000000000004,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006400000000000004,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006400000000000004,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006400000000000004,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006400000000000004,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006500000000000004,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006500000000000004,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006500000000000004,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006500000000000004,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006500000000000004,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006500000000000004,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006500000000000004,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006500000000000004,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006600000000000004,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006600000000000004,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006600000000000004,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006600000000000004,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006600000000000004,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006600000000000004,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006600000000000004,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006600000000000004,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0067000000000000046,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0067000000000000046,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0067000000000000046,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0067000000000000046,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0067000000000000046,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0067000000000000046,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0067000000000000046,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0067000000000000046,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006800000000000005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006800000000000005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006800000000000005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006800000000000005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006800000000000005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006800000000000005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006800000000000005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006800000000000005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006900000000000005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006900000000000005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006900000000000005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006900000000000005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006900000000000005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006900000000000005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006900000000000005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.006900000000000005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007000000000000005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007000000000000005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007000000000000005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007000000000000005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007000000000000005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007000000000000005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007000000000000005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007000000000000005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007100000000000006,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007100000000000006,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007100000000000006,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007100000000000006,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007100000000000006,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007100000000000006,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007100000000000006,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007100000000000006,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007200000000000006,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007200000000000006,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007200000000000006,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007200000000000006,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007200000000000006,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007200000000000006,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007200000000000006,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007200000000000006,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007300000000000006,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007300000000000006,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007300000000000006,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007300000000000006,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007300000000000006,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007300000000000006,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007300000000000006,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007300000000000006,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007400000000000006,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007400000000000006,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007400000000000006,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007400000000000006,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007400000000000006,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007400000000000006,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007400000000000006,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007400000000000006,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007500000000000007,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007500000000000007,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007500000000000007,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007500000000000007,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007500000000000007,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007500000000000007,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007500000000000007,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007500000000000007,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007600000000000007,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007600000000000007,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007600000000000007,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007600000000000007,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007600000000000007,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007600000000000007,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007600000000000007,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007600000000000007,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007700000000000007,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007700000000000007,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007700000000000007,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007700000000000007,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007700000000000007,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007700000000000007,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007700000000000007,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007700000000000007,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0078000000000000074,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0078000000000000074,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0078000000000000074,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0078000000000000074,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0078000000000000074,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0078000000000000074,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0078000000000000074,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0078000000000000074,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007900000000000008,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007900000000000008,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007900000000000008,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007900000000000008,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007900000000000008,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007900000000000008,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007900000000000008,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.007900000000000008,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008000000000000007,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008000000000000007,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008000000000000007,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008000000000000007,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008000000000000007,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008000000000000007,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008000000000000007,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008000000000000007,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008100000000000007,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008100000000000007,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008100000000000007,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008100000000000007,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008100000000000007,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008100000000000007,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008100000000000007,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008100000000000007,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008200000000000006,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008200000000000006,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008200000000000006,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008200000000000006,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008200000000000006,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008200000000000006,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008200000000000006,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008200000000000006,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008300000000000005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008300000000000005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008300000000000005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008300000000000005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008300000000000005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008300000000000005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008300000000000005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008300000000000005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008400000000000005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008400000000000005,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008400000000000005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008400000000000005,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008400000000000005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008400000000000005,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008400000000000005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008400000000000005,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008500000000000004,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008500000000000004,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008500000000000004,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008500000000000004,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008500000000000004,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008500000000000004,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008500000000000004,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008500000000000004,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008600000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008600000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008600000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008600000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008600000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008600000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008600000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008600000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008700000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008700000000000003,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008700000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008700000000000003,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008700000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008700000000000003,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008700000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008700000000000003,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008800000000000002,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008800000000000002,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008800000000000002,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008800000000000002,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008800000000000002,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008800000000000002,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008800000000000002,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008800000000000002,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008900000000000002,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008900000000000002,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008900000000000002,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008900000000000002,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008900000000000002,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008900000000000002,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008900000000000002,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.008900000000000002,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009000000000000001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009000000000000001,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009000000000000001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009000000000000001,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009000000000000001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009000000000000001,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009000000000000001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009000000000000001,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0091,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0091,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0091,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0091,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0091,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0091,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0091,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0091,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0092,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0092,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0092,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0092,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0092,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0092,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0092,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0092,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0093,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0093,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0093,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0093,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0093,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0093,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0093,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.0093,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009399999999999999,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009399999999999999,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009399999999999999,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009399999999999999,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009399999999999999,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009399999999999999,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009399999999999999,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009399999999999999,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009499999999999998,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009499999999999998,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009499999999999998,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009499999999999998,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009499999999999998,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009499999999999998,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009499999999999998,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009499999999999998,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009599999999999997,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009599999999999997,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009599999999999997,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009599999999999997,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009599999999999997,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009599999999999997,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009599999999999997,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009599999999999997,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009699999999999997,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009699999999999997,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009699999999999997,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009699999999999997,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009699999999999997,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009699999999999997,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009699999999999997,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009699999999999997,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009799999999999996,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009799999999999996,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009799999999999996,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009799999999999996,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009799999999999996,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009799999999999996,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009799999999999996,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009799999999999996,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009899999999999996,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009899999999999996,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009899999999999996,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009899999999999996,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009899999999999996,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009899999999999996,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009899999999999996,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009899999999999996,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009999999999999995,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009999999999999995,
+    "event": "credit_stall",
+    "node": "S0",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009999999999999995,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009999999999999995,
+    "event": "credit_stall",
+    "node": "S1",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009999999999999995,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009999999999999995,
+    "event": "credit_stall",
+    "node": "S2",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009999999999999995,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.009999999999999995,
+    "event": "credit_stall",
+    "node": "S3",
+    "reason": "no_credits_available"
+  },
+  {
+    "time": 0.01,
+    "event": "simulation_end",
+    "protocol": "Fibre Channel (STRETCH)"
+  },
+  {
+    "time": 0.01,
+    "event": "simulation_end",
+    "protocol": "Fibre Channel (STRETCH)"
+  }
+]
