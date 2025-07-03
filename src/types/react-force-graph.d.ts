@@ -1,3 +1,4 @@
+'use client'
 declare module 'react-force-graph-2d' {
   import { FC, ForwardRefExoticComponent, RefAttributes } from 'react';
 

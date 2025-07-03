@@ -1,3 +1,4 @@
+'use client'
 # -*- coding: utf-8 -*-
 """
 ts_master_log_parser.py
@@ -45,7 +46,7 @@ class TSMasterMatLogParser:
         """
         if not self.file_path.is_file():
             raise FileNotFoundError(f"Error: Log file not found at {self.file_path}")
-        
+
         try:
             # Using squeeze_me=True removes single-dimensional entries from array data,
             # simplifying the subsequent parsing logic.
@@ -72,7 +73,7 @@ class TSMasterMatLogParser:
             raise KeyError("Error: 'TIME_LIST' not found in the MAT file. Cannot parse signals.")
 
         time_axes_str = self.mat_data['TIME_LIST']
-        
+
         # Ensure the comma-separated string from the MAT file is handled correctly.
         time_axes = time_axes_str.split(',') if isinstance(time_axes_str, str) else "".join(time_axes_str).split(',')
 
@@ -89,7 +90,7 @@ class TSMasterMatLogParser:
                 continue
 
             time_vector = self.mat_data[time_axis_name]
-            
+
             signal_names_str = self.mat_data[signal_list_name]
             signal_names = signal_names_str.split(',') if isinstance(signal_names_str, str) else "".join(signal_names_str).split(',')
 
@@ -98,7 +99,7 @@ class TSMasterMatLogParser:
             # powerful structure for analysis and visualization.
             # The TDateTime format is an OLE Automation date, which is the number of days since 1899-12-30.
             df = pd.DataFrame(index=pd.to_datetime(time_vector, unit='D', origin='1899-12-30'))
-            
+
             for signal_name in signal_names:
                 signal_name = signal_name.strip()
                 if signal_name in self.mat_data:
@@ -109,9 +110,9 @@ class TSMasterMatLogParser:
                         print(f"Warning: Length mismatch for signal '{signal_name}'. Skipping.")
                 else:
                     print(f"Warning: Signal '{signal_name}' not found in data. Skipping.")
-            
+
             self.signal_groups[time_axis_name] = df
-        
+
         print(f"Parsing complete. Found {len(self.signal_groups)} signal groups.")
 
     def get_metadata(self) -> dict:
@@ -125,7 +126,7 @@ class TSMasterMatLogParser:
         """
         if not self.mat_data:
             return {}
-        
+
         metadata_keys = ['Comment', 'MeasurementStartTimeStr', 'MeasurementStopTimeStr', 'ECU_LIST']
         return {key: self.mat_data.get(key, 'N/A') for key in metadata_keys}
 
@@ -169,7 +170,7 @@ class TSMasterMatLogParser:
         if signal_name not in group.columns:
             print(f"Error: Signal '{signal_name}' not found in group '{group_name}'.")
             return
-            
+
         plt.style.use('seaborn-v0_8-whitegrid')
         fig, ax = plt.subplots(figsize=(14, 7))
         ax.plot(group.index, group[signal_name], label=signal_name)
@@ -188,9 +189,9 @@ def create_dummy_mat_file(path: str = "dummy_log.mat"):
     // in isolation without requiring a live hardware setup.
     """
     # Time vectors based on TDateTime (OLE Automation date)
-    time_daq_10ms = np.linspace(0, 10/86400, 1001) + 44210.5 
+    time_daq_10ms = np.linspace(0, 10/86400, 1001) + 44210.5
     time_daq_100ms = np.linspace(0, 10/86400, 101) + 44210.5
-    
+
     # Signal vectors
     t_10ms_rel = np.linspace(0, 10, 1001)
     t_100ms_rel = np.linspace(0, 10, 101)
@@ -210,7 +211,7 @@ def create_dummy_mat_file(path: str = "dummy_log.mat"):
         'ecu1_sineSignal': sine_signal,
         'ecu1_triangleSignal': triangle_signal
     }
-    
+
     scipy.io.savemat(path, mat_dict)
     print(f"Dummy MAT file '{path}' created for demonstration.")
     return path
@@ -219,10 +220,10 @@ if __name__ == '__main__':
     # This section demonstrates the intended use of the TSMasterMatLogParser.
     # It first creates a verifiable, dummy .mat file that conforms to the AN0003 spec,
     # and then uses the parser to load, analyze, and visualize its contents.
-    
+
     try:
         dummy_file_path = create_dummy_mat_file()
-        
+
         # Initialize the parser with the log file
         parser = TSMasterMatLogParser(dummy_file_path)
 
@@ -233,7 +234,7 @@ if __name__ == '__main__':
             # Handle potential array-to-string conversion for clean printing
             display_value = "".join(value) if isinstance(value, np.ndarray) else value
             print(f"  {key:<25}: {display_value}")
-        
+
         # Discover and list the signal groups found in the file
         groups = parser.list_signal_groups()
         print(f"\n--- Signal Groups Found ({len(groups)}) ---")
@@ -246,14 +247,14 @@ if __name__ == '__main__':
             for group_name in groups:
                 print(f"\n--- Inspecting Group: {group_name} ---")
                 df_group = parser.get_signal_group(group_name)
-                
+
                 if df_group is None or df_group.empty:
                     print("  Group is empty or could not be retrieved.")
                     continue
-                    
+
                 print("  First 5 data points:")
                 print(df_group.head().to_string(float_format="%.4f"))
-                
+
                 for signal_name in df_group.columns:
                     print(f"\n  Plotting signal '{signal_name}'...")
                     parser.plot_signal(group_name, signal_name)

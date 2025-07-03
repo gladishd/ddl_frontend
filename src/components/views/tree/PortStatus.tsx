@@ -1,3 +1,4 @@
+'use client'
 import { PortSnapshot } from "@/types/PortSnapshot";
 import { ChevronDown, ChevronRight, Network, WifiOff } from "lucide-react";
 import { useEffect, useState } from "react";

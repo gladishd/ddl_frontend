@@ -1,3 +1,4 @@
+'use client'
 import { useMacMiniContext } from '@/context/MacMiniContext';
 import JsonPrettifier from '@/components/JsonPrettifier';
 import { FaHeartbeat, FaCodeBranch, FaHashtag, FaLink } from 'react-icons/fa';

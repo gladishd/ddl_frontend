@@ -1,3 +1,4 @@
+'use client'
 import React, { useState, useMemo } from "react";
 import { Plus, RefreshCw, X, Search } from "lucide-react";
 import { useMacMiniContext } from "@/context/MacMiniContext";

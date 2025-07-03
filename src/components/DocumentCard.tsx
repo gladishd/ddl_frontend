@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Heart, Eye, Tag, Share2, ImageOff, X as CloseIcon } from 'lucide-react';
 import { pdfjs } from 'react-pdf';

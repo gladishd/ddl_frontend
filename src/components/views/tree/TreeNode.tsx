@@ -1,3 +1,4 @@
+'use client'
 import { ArrowRight, ChevronDown, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { TreeNodeData } from "@/types/PortSnapshot";

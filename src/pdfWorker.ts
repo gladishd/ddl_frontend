@@ -1,3 +1,4 @@
+'use client';
 import { pdfjs } from 'react-pdf';
 
 // Put this once – e.g. in src/pdfWorker.ts and import it from _app.tsx
