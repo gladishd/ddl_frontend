@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "api/**/*.js": {
+      "excludeFiles": "public/scripts/ethernet/**"
+    },
+    "models/**/*.js": {
+      "excludeFiles": "public/scripts/ethernet/**"
+    }
+  }
+}
