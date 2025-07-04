@@ -6,7 +6,7 @@ import PythonModelDisplay from './PythonModelDisplay';
 // This component provides a 'Multiway System' view, showing the causal evolution of our Ethernet models.
 import EthernetSequenceDisplay from './EthernetSequenceDisplay';
 import PythonCSMACDModelDisplay from './PythonCSMACDModelDisplay';
-import PythonRTTModelDisplay from './PythonRTTModelDisplay'; // Import the new component
+import PythonRTTModelDisplay from './PythonRTTModelDisplay';
 
 // This page serves as the dedicated "wrapper" for each of our live computational models.
 // It provides context, embeds the interactive content, and guides the user to
@@ -54,7 +54,7 @@ export default async function ModelPage({
 
   return (
     <div
-      className={`bg-white dark:bg-gray-900 py-12 ${notebook.type.startsWith('python')
+      className={`bg-white dark:bg-gray-900 py-12 ${notebook.type.startsWith('python') || notebook.type === 'placeholder'
         ? 'text-gray-200 dark:text-gray-200'
         : 'text-gray-800 dark:text-gray-200'
         }`}
@@ -91,6 +91,16 @@ export default async function ModelPage({
                   <PythonRTTModelDisplay />
                       ) : notebook.type === 'python-sequence' ? (
                         <EthernetSequenceDisplay />
+                        ) : notebook.type === 'placeholder' ? (
+                          // An empty state for models that are not yet built.
+                          // This fulfills the requirement for a page that exists but is empty,
+                          // serving as a commitment to future work.
+                          <div className="flex items-center justify-center h-[85vh] bg-gray-800 text-gray-400">
+                            <div className="text-center">
+                              <h2 className="text-2xl font-semibold">Model Coming Soon</h2>
+                              <p className="mt-2">This computational proof is currently under construction.</p>
+                            </div>
+                          </div>
                 ) : null}
               </div>
             </div>

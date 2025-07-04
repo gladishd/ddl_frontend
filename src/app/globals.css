@@ -1,3 +1,4 @@
+.break-inside-avoid-column { break-inside: avoid-column; }
 /* ==========================================================================
    Python Model Display
    Styles for presenting Python code and its output as a computational essay.
