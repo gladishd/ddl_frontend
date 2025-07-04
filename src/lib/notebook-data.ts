@@ -26,11 +26,11 @@ const slugify = (text: string): string => {
     return text
       .toString()
       .toLowerCase()
-      .replace(/\s+/g, '-')       // Replace spaces with -
-      .replace(/[^\w\-]+/g, '')   // Remove all non-word chars
-      .replace(/\-\-+/g, '-')     // Replace multiple - with single -
-      .replace(/^-+/, '')         // Trim - from start of text
-      .replace(/-+$/, '');        // Trim - from end of text
+    .replace(/\s+/g, '-')      // Replace spaces with -
+    .replace(/[^\w\-]+/g, '')    // Remove all non-word chars
+    .replace(/\-\-+/g, '-')      // Replace multiple - with single -
+    .replace(/^-+/, '')          // Trim - from start of text
+    .replace(/-+$/, '');         // Trim - from end of text
   };
 
 // First define the raw array with a type that correctly describes its shape.
@@ -135,6 +135,54 @@ const rawNotebooks: RawNotebook[] = [
       type: 'python-sequence',
       date: "July 4, 2025",
     },
+  {
+    id: 13,
+    title: "Model 13: Cellular Automata I",
+    description: "This model explores the fundamental relationship between local, reversible rules and emergent global phenomena, demonstrating how cellular automata serve as a computational substrate for everything from classical logic to fault-tolerant quantum systems. This is a core principle of the Graph Virtual Machine, where complex behaviors arise from simple, deterministic token interactions.",
+    url: "https://www.wolframcloud.com/obj/gladishdean/Published/cellular%20automata%20-%20from%20classical%20computation%20to%20quantum%20error%20correction.nb",
+    type: 'wolfram',
+    date: "July 4, 2025",
+  },
+  {
+    id: 14,
+    title: "Model 14: Cellular Automata II",
+    description: "Building on the previous model, this simulation delves deeper into the specific rule-sets that give rise to complex, persistent structures. It serves as a proof by code for how the N2N Lattice can support stable, self-correcting patterns, a necessary precondition for reliable computation in a decentralized system.",
+    url: "https://www.wolframcloud.com/obj/gladishdean/Published/2.%20cellular%20automata%20-%20from%20classical%20computation%20to%20quantum%20error%20correction.nb",
+    type: 'wolfram',
+    date: "July 4, 2025",
+  },
+  {
+    id: 15,
+    title: "Model 15: Cellular Automata III",
+    description: "This notebook demonstrates the principles of reversible computation within a cellular automaton framework. Each state transition is invertible, illustrating a core tenet of our thesis: that reliable systems must be built on reversible subtransactions to prevent state loss and enable deterministic error correction.",
+    url: "https://www.wolframcloud.com/obj/gladishdean/Published/3.%20cellular%20automata%20-%20from%20classical%20computation%20to%20quantum%20error%20correction.nb",
+    type: 'wolfram',
+    date: "July 4, 2025",
+  },
+  {
+    id: 16,
+    title: "Model 16: Cellular Automata IV",
+    description: "Here, we model the interaction of multiple, independent patterns within the same lattice. This visualizes the concept of Token Dynamics, where information packets (tokens) traverse the Graph Virtual Machine without interference, demonstrating a form of spatial multiplexing that avoids the pitfalls of statistical contention.",
+    url: "https://www.wolframcloud.com/obj/gladishdean/Published/4.%20cellular%20automata%20-%20from%20classical%20computation%20to%20quantum%20error%20correction.nb",
+    type: 'wolfram',
+    date: "July 4, 2025",
+  },
+  {
+    id: 17,
+    title: "Model 17: Cellular Automata V",
+    description: "The final model in this series showcases a rudimentary form of quantum error correction. By encoding information redundantly across multiple cells and applying local, corrective rules, the system can withstand perturbations, proving the viability of achieving fault-tolerance through geometric and topological means, rather than temporal retries.",
+    url: "https://www.wolframcloud.com/obj/gladishdean/Published/5.%20cellular%20automata%20-%20from%20classical%20computation%20to%20quantum%20error%20correction.nb",
+    type: 'wolfram',
+    date: "July 4, 2025",
+  },
+  {
+    id: 18,
+    title: "Model 18: OAE Specification",
+    description: "This document specifies the Open Aethernet Emulator (OAE), a system designed to model the N2N Lattice and its token dynamics. It provides the formal framework for our 'proof by code' approach, defining the state transitions and interaction protocols that govern the reliable, reversible subtransactions at the heart of our thesis.",
+    url: "https://www.wolframcloud.com/obj/gladishdean/Published/6.%20OAE-SPEC-MAIN.nb",
+    type: 'wolfram',
+    date: "July 4, 2025",
+  },
   ];
 
 // Now map over the typed array to inject the slug field without widening `type`.

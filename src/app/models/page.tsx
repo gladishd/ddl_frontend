@@ -14,7 +14,7 @@ export default async function ModelsPage({
   // unwrap the params promise
   const sp = await searchParams;
   const page = Number(sp.page ?? 1);
-  const ITEMS_PER_PAGE = 2;
+  const ITEMS_PER_PAGE = 5;
   const totalPages = Math.ceil(notebooks.length / ITEMS_PER_PAGE);
 
   const currentNotebooks = notebooks.slice(

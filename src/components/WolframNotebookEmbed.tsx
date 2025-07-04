@@ -9,7 +9,7 @@ import { notebooks } from '@/lib/notebook-data'; // Import from the new central 
 // Each model is a "proof by code," a precise information-theoretic emulator designed to reveal the consequences of different networking assumptions.
 // They are presented here as entries that link to dedicated pages where the live models can be interrogated.
 
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 10;
 
 const WolframNotebookEmbed: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
