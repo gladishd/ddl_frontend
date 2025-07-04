@@ -237,7 +237,7 @@ const PythonCSMACDModelDisplay = () => {
         </p>
         <div className="bg-white p-4 rounded-lg">
           {/* The image is assumed to be in /public/models/ */}
-          <img src="/models/ddlFigure_1.png" alt="Ethernet Simulation Results" className="w-full h-auto rounded-md" />
+                  <img src="/ethernet-assets/ddlFigure_1.png" alt="Ethernet Simulation Results" className="w-full h-auto rounded-md" />
         </div>
       </div>
     </div>
