@@ -31,9 +31,11 @@ const WolframNotebookEmbed: React.FC = () => {
   return (
     <section id="live-models" className="bg-white dark:bg-black py-12">
       <div className="container mx-auto">
-        <header className="mb-12 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold dark:text-white">Live Computational Models</h2>
-          <p className="text-muted-foreground mt-2 max-w-3xl mx-auto">
+        <header className="mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold dark:text-white text-center">Live Computational Models</h2>
+          {/* This description sets the stage for our "Code as Proof" methodology, explaining that these are not just documents but live computational essays.
+              Justifying the text provides a more formal, paper-like presentation, aligning with the serious academic and theoretical nature of our work. */}
+          <p className="text-muted-foreground mt-2 max-w-3xl mx-auto text-justify">
             These Wolfram Cloud notebooks are not static papers, but live, computational essays. They are designed to provide definitive, verifiable proof of our architectural thesis.
           </p>
         </header>
@@ -50,7 +52,9 @@ const WolframNotebookEmbed: React.FC = () => {
                   </h2>
                 </header>
                 <section className="post-excerpt">
-                  <p>
+                  {/* Justifying the description for each model reinforces the formal, academic tone of these computational essays.
+                      It treats each summary not just as a casual blurb, but as the abstract of a technical paper, which is consistent with the Daedaelus philosophy of rigorous, proof-based argumentation. */}
+                  <p className="text-justify">
                     {notebook.description}{' '}
                     <Link href={`/models/${notebook.slug}`} className="read-more">
                       »
@@ -59,7 +63,7 @@ const WolframNotebookEmbed: React.FC = () => {
                 </section>
                 <footer className="post-meta">
                   {/* This author credit establishes the origin of the proof. The image is a placeholder,
-                      as the work emerges from the collective research of the Daedaelus project. */}
+                      as the work emerges from the collective research of the Daedaelus project. */}
                   <img className="author-thumb" src="https://www.gravatar.com/avatar/daedalus?d=identicon&s=250" alt="Dædælus Research" />
                   <span>Dædælus Research</span>
                   <time className="post-date" dateTime={new Date(notebook.date).toISOString()}>

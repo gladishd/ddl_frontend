@@ -51,21 +51,24 @@ export default function Model11Page() {
           </section>
         </article>
 
-        {/* ← Read Next / You Might Enjoy → */}
-        <section className="read-next flex justify-between mt-12">
-          <Link
-            href={`/models/${mightEnjoy.slug}`}
-            className="read-next-story prev flex-1 mr-4 p-6 bg-gray-100 dark:bg-gray-800 rounded-lg hover:shadow-lg transition"
-          >
-            <span className="block text-sm text-muted-foreground">← You might enjoy</span>
-            <h2 className="text-lg font-semibold mt-1">{mightEnjoy.title}</h2>
-          </Link>
+        {/* Read-next on the LEFT, you-might-enjoy on the RIGHT, flush to edges */}
+        <section className="read-next full-bleed mt-12">
+          {/* LEFT -- Read This Next */}
           <Link
             href={`/models/${readNext.slug}`}
-            className="read-next-story flex-1 ml-4 p-6 bg-gray-100 dark:bg-gray-800 rounded-lg hover:shadow-lg transition text-right"
+            className="read-next-story p-6 bg-gray-100 dark:bg-gray-800 rounded-lg hover:shadow-lg transition"
           >
             <span className="block text-sm text-muted-foreground">Read next →</span>
             <h2 className="text-lg font-semibold mt-1">{readNext.title}</h2>
+          </Link>
+
+          {/* RIGHT -- You Might Enjoy */}
+          <Link
+            href={`/models/${mightEnjoy.slug}`}
+            className="read-next-story prev p-6 rounded-lg hover:shadow-lg transition"
+          >
+            <span className="block text-sm text-muted-foreground">← You might enjoy</span>
+            <h2 className="text-lg font-semibold mt-1">{mightEnjoy.title}</h2>
           </Link>
         </section>
       </main>

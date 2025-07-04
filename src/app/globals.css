@@ -1645,7 +1645,7 @@ input[type="text"].pl-10:focus, input[type="search"].pl-10:focus {
   flex-direction: row;
   margin-top: 5rem;
   margin-bottom: 5rem;
-  max-width: 1200px;
+  max-width: none;
   margin-left: auto;
   margin-right: auto;
 }
@@ -1655,6 +1655,7 @@ input[type="text"].pl-10:focus, input[type="search"].pl-10:focus {
  * adapting to their container rather than adhering to a fragile, fixed geometry.
  */
 .read-next-story {
+  right: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1666,6 +1667,8 @@ input[type="text"].pl-10:focus, input[type="search"].pl-10:focus {
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   padding: 3rem 1.5rem;
+  flex: 0 0 50vw;   /* exact half-screen */
+  max-width: 50vw;
 }
 
 .read-next-story .post {
@@ -1704,6 +1707,16 @@ input[type="text"].pl-10:focus, input[type="search"].pl-10:focus {
 .read-next-story.prev .post:before {
     content: "You Might Enjoy";
 }
+
+/* --- Full-bleed helper for two-column nav -------------------------------- */
+.full-bleed {
+  /* break out of the 710 px .content max-width */
+  /* width: 100vw; */
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 
 /*
  * THEME-ADAPTIVE (LEFT): The primary link inherits its appearance from the
@@ -1744,6 +1757,8 @@ input[type="text"].pl-10:focus, input[type="search"].pl-10:focus {
  * alternative suggestion explicit and unambiguous.
  */
 .read-next-story.prev {
+  flex: 0 0 50vw;      /* ← guarantees each occupies half the screen */
+  max-width: 50vw;
   color: #ffffff;
   background-color: #2E2E2E; /* A static, dark color */
   border: 1px solid #444; /* A border visible against the dark background */

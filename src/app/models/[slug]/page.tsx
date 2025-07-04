@@ -69,9 +69,12 @@ export default async function ModelPage({
           </header>
 
           <section className="post-content">
-            <p className="text-lg text-center max-w-3xl mx-auto mb-8">{notebook.description}</p>
+            {/* The model's description serves as its abstract, framing the computational proof that follows.
+                By changing from 'text-center' to 'text-justify', we present the text in a more formal,
+                academic style that aligns with the rigor of our underlying arguments. */}
+            <p className="text-lg text-justify max-w-3xl mx-auto mb-8">{notebook.description}</p>
             {/* This container uses a CSS trick to break out of the parent's width constraints, achieving a full-width effect.
-                It is a visual representation of escaping a constrained model to utilize the full available space. */}
+                It is a visual representation of escaping a constrained model to utilize the full available space. */}
             <div className="wolfram-embed-container my-8">
               <div className="border-y border-gray-200 dark:border-gray-700 shadow-lg bg-gray-50 dark:bg-gray-800">
                 {notebook.type === 'wolfram' ? (
@@ -108,8 +111,8 @@ export default async function ModelPage({
         </article>
 
         {/* This section ensures that our arguments do not exist in isolation.
-            It guides the user to the next logical step in the chain of reasoning,
-            reinforcing the connections between our computational proofs. */}
+            It guides the user to the next logical step in the chain of reasoning,
+            reinforcing the connections between our computational proofs. */}
         <section className="read-next">
           <Link href={`/models/${readNext.slug}`} className="read-next-story">
             <div className="post">
