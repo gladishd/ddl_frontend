@@ -340,10 +340,10 @@ const newsItems: NewsItem[] = [
 // It is an adaptive ruleset, ensuring the view conforms to the observer's local environment (viewport)
 // rather than being a fragile, fixed-width layout. A fixed cartesian coordinate system would be far too fragile.
 const responsive = {
-  superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 5, slidesToSlide: 3 },
-  desktop: { breakpoint: { max: 3000, min: 1024 }, items: 4, slidesToSlide: 2 },
-  tablet: { breakpoint: { max: 1024, min: 640 }, items: 2, slidesToSlide: 1 },
-  mobile: { breakpoint: { max: 640, min: 0 }, items: 1, slidesToSlide: 1 },
+  superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 5, slidesToSlide: 4 },
+  desktop: { breakpoint: { max: 3000, min: 1024 }, items: 4, slidesToSlide: 3 },
+  tablet: { breakpoint: { max: 1024, min: 640 }, items: 2, slidesToSlide: 2 },
+  mobile: { breakpoint: { max: 640, min: 0 }, items: 1, slidesToSlide: 2 },
 };
 
 const NewsCarousel: React.FC = () => {
