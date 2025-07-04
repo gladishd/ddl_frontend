@@ -1492,7 +1492,6 @@ input[type="text"].pl-10:focus, input[type="search"].pl-10:focus {
    a deliberate, sequential exploration of our foundational arguments.
 ========================================================================== */
 .content {
-  max-width: 710px;
   margin: 0 auto;
 }
 
@@ -1655,7 +1654,6 @@ input[type="text"].pl-10:focus, input[type="search"].pl-10:focus {
  * adapting to their container rather than adhering to a fragile, fixed geometry.
  */
 .read-next-story {
-  right: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
