@@ -79,7 +79,7 @@ const StrategicInitiatives = () => {
     <section className="initiatives-section">
       <div className="container mx-auto">
         <h2 className="initiatives-header">Our Strategic Initiatives</h2>
-        <p className="text-lg text-center text-[rgb(46,45,41)] max-w-3xl mx-auto mb-16">
+        <p className="text-lg text-justify text-[rgb(46,45,41)] max-w-3xl mx-auto mb-16">
           We are executing a multi-pronged strategy combining formal simulation, team development, and robust tooling to build the next generation of Ethernet.
         </p>
         {/*

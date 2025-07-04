@@ -125,6 +125,6 @@ const FeatureCard = ({
     <div className="text-center p-6">
         <div className="text-primary text-4xl mb-4 inline-block">{icon}</div>
         <h3 className="text-2xl font-bold mb-2">{title}</h3>
-        <p className="text-gray-600">{description}</p>
+        <p className="text-gray-600 text-left">{description}</p>
     </div>
 );

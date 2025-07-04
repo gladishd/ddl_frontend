@@ -32,7 +32,7 @@ const EthernetModel = () => {
                         As Metcalfe noted, "At some point the Ether will be so busy that additional stations will just divide more finely the already inadequate bandwidth."
                         This simulation reveals the consequences of that division.
                     */}
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto mt-4">
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto mt-4 text-justify">
             An agent-based simulation of the 1976 Metcalfe-Boggs half-duplex protocol. This is not a statistical analysis; it is a computational model where each station acts as an autonomous agent contending for the Ether. Observe how statistical arbitration and collision handling directly impact the transactional capacity of the network.
           </p>
         </header>

@@ -5,6 +5,14 @@ import { Heart, Eye, Tag, Share2, ImageOff, X as CloseIcon } from 'lucide-react'
 import { pdfjs } from 'react-pdf';
 import type { DocumentRecord } from '@/types/Document';
 import { Button } from '@/components/ui/button';
+// ──────────────────────────────────────────────────────────────
+// Quick helper – tells us if a path looks like an image
+// (add /webp /svg etc. if you store them)
+// ──────────────────────────────────────────────────────────────
+const isImageFile = (href: string) =>
+  [".png", ".jpg", ".jpeg", ".gif", ".webp"].some(ext =>
+    href.toLowerCase().endsWith(ext),
+  );
 
 if (typeof window !== 'undefined' && !pdfjs.GlobalWorkerOptions.workerSrc) {
   pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -35,19 +43,25 @@ export default function DocumentCard({ doc }: Props) {
         if (!entry.isIntersecting) return;
         obs.disconnect();
 
+        /* ── 1️⃣ If it’s an image, just use the file itself ─────────── */
+        if (isImageFile(doc.href)) {
+          setThumbUrl(doc.href);
+          return;
+        }
+
+        /* ── 2️⃣ Otherwise fall back to the current PDF-render path ──── */
         try {
           const pdf = await pdfjs.getDocument(doc.href).promise;
           const page = await pdf.getPage(1);
-
-          const TARGET_W = 300;
-          const v1 = page.getViewport({ scale: 1 });
-          const v2 = page.getViewport({ scale: TARGET_W / v1.width });
+          const W = 300;
+          const vBase = page.getViewport({ scale: 1 });
+          const view = page.getViewport({ scale: W / vBase.width });
 
           const canvas = document.createElement('canvas');
-          canvas.width = v2.width;
-          canvas.height = v2.height;
+          canvas.width = view.width;
+          canvas.height = view.height;
+          await page.render({ canvasContext: canvas.getContext('2d')!, viewport: view }).promise;
 
-          await page.render({ canvasContext: canvas.getContext('2d')!, viewport: v2 }).promise;
           setThumbUrl(canvas.toDataURL('image/png'));
         } catch (err) {
           console.warn('Thumbnail generation failed:', err);
@@ -99,7 +113,7 @@ export default function DocumentCard({ doc }: Props) {
         <div className="card-image-container" ref={hookRef}>
           {thumbUrl ? (
             <img src={thumbUrl} alt={doc.title} className="card-image" />
-          ) : thumbUrl === undefined ? (
+          ) : thumbUrl === undefined ? ( /*  still rendering  */
             <div className="w-full h-full flex items-center justify-center bg-gray-200">
               <ImageOff className="w-6 h-6 text-gray-500" />
             </div>

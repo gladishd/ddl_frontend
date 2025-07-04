@@ -19,7 +19,7 @@ const pool = new Pool({
     : undefined,
 });
 
-/* ────────────────────────── 2. PDF manifest ────────────────────────── */
+/* ────────────────────────── 2. document manifest ───────────────────── */
 type DocMeta = { file: string; title: string; description?: string };
 
 const PDF_META: DocMeta[] = [
@@ -89,6 +89,28 @@ const PDF_META: DocMeta[] = [
     title: "Reversibility & Time-Reversible Computing",
     description: "Charles H. Bennett’s foundational paper on logical reversibility and thermodynamics of computation."
   },
+  // ─── new 2025-07 additions ───
+  { file: "OAE-SPEC-MAIN.pdf", title: "OAE Spec (Main)" },
+  { file: "DeansPresentation.pdf", title: "Dean Gladish – Keynote Slides" },
+  { file: "OCP-OAE-02025-EVOLVING.pdf", title: "OCP-OAE 2025 – Evolving Interconnects" },
+  { file: "CellularAutomata-FromClassicalComputationtoQuantumErrorCorrection.pdf", title: "Cellular Automata – Classical to Quantum EC" },
+  { file: "aethernet_talk_final.pdf", title: "Æthernet Talk (final)" },
+  {
+    file: "TheDistributedFiringSquadProblem-AReviewofTemporalInconsistenciesBetweenComputationandPhysics.pdf",
+    title: "Distributed Firing-Squad – Temporal Inconsistencies"
+  },
+  { file: "PUF_Talk.pdf", title: "PUF Talk" },
+  { file: "Demolition2.pdf", title: "Demolition 2" },
+  { file: "TR25-017.pdf", title: "Technical Report TR25-017" },
+  { file: "LIPIcs.CCC.2022.8.pdf", title: "LIPIcs CCC 2022 §8" },
+  { file: "Square-Root-Space.pdf", title: "Square-Root Space" },
+  { file: "Graph-Report.pdf", title: "Graph Report" },
+  { file: "PastedGraphic-1.png", title: "Inline Graphic 1" },
+  { file: "PastedGraphic-3.png", title: "Inline Graphic 3" },
+  { file: "GuQqVMxbwAAMg4t.jpeg", title: "Æthernet Poster (JPEG)" },
+  { file: "01_principles-of_operation.pdf", title: "Principles of Operation (01)" },
+  { file: "DistributedFiringSquadcopy-BN.pdf", title: "Distributed Firing-Squad (BN copy)" },
+  { file: "Screenshot2025-07-02at7.13.40PM.png", title: "UI Screenshot (2025-07-02 19-13-40)" },
 ];
 
 /* ────────────────────────── 3. Self-seeding + GC ───────────────────── */

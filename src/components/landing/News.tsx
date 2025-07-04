@@ -117,6 +117,222 @@ const newsItems: NewsItem[] = [
     link: 'https://github.com/gladishd/DDL_Emulator/tree/refactor/n2n-neighbor-discovery',
     // We're releasing a 'Precise information-theoretic' emulator to enable competitive interactions for 'Digital Twins'.
     description: 'Now developers can test our protocol stack and build their own time-reversible applications.'
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'OCP All Main Discussion Group',
+    link: 'https://ocp-all.groups.io/g/main',
+    description: 'The main discussion group for the Open Compute Project (OCP) community, covering all topics related to open hardware and data center innovation.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'Open Atomic Ethernet - OpenCompute',
+    link: 'https://www.opencompute.org/w/index.php?title=Open_Atomic_Ethernet',
+    description: 'The official wiki page for the Open Atomic Ethernet project, providing details on the project\'s goals, specifications, and progress.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'ECCC Report: On Perfect Zero-Knowledge and Secure Computation',
+    link: 'https://eccc.weizmann.ac.il/report/2025/017/',
+    description: 'A report from the Electronic Colloquium on Computational Complexity (ECCC) on perfect zero-knowledge, secure computation, and the foundations of cryptography.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'Weizmann Institute of Science',
+    link: 'https://www.weizmann.ac.il/pages/',
+    description: 'The official website of the Weizmann Institute of Science, a leading multidisciplinary research institution.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'IEEE Xplore Author Profile: David H. Wolpert',
+    link: 'https://ieeexplore.ieee.org/author/37088318764',
+    description: 'The IEEE Xplore profile of David H. Wolpert, showcasing his publications and contributions to the field.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'RoCQ Prover Project',
+    link: 'https://rocq-prover.org/',
+    description: 'The official website for the RoCQ Prover, a project focused on the development of a formal proof assistant.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'Wolfram Language: General::partw Message',
+    link: 'https://reference.wolfram.com/legacy/language/v14/ref/message/General/partw.html?v=14.0',
+    description: 'Documentation for the "partw" message in the Wolfram Language, which is issued when a part specification is longer than the depth of the expression.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'OCP TAP Discussion Group',
+    link: 'https://ocp-all.groups.io/g/OCP-TAP/joined',
+    description: 'The discussion group for the Open Compute Project\'s Time Appliances Project (TAP).',
+  },
+  {
+    date: 'July 17, 2024',
+    title: 'Time Appliances Project Call #105 (July 17, 2024)',
+    link: 'https://www.youtube.com/watch?v=ll5aF-oN-YE',
+    description: 'A recording of the Time Appliances Project Call #105, which took place on July 17, 2024.',
+  },
+  {
+    date: 'July 15, 2014',
+    title: 'Leslie Lamport: Thinking Above the Code',
+    link: 'https://www.youtube.com/watch?v=-4Yp3j_jk8Q',
+    description: 'A talk by Leslie Lamport on the importance of thinking about specifications and abstractions before writing code.',
+  },
+  {
+    date: 'December 13, 2024',
+    title: 'Yotam Bentov on Error Detecting and Error Correcting Codes [PWL NYC]',
+    link: 'https://www.youtube.com/watch?v=i4HEp9vaM6Q',
+    description: 'A talk from Papers We Love NYC by Yotam Bentov on error detecting and error correcting codes.',
+  },
+  {
+    date: 'June 21, 2023',
+    title: 'Ori Bernstein on An Introduction to Bε-trees and Write-Optimization [PWL NYC]',
+    link: 'https://www.youtube.com/watch?v=v_g4eZeWAng',
+    description: 'A talk from Papers We Love NYC by Ori Bernstein on Bε-trees and write-optimization techniques.',
+  },
+  {
+    date: 'January 3, 2019',
+    title: 'Time, Clocks and Ordering of Events in a Dist. System by Dan Rubenstein [PWL NYC]',
+    link: 'https://www.youtube.com/watch?v=hK6m6WBk-d8',
+    description: 'A talk from Papers We Love NYC by Dan Rubenstein on Lamport\'s seminal paper on time, clocks, and the ordering of events in a distributed system.',
+  },
+  {
+    date: 'September 26, 2016',
+    title: '"Design Philosophy in Networked Systems" by Justine Sherry',
+    link: 'https://www.youtube.com/watch?v=aR_UOSGEizE',
+    description: 'A talk by Justine Sherry on design philosophy in networked systems.',
+  },
+  {
+    date: 'June 17, 2018',
+    title: 'Wandering Threads - Virtualizing SMP',
+    link: 'https://www.youtube.com/watch?v=Bh5axlxIUvM',
+    description: 'A video by Kevin Cameron on "Wandering Threads," a concept for virtualizing Symmetric Multiprocessing (SMP).',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'Axiomtek Edge AI GPU Computing',
+    link: 'https://us.axiomtek.com/Default.aspx?MenuId=Products&FunctionId=ProductCat&Cat=398&C=Edge+AI+GPU+Computing',
+    description: 'Axiomtek\'s lineup of Edge AI GPU computing solutions, designed for AI-powered applications at the edge.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'OCP Ready Program',
+    link: 'https://www.opencompute.org/wiki/Data_Center_Facility/OCP_Ready',
+    description: 'Information on the Open Compute Project\'s "OCP Ready" program, which certifies data centers that meet OCP standards.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'Wolfram Language: Options',
+    link: 'https://reference.wolfram.com/legacy/language/v14/ref/Options.html?v=14.0',
+    description: 'Documentation for the "Options" function in the Wolfram Language, which is used to get and set options for functions and symbols.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'Wolfram Language: DefaultNewCellStyle',
+    link: 'https://reference.wolfram.com/legacy/language/v14/ref/DefaultNewCellStyle.html?v=14.0',
+    description: 'Documentation for the "DefaultNewCellStyle" option in the Wolfram Language, which specifies the default style for new cells.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'Wolfram Language: How to Plot a Graph',
+    link: 'https://reference.wolfram.com/language/howto/PlotAGraph.html',
+    description: 'A tutorial on how to plot graphs in the Wolfram Language, with examples and options.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'Mathematica: Expand All Cells',
+    link: 'https://comp.soft-sys.math.mathematica.narkive.com/5PwZRm9U/expand-all-cells',
+    description: 'A forum discussion on how to expand all cells in a Mathematica notebook.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'Java Concurrency: Happens-Before Relationship',
+    link: 'https://www.logicbig.com/tutorials/core-java-tutorial/java-multi-threading/happens-before.html',
+    description: 'A tutorial explaining the "happens-before" relationship in Java\'s memory model, which is crucial for writing correct concurrent programs.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'NKS: The Intrinsic Generation of Randomness',
+    link: 'https://www.wolframscience.com/nks/p320--the-intrinsic-generation-of-randomness/',
+    description: 'An excerpt from Stephen Wolfram\'s "A New Kind of Science" discussing the intrinsic generation of randomness in simple programs.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'XDC Demonstrates Breakthrough High-Speed Display for Free-Space Optical Wireless Communication',
+    link: 'https://www.xdisplay.com/pressrelease/xdc-demonstrates-breakthrough-high-speed-display-for-free-space-optical-wireless-communication/',
+    description: 'A press release from XDC announcing a breakthrough in high-speed displays for free-space optical wireless communication.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'arXiv Paper: "The Unreasonable Effectiveness of Recurrent Neural Networks"',
+    link: 'https://arxiv.org/pdf/2003.05542',
+    description: 'A research paper discussing the surprising effectiveness of recurrent neural networks in various applications.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'Book: "Random Number Generators—Principles and Practices: For Scientists and Engineers"',
+    link: 'https://www.amazon.com/Random-Number-Generators-Principles-Practice-Programmers/dp/1501515136',
+    description: 'A book on random number generators, covering their principles, practices, and applications for scientists and engineers.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'Book: "Noise and Randomness in Living Systems"',
+    link: 'https://books.google.com/books?id=kIxuDwAAQBAJ',
+    description: 'A book exploring the role of noise and randomness in living systems, from the molecular level to entire ecosystems.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'Zenodo: Research. Shared.',
+    link: 'https://zenodo.org/',
+    description: 'Zenodo is a general-purpose open-access repository developed under the European OpenAIRE program and operated by CERN.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'Logical Reversibility of Computation',
+    link: 'https://mathweb.ucsd.edu/~sbuss/CourseWeb/Math268_2013W/Bennett_Reversibiity.pdf',
+    description: 'A paper by Charles H. Bennett on the logical reversibility of computation, a foundational concept in reversible computing.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'Daedaelus: A New Approach to Distributed Systems',
+    link: 'https://daedaelus.com/',
+    description: 'The official website of the Daedaelus project, which is developing a new approach to building resilient and efficient distributed systems.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'Wikipedia: Open Compute Project',
+    link: 'https://en.wikipedia.org/wiki/Open_Compute_Project',
+    description: 'The Wikipedia page for the Open Compute Project (OCP), providing an overview of its history, goals, and projects.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'Ether: Distributed Packet Switching for Local Computer Networks',
+    link: 'https://dl.acm.org/doi/pdf/10.1145/363347.363366',
+    description: 'The original paper by Robert M. Metcalfe and David R. Boggs that introduced the Ethernet protocol.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'A Note on Reliable Full-Duplex Transmission over Half-Duplex Links',
+    link: 'https://dl.acm.org/doi/pdf/10.1145/362946.362970',
+    description: 'A research paper discussing techniques for achieving reliable full-duplex transmission over half-duplex communication links.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'PRX: "Experimental Realization of a Quantum Nanosystem with Controllable Quantum Chaos"',
+    link: 'https://journals.aps.org/prx/pdf/10.1103/PhysRevX.15.021044',
+    description: 'A paper in Physical Review X on the experimental realization of a quantum nanosystem with controllable quantum chaos.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'Wikipedia: Alternating Sign Matrix',
+    link: 'https://en.wikipedia.org/wiki/Alternating_sign_matrix',
+    description: 'The Wikipedia page for alternating sign matrices, a class of matrices with entries 0, 1, and -1, with connections to various areas of mathematics.',
+  },
+  {
+    date: 'July 4, 2025',
+    title: 'About Daedaelus',
+    link: 'https://daedaelus.com/about/',
+    description: 'The about page for the Daedaelus project, providing more information about its mission and team.',
   }
 ];
 
@@ -124,10 +340,10 @@ const newsItems: NewsItem[] = [
 // It is an adaptive ruleset, ensuring the view conforms to the observer's local environment (viewport)
 // rather than being a fragile, fixed-width layout. A fixed cartesian coordinate system would be far too fragile.
 const responsive = {
-  superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 5 },
-  desktop: { breakpoint: { max: 3000, min: 1024 }, items: 4 },
-  tablet: { breakpoint: { max: 1024, min: 640 }, items: 2 },
-  mobile: { breakpoint: { max: 640, min: 0 }, items: 1 },
+  superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 5, slidesToSlide: 3 },
+  desktop: { breakpoint: { max: 3000, min: 1024 }, items: 4, slidesToSlide: 2 },
+  tablet: { breakpoint: { max: 1024, min: 640 }, items: 2, slidesToSlide: 1 },
+  mobile: { breakpoint: { max: 640, min: 0 }, items: 1, slidesToSlide: 1 },
 };
 
 const NewsCarousel: React.FC = () => {
