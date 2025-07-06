@@ -183,6 +183,14 @@ const rawNotebooks: RawNotebook[] = [
     type: 'wolfram',
     date: "July 4, 2025",
   },
+  {
+    id: 19,
+    title: "Model 19: Comprehensive Æthernet Toolkit and Interactive Modules",
+    description: "A unified Mathematica & TypeScript computational notebook integrating multiple interactive modules under the Daedælus lens: the Fabric Analysis Console for ROI-based token-balance profiling in the GVM; a dynamic geolocation and weather dashboard; Project Euler solvers with step-by-step visual analytics; the DaedælusSignals package for reversible financial indicators (SMA, RSI, volume charts); GraphQL-powered causal timeline visualizations; the DaedælusTokenDynamicsModel clustering analysis; a lineup-generation interface; a simulated-annealing TSP explorer; resource-allocation flow imbalance charts; advanced data transformations (min-max, standardization, gaussianization) and correlation diagnostics; a GAN-based original/generated/reconstructed image grid; and interactive `Manipulate` constructs for exploratory data analysis. Together, these modules illustrate the epistemic-state degradation and transactional-capacity collapse inherent in bandwidth-multiplexing, and demonstrate the necessity of Daedælus’ transaction-multiplexed fabric.",
+    url: "model-19-comprehensive-aethernet-toolkit-and-interactive-modules",
+    type: "wolfram",
+    date: "July 6, 2025",
+  },
   ];
 
 // Now map over the typed array to inject the slug field without widening `type`.
