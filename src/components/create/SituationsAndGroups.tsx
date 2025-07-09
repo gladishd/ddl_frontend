@@ -5,7 +5,12 @@ import React, { useContext, useState, useMemo } from 'react';
 import { CanvasContext } from '@/context/canvas/CanvasContext';
 import styles from './styles/SituationsAndGroups.module.css';
 import { FaCaretRight, FaCaretDown } from 'react-icons/fa';
-import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from '@hello-pangea/dnd';
 import { Group } from '@/types/canvas/Group';
 import { Situation } from '@/types/canvas/Situation';
 
@@ -13,10 +18,12 @@ interface SituationsAndGroupsProps {
   setRenderEditSidebar: (render: boolean) => void;
 }
 
-// This component provides a direct interface for manipulating the 'groundplane'—the physical graph of Cells and Links.
+// This component provides a direct interface for manipulating the "ground-plane"—the physical graph of Cells and Links.
 // "Manage on a Tree, Compute on a Graph." Here, users organize Cells into TRAPHs (Groups), establishing the
 // hierarchical tree structure used for management, confinement, and efficient routing.
-const SituationsAndGroups: React.FC<SituationsAndGroupsProps> = ({ setRenderEditSidebar }) => {
+const SituationsAndGroups: React.FC<SituationsAndGroupsProps> = ({
+  setRenderEditSidebar,
+}) => {
   const {
     groups,
     situations,
@@ -29,7 +36,8 @@ const SituationsAndGroups: React.FC<SituationsAndGroupsProps> = ({ setRenderEdit
     onSelectGroup,
   } = useContext(CanvasContext);
 
-  const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
+  const [collapsedGroups, setCollapsedGroups] =
+    useState<Record<string, boolean>>({});
 
   const handleCreateGroup = async () => {
     const newGroup = await createGroup();
@@ -42,22 +50,38 @@ const SituationsAndGroups: React.FC<SituationsAndGroupsProps> = ({ setRenderEdit
   // This state transformation is now fully typed, ensuring its operation is
   // verifiable and its inputs are unambiguous. Each 'group' is a well-defined
   // logical entity (a TRAPH), and this precision prevents state corruption.
-  const groupedSituations = useMemo(() => groups.reduce((acc: Record<string, Situation[]>, group: Group) => {
-    acc[group._id] = situations.filter((s: Situation) => s.situationGroup === group._id);
-    return acc;
-  }, {} as Record<string, Situation[]>), [groups, situations]);
+  const groupedSituations = useMemo(
+    () =>
+      groups.reduce((acc: Record<string, Situation[]>, group: Group) => {
+        acc[group._id] = situations.filter(
+          (s: Situation) => s.situationGroup === group._id,
+        );
+        return acc;
+      }, {} as Record<string, Situation[]>),
+    [groups, situations],
+  );
 
-  const ungroupedSituations = useMemo(() => situations.filter((s: Situation) => !s.situationGroup), [situations]);
+  const ungroupedSituations = useMemo(
+    () => situations.filter((s: Situation) => !s.situationGroup),
+    [situations],
+  );
 
   const onDragEnd = async (result: DropResult) => {
     const { destination, source, draggableId } = result;
     if (!destination) return;
-    if (destination.droppableId === source.droppableId && destination.index === source.index) return;
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    )
+      return;
 
     // The protocol for updateSituationAndNode requires a 'string | undefined' type.
     // We must use 'undefined' instead of 'null' to represent the absence of a group,
     // thereby ensuring our transactional update adheres to the strict data contract.
-    const newGroupId = destination.droppableId === 'ungrouped' ? undefined : destination.droppableId;
+    const newGroupId =
+      destination.droppableId === 'ungrouped'
+        ? undefined
+        : destination.droppableId;
     await updateSituationAndNode(draggableId, { situationGroup: newGroupId });
   };
 
@@ -71,13 +95,19 @@ const SituationsAndGroups: React.FC<SituationsAndGroupsProps> = ({ setRenderEdit
           {groups.map((group: Group) => (
             <div key={group._id}>
               <div
-                className={`${styles.groupTitle} ${selectedGroup?._id === group._id ? styles.selectedGroup : ''}`}
+                className={`${styles.groupTitle} ${selectedGroup?._id === group._id ? styles.selectedGroup : ''
+                  }`}
                 onClick={() => getGroup(group._id)}
               >
-                <span onClick={(e) => {
-                  e.stopPropagation();
-                  setCollapsedGroups(p => ({ ...p, [group._id]: !p[group._id] }));
-                }}>
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCollapsedGroups((p) => ({
+                      ...p,
+                      [group._id]: !p[group._id],
+                    }));
+                  }}
+                >
                   {collapsedGroups[group._id] ? <FaCaretRight /> : <FaCaretDown />}
                 </span>
                 {group.title || 'Untitled Group'}
@@ -85,20 +115,35 @@ const SituationsAndGroups: React.FC<SituationsAndGroupsProps> = ({ setRenderEdit
               {!collapsedGroups[group._id] && (
                 <Droppable droppableId={group._id}>
                   {(provided) => (
-                    <div ref={provided.innerRef} {...provided.droppableProps} className={styles.situationList}>
-                      {(groupedSituations[group._id] || []).map((situation, index) => (
-                        <Draggable key={situation._id} draggableId={situation._id} index={index}>
-                          {(provided) => (
-                            <div
-                              ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}
-                              className={`${styles.situationItem} ${selectedSituation?._id === situation._id ? styles.selectedSituation : ''}`}
-                              onClick={() => getSituation(situation._id)}
-                            >
-                              {situation.title || 'Untitled Cell'}
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      className={styles.situationList}
+                    >
+                      {(groupedSituations[group._id] || []).map(
+                        (situation: Situation, index: number) => (
+                          <Draggable
+                            key={sitation._id}
+                            draggableId={situation._id}
+                            index={index}
+                          >
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                className={`${styles.situationItem} ${selectedSituation?._id === situation._id
+                                  ? styles.selectedSituation
+                                  : ''
+                                  }`}
+                                onClick={() => getSituation(situation._id)}
+                              >
+                                {situation.title || 'Untitled Cell'}
+                              </div>
+                            )}
+                          </Draggable>
+                        ),
+                      )}
                       {provided.placeholder}
                     </div>
                   )}
@@ -109,20 +154,35 @@ const SituationsAndGroups: React.FC<SituationsAndGroupsProps> = ({ setRenderEdit
           <div className={styles.ungroupedTitle}>Ungrouped Cells</div>
           <Droppable droppableId="ungrouped">
             {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps} className={styles.situationList}>
-                {ungroupedSituations.map((situation, index) => (
-                  <Draggable key={situation._id} draggableId={situation._id} index={index}>
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}
-                        className={`${styles.situationItem} ${selectedSituation?._id === situation._id ? styles.selectedSituation : ''}`}
-                        onClick={() => getSituation(situation._id)}
-                      >
-                        {situation.title || 'Untitled Cell'}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className={styles.situationList}
+              >
+                {ungroupedSituations.map(
+                  (situation: Situation, index: number) => (
+                    <Draggable
+                      key={sitation._id}
+                      draggableId={situation._id}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className={`${styles.situationItem} ${selectedSituation?._id === situation._id
+                            ? styles.selectedSituation
+                            : ''
+                            }`}
+                          onClick={() => getSituation(situation._id)}
+                        >
+                          {situation.title || 'Untitled Cell'}
+                        </div>
+                      )}
+                    </Draggable>
+                  ),
+                )}
                 {provided.placeholder}
               </div>
             )}
