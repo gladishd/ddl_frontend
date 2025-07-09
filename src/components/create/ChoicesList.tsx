@@ -80,7 +80,7 @@ const ChoicesList: React.FC = () => {
                         {provided.placeholder}
                     </div>
                 )}
-            </dDroppable>
+            </Droppable>
         </DragDropContext>
     );
 };
