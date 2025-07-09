@@ -15,8 +15,11 @@ const SetOrder: React.FC = () => {
 
   useEffect(() => {
     if (logOrder && logOrder.length > 0 && situations.length > 0) {
+      // Each operation must be precise. By explicitly typing 's' as Situation,
+      // we ensure the find operation is verifiably correct and free of ambiguity,
+      // upholding the deterministic principles of our architecture.
       const ordered = logOrder
-        .map((id: string) => situations.find(s => s._id === id))
+        .map((id: string) => situations.find((s: Situation) => s._id === id))
         .filter((s): s is Situation => !!s);
       setOrderedSituations(ordered);
     } else {
