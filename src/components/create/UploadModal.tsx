@@ -1,55 +1,73 @@
 import React, { useState, useContext, useEffect, ChangeEvent } from 'react';
 import styles from './styles/UploadModal.module.css';
 import { CanvasContext } from '@/context/canvas/CanvasContext';
-import MediaPlayer from '@/utils/MediaPlayer'; // Assuming this utility is migrated
-import { getMediaSrc } from '@/utils/utils'; // Assuming this utility is migrated
+import MediaPlayer from '@/utils/MediaPlayer';
+import { getMediaSrc } from '@/utils/utils';
 
 interface UploadModalProps {
   uploadType: 'image' | 'audio';
   setIsModalOpen: (isOpen: boolean) => void;
 }
 
-// The UploadModal facilitates the attachment of a semantic payload (image, audio, video) to a Cell or Group.
-// This is not mere decoration; it enriches the state of a GVM element with observable data that can
-// inform user interactions or programmatic behavior.
+/**
+ * UploadModal allows a user to attach media to a Cell (Situation) or Group.
+ * The data layer expects a Partial<Situation | Group>, but our UI deals with
+ * a raw FormData payload. We cast the FormData to `any` to satisfy TypeScript
+ * while preserving runtime behaviour.
+ */
 const UploadModal: React.FC<UploadModalProps> = ({ uploadType, setIsModalOpen }) => {
   const {
     updateSituationAndNode,
     updateGroup,
     selectedSituation,
     selectedGroup,
-    loading
+    loading,
   } = useContext(CanvasContext);
 
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
 
-  // ... (useEffect hook to set initial preview would go here) ...
-
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files?.[0];
-    setErrorMessage('');
+  /* ------------------------------------------------------------
+     Helpers
+  -------------------------------------------------------------*/
+  const resetState = () => {
     setFile(null);
     setPreview(null);
-
-    if (selectedFile) {
-      // This is a local-only validation, a pre-check before the transaction to
-      // attach the media is attempted.
-      const maxSize = 50 * 1024 * 1024; // 50MB
-      if (selectedFile.size > maxSize) {
-        setErrorMessage(`File size exceeds 50MB limit.`);
-        return;
-      }
-      // ... (rest of file type validation logic) ...
-
-      setFile(selectedFile);
-      const reader = new FileReader();
-      reader.onloadend = () => setPreview(reader.result as string);
-      reader.readAsDataURL(selectedFile);
-    }
+    setErrorMessage('');
   };
 
+  /* ------------------------------------------------------------
+     File selection / validation
+  -------------------------------------------------------------*/
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    resetState();
+
+    if (!selectedFile) return;
+
+    const maxSize = 50 * 1024 * 1024; // 50 MiB
+    if (selectedFile.size > maxSize) {
+      setErrorMessage('File size exceeds 50 MiB limit.');
+      return;
+    }
+
+    // Basic MIME‑type guard (could be extended)
+    const allowed = uploadType === 'image' ? /^image\// : /^(audio|video)\//;
+    if (!allowed.test(selectedFile.type)) {
+      setErrorMessage(`Invalid file type for ${uploadType} upload.`);
+      return;
+    }
+
+    setFile(selectedFile);
+    const reader = new FileReader();
+    reader.onloadend = () => setPreview(reader.result as string);
+    reader.readAsDataURL(selectedFile);
+  };
+
+  /* ------------------------------------------------------------
+     Save action
+  -------------------------------------------------------------*/
   const handleSave = async () => {
     if (!file || loading) return;
 
@@ -58,9 +76,15 @@ const UploadModal: React.FC<UploadModalProps> = ({ uploadType, setIsModalOpen })
 
     try {
       if (selectedSituation?._id) {
-        await updateSituationAndNode(selectedSituation._id, formData);
-      } else if (selectedGroup) {
-        await updateGroup(selectedGroup._id, formData);
+        await updateSituationAndNode(
+          selectedSituation._id,
+          formData as unknown as Partial<Situation>,
+        );
+      } else if (selectedGroup?._id) {
+        await updateGroup(
+          selectedGroup._id,
+          formData as unknown as Record<string, unknown>,
+        );
       }
       setIsModalOpen(false);
     } catch (error) {
@@ -69,11 +93,21 @@ const UploadModal: React.FC<UploadModalProps> = ({ uploadType, setIsModalOpen })
     }
   };
 
+  /* ------------------------------------------------------------
+     JSX
+  -------------------------------------------------------------*/
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
-        <h2 className={styles.modalTitle}>Upload {uploadType === 'image' ? 'Image' : 'Media'}</h2>
-        <label htmlFor="file-upload" className={`${styles.buttonBase} ${styles.uploadButton}`}>
+        <h2 className={styles.modalTitle}>
+          Upload {uploadType === 'image' ? 'Image' : 'Media'}
+        </h2>
+
+        {/* File picker */}
+        <label
+          htmlFor="file-upload"
+          className={`${styles.buttonBase} ${styles.uploadButton}`}
+        >
           {preview ? 'Change File' : 'Select File'}
         </label>
         <input
@@ -84,21 +118,43 @@ const UploadModal: React.FC<UploadModalProps> = ({ uploadType, setIsModalOpen })
           accept={uploadType === 'image' ? 'image/*' : 'audio/*,video/*'}
           disabled={loading}
         />
+
+        {/* Validation / server messages */}
         {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+
+        {/* Preview */}
         {preview && (
           <div className={styles.previewContainer}>
             {uploadType === 'image' ? (
-              <img src={getMediaSrc(preview)} alt="Preview" className={styles.previewImage} />
+              <img
+                src={getMediaSrc(preview)}
+                alt="Preview"
+                className={styles.previewImage}
+              />
             ) : (
-              <MediaPlayer src={getMediaSrc(preview)} autoplay={false} className={styles.previewMedia} />
+                <MediaPlayer
+                  src={getMediaSrc(preview)}
+                  autoplay={false}
+                  className={styles.previewMedia}
+                />
             )}
           </div>
         )}
+
+        {/* Buttons */}
         <div className={styles.buttonGroup}>
-          <button onClick={handleSave} className={`${styles.buttonBase} ${styles.saveButton}`} disabled={!file || loading}>
-            {loading ? 'Saving...' : 'Save'}
+          <button
+            onClick={handleSave}
+            className={`${styles.buttonBase} ${styles.saveButton}`}
+            disabled={!file || loading}
+          >
+            {loading ? 'Saving…' : 'Save'}
           </button>
-          <button onClick={() => setIsModalOpen(false)} className={`${styles.buttonBase} ${styles.cancelButton}`} disabled={loading}>
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className={`${styles.buttonBase} ${styles.cancelButton}`}
+            disabled={loading}
+          >
             Cancel
           </button>
         </div>
