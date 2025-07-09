@@ -10,6 +10,7 @@ import styles from './styles/EditSituation.module.css';
 import EditSidebarTabs from './EditSidebarTabs';
 import DeleteModal from './DeleteModal';
 import UploadModal from './UploadModal';
+import ChoicesList from './ChoicesList'; // Import ChoicesList
 
 interface EditSituationProps {
   setRenderEditSidebar: (render: boolean) => void;
@@ -22,7 +23,7 @@ const EditSituation: React.FC<EditSituationProps> = ({ setRenderEditSidebar }) =
     deleteSituationAndNode,
     activeEditTab,
     loading,
-    resetState, // The global reset transaction is accessed here.
+    resetState,
   } = useContext(CanvasContext);
 
   const [title, setTitle] = useState(selectedSituation?.title || '');
@@ -51,21 +52,23 @@ const EditSituation: React.FC<EditSituationProps> = ({ setRenderEditSidebar }) =
 
   const handleReset = () => {
     // This action reverts the entire GVM to its genesis state.
-    if (window.confirm('Are you sure you want to reset the entire canvas? This action cannot be undone.')) {
+    if (window.confirm('This will revert the groundplane to its initial state. This action cannot be undone. Proceed?')) {
       resetState();
     }
   }
 
   const renderTabContent = () => {
     switch (activeEditTab) {
-      case '2': // Settings Tab
+      case '2': // Links Tab
+        return <ChoicesList />;
+      case '3': // Settings Tab
         return (
           <div className={styles.settingsContainer}>
-            <button onClick={() => setShowDeleteModal(true)} className={styles.deleteButton} disabled={loading}>
+            <button onClick={() => setShowDeleteModal(true)} className={styles.deleteButton} disabled={loading || selectedSituation?.isStart}>
               Destroy Ethernet Node
             </button>
             <button onClick={handleReset} className={styles.resetButton} disabled={loading}>
-              Reset Canvas
+              Reset Groundplane
             </button>
           </div>
         );

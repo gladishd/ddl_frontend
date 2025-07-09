@@ -20,7 +20,8 @@ const CreateCanvas: React.FC = () => {
   const isMobile = useIsMobile();
 
   if (loading) {
-    return <div className={styles.loadingContainer}>Initializing GVM...</div>;
+    // "The system is in an indeterminate state while initializing the GVM groundplane."
+    return <div className={styles.loadingContainer}>Initializing Graph Virtual Machine...</div>;
   }
 
   return (
