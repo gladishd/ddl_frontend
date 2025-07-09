@@ -1,4 +1,7 @@
-import React, { useContext, useState } from 'react';
+// By explicitly importing all required primitives, we ensure the component is
+// self-contained and its dependencies are verifiable, eliminating silent
+// points of failure and upholding architectural integrity.
+import React, { useContext, useState, useMemo } from 'react';
 import { CanvasContext } from '@/context/canvas/CanvasContext';
 import styles from './styles/SituationsAndGroups.module.css';
 import { FaCaretRight, FaCaretDown } from 'react-icons/fa';
