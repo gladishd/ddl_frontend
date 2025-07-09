@@ -56,7 +56,12 @@ const LinkSituation: React.FC<LinkSituationProps> = ({ nextSituation }) => {
 
       <div className={styles.listWrapper}>
         <ul className={styles.situationList}>
-          {filteredSituations.map((situation) => (
+          {/*
+            Each 'situation' passed by the map function is explicitly typed as 'Situation'.
+            This removes ambiguity and ensures type-safety, aligning with our
+            principle of building formally verifiable and precise systems.
+          */}
+          {filteredSituations.map((situation: Situation) => (
             <li
               key={situation._id}
               className={`${styles.situationItem} ${nextSituation?._id === situation._id ? styles.highlightedSituation : ''}`}
