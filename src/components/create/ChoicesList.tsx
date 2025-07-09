@@ -25,12 +25,16 @@ const ChoicesList: React.FC = () => {
         reorderedChoices.splice(result.destination.index, 0, removed);
 
         setDisplayChoices(reorderedChoices);
-        const reorderedChoiceIds = reorderedChoices.map(choice => choice._id);
 
         try {
-            await updateSituationAndNode(selectedSituation._id, { choices: reorderedChoiceIds });
+            // The protocol for updating the GVM requires the full state of the choices array.
+            // Passing the 'reorderedChoices' array directly ensures that the transaction to
+            // update the node's state is complete and lossless, preserving the full information
+            // content of each Link rather than just its identifier.
+            await updateSituationAndNode(selectedSituation._id, { choices: reorderedChoices });
         } catch (error) {
             console.error("Error updating choice order:", error);
+            // On failure, the subtransaction is reversed by reverting the UI state.
             setDisplayChoices(selectedSituation?.choices || []);
         }
     };
@@ -76,7 +80,7 @@ const ChoicesList: React.FC = () => {
                         {provided.placeholder}
                     </div>
                 )}
-            </Droppable>
+            </dDroppable>
         </DragDropContext>
     );
 };
