@@ -43,11 +43,11 @@ const SituationsAndGroups: React.FC<SituationsAndGroupsProps> = ({ setRenderEdit
   // verifiable and its inputs are unambiguous. Each 'group' is a well-defined
   // logical entity (a TRAPH), and this precision prevents state corruption.
   const groupedSituations = useMemo(() => groups.reduce((acc: Record<string, Situation[]>, group: Group) => {
-    acc[group._id] = situations.filter(s => s.situationGroup === group._id);
+    acc[group._id] = situations.filter((s: Situation) => s.situationGroup === group._id);
     return acc;
   }, {} as Record<string, Situation[]>), [groups, situations]);
 
-  const ungroupedSituations = useMemo(() => situations.filter(s => !s.situationGroup), [situations]);
+  const ungroupedSituations = useMemo(() => situations.filter((s: Situation) => !s.situationGroup), [situations]);
 
   const onDragEnd = async (result: DropResult) => {
     const { destination, source, draggableId } = result;
