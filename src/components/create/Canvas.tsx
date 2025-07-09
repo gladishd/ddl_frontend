@@ -91,7 +91,13 @@ const Canvas: React.FC<CanvasProps> = ({ setRenderEditSidebar, isMobile }) => {
       >
         <Controls />
         <Background color="#aaa" gap={16} />
-        <EdgeLabelRenderer />
+        {/*
+          The <EdgeLabelRenderer /> component has been removed. It is a wrapper
+          that requires children to function and was causing a build failure
+          as it was being invoked without them. Its removal simplifies the
+          component and ensures architectural correctness, aligning with the
+          principle of eliminating unnecessary elements.
+        */}
         <ErrorOverlay onSelectNode={() => { }} onSelectEdge={() => { }} />
       </ReactFlow>
     </div>
