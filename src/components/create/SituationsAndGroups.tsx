@@ -123,7 +123,7 @@ const SituationsAndGroups: React.FC<SituationsAndGroupsProps> = ({
                       {(groupedSituations[group._id] || []).map(
                         (situation: Situation, index: number) => (
                           <Draggable
-                            key={sitation._id}
+                            key={situation._id}
                             draggableId={situation._id}
                             index={index}
                           >
@@ -162,7 +162,7 @@ const SituationsAndGroups: React.FC<SituationsAndGroupsProps> = ({
                 {ungroupedSituations.map(
                   (situation: Situation, index: number) => (
                     <Draggable
-                      key={sitation._id}
+                      key={situation._id}
                       draggableId={situation._id}
                       index={index}
                     >
