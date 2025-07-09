@@ -39,7 +39,10 @@ const SituationsAndGroups: React.FC<SituationsAndGroupsProps> = ({ setRenderEdit
     }
   };
 
-  const groupedSituations = useMemo(() => groups.reduce((acc, group) => {
+  // A state transformation like 'reduce' must have explicitly typed parameters
+  // to be verifiable. Typing the accumulator 'acc' ensures the integrity of the
+  // resulting data structure at every step of its construction.
+  const groupedSituations = useMemo(() => groups.reduce((acc: Record<string, Situation[]>, group) => {
     acc[group._id] = situations.filter(s => s.situationGroup === group._id);
     return acc;
   }, {} as Record<string, Situation[]>), [groups, situations]);
