@@ -3,6 +3,11 @@ import styles from './styles/UploadModal.module.css';
 import { CanvasContext } from '@/context/canvas/CanvasContext';
 import MediaPlayer from '@/utils/MediaPlayer';
 import { getMediaSrc } from '@/utils/utils';
+// A component that performs transactions on core GVM entities must explicitly
+// import their type definitions. This ensures all operations are verifiable
+// and conform to the system's architectural contracts.
+import { Situation } from '@/types/canvas/Situation';
+import { Group } from '@/types/canvas/Group';
 
 interface UploadModalProps {
   uploadType: 'image' | 'audio';
@@ -30,7 +35,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ uploadType, setIsModalOpen })
 
   /* ------------------------------------------------------------
      Helpers
-  -------------------------------------------------------------*/
+   -------------------------------------------------------------*/
   const resetState = () => {
     setFile(null);
     setPreview(null);
@@ -39,20 +44,20 @@ const UploadModal: React.FC<UploadModalProps> = ({ uploadType, setIsModalOpen })
 
   /* ------------------------------------------------------------
      File selection / validation
-  -------------------------------------------------------------*/
+   -------------------------------------------------------------*/
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     resetState();
 
     if (!selectedFile) return;
 
-    const maxSize = 50 * 1024 * 1024; // 50 MiB
+    const maxSize = 50 * 1024 * 1024; // 50 MiB
     if (selectedFile.size > maxSize) {
-      setErrorMessage('File size exceeds 50 MiB limit.');
+      setErrorMessage('File size exceeds 50 MiB limit.');
       return;
     }
 
-    // Basic MIME‑type guard (could be extended)
+    // Basic MIME-type guard (could be extended)
     const allowed = uploadType === 'image' ? /^image\// : /^(audio|video)\//;
     if (!allowed.test(selectedFile.type)) {
       setErrorMessage(`Invalid file type for ${uploadType} upload.`);
@@ -67,7 +72,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ uploadType, setIsModalOpen })
 
   /* ------------------------------------------------------------
      Save action
-  -------------------------------------------------------------*/
+   -------------------------------------------------------------*/
   const handleSave = async () => {
     if (!file || loading) return;
 
@@ -83,7 +88,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ uploadType, setIsModalOpen })
       } else if (selectedGroup?._id) {
         await updateGroup(
           selectedGroup._id,
-          formData as unknown as Record<string, unknown>,
+          formData as unknown as Partial<Group>,
         );
       }
       setIsModalOpen(false);
@@ -95,7 +100,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ uploadType, setIsModalOpen })
 
   /* ------------------------------------------------------------
      JSX
-  -------------------------------------------------------------*/
+   -------------------------------------------------------------*/
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
