@@ -7,33 +7,34 @@ interface SituationsListProps {
   situations: Situation[];
 }
 
-// This component lists the Cells (Situations) contained within a Group (TRAPH).
-// It's a Local Observer View of a subgraph within the GVM, allowing for direct
-// interaction with the members of that confined set.
+// Lists the Cells (Situations) contained within a Group (TRAPH).
+// Removing a Cell is an atomic transaction: `situationGroup` becomes `undefined` (never `null`).
 const SituationsList: React.FC<SituationsListProps> = ({ situations }) => {
-  const { updateSituationAndNode, getSituation, setActiveEditTab } = useContext(CanvasContext);
+  const {
+    updateSituationAndNode,
+    getSituation,
+    setActiveEditTab,
+  } = useContext(CanvasContext);
 
-  // This operation is a transactional state change, moving a Cell from one TRAPH to another (the null group).
-  // The GVM ensures this change is atomic.
   const removeSituationFromGroup = async (situationId: string) => {
     try {
-      await updateSituationAndNode(situationId, { situationGroup: null });
+      await updateSituationAndNode(situationId, { situationGroup: undefined });
     } catch (error) {
-      console.error("Error removing Cell from Group or updating canvas: ", error);
+      console.error('Error removing Cell from Group or updating canvas: ', error);
     }
   };
 
   const handleSituationClick = async (situationId: string) => {
     await getSituation(situationId);
-    if (setActiveEditTab) setActiveEditTab("1");
+    if (setActiveEditTab) setActiveEditTab('1');
   };
 
   return (
     <div className={styles.situationsContainer}>
-      {(!situations || situations.length === 0) ? (
+      {situations.length === 0 ? (
         <div className={styles.noSituationsText}>No Cells in this Group</div>
       ) : (
-        situations.map((situation) => (
+          situations.map((situation: Situation) => (
           <div
             key={situation._id}
             className={styles.situationItem}
@@ -44,11 +45,11 @@ const SituationsList: React.FC<SituationsListProps> = ({ situations }) => {
             </div>
             <button
               className={styles.removeButton}
+                aria-label="Remove situation from group"
               onClick={(e) => {
                 e.stopPropagation();
                 removeSituationFromGroup(situation._id);
               }}
-              aria-label="Remove situation from group"
             >
               <span className={styles.minusIcon}>−</span>
             </button>
