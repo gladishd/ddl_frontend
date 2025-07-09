@@ -39,10 +39,10 @@ const SituationsAndGroups: React.FC<SituationsAndGroupsProps> = ({ setRenderEdit
     }
   };
 
-  // A state transformation like 'reduce' must have explicitly typed parameters
-  // to be verifiable. Typing the accumulator 'acc' ensures the integrity of the
-  // resulting data structure at every step of its construction.
-  const groupedSituations = useMemo(() => groups.reduce((acc: Record<string, Situation[]>, group) => {
+  // This state transformation is now fully typed, ensuring its operation is
+  // verifiable and its inputs are unambiguous. Each 'group' is a well-defined
+  // logical entity (a TRAPH), and this precision prevents state corruption.
+  const groupedSituations = useMemo(() => groups.reduce((acc: Record<string, Situation[]>, group: Group) => {
     acc[group._id] = situations.filter(s => s.situationGroup === group._id);
     return acc;
   }, {} as Record<string, Situation[]>), [groups, situations]);
