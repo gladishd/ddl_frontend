@@ -54,7 +54,10 @@ const SituationsAndGroups: React.FC<SituationsAndGroupsProps> = ({ setRenderEdit
     if (!destination) return;
     if (destination.droppableId === source.droppableId && destination.index === source.index) return;
 
-    const newGroupId = destination.droppableId === 'ungrouped' ? null : destination.droppableId;
+    // The protocol for updateSituationAndNode requires a 'string | undefined' type.
+    // We must use 'undefined' instead of 'null' to represent the absence of a group,
+    // thereby ensuring our transactional update adheres to the strict data contract.
+    const newGroupId = destination.droppableId === 'ungrouped' ? undefined : destination.droppableId;
     await updateSituationAndNode(draggableId, { situationGroup: newGroupId });
   };
 
