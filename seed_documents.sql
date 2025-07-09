@@ -184,6 +184,24 @@ INSERT INTO documents (title, description, image, href) VALUES
  'UI mock-up of the new library view.',
  'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80',
  '/Screenshot2025-07-02at7.13.40PM.png')
+
+--------------------------------------------------------------------------------
+-- ░░ NEW ENTRIES (2025-07-09) ░░
+--------------------------------------------------------------------------------
+('Quantum Cellular Automata (QCA) Primer',
+ 'Introductory survey: QCA as a bridge between CA and quantum information.',
+ 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80',
+ '/QCA.pdf'),
+
+('RDMA Meta-Protocol',
+ 'Design notes for an RDMA-accelerated meta-protocol in Ethernet 2025.',
+ 'https://images.unsplash.com/photo-1504386106331-3e4e71712b38?auto=format&fit=crop&w=800&q=80',
+ '/RDMA-Meta.pdf'),
+
+('TAP #120 — Set Reconciliation (Pat & Daniel)',
+ 'Time Appliances Project episode 120: provably-safe set reconciliation.',
+ 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80',
+ '/TAP120_Set-Reconcilliation-Pat-Daniel.pdf')
 ON CONFLICT (href) DO NOTHING;   -- safe to re-run
 
 COMMIT;

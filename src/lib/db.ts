@@ -111,6 +111,22 @@ const PDF_META: DocMeta[] = [
   { file: "01_principles-of_operation.pdf", title: "Principles of Operation (01)" },
   { file: "DistributedFiringSquadcopy-BN.pdf", title: "Distributed Firing-Squad (BN copy)" },
   { file: "Screenshot2025-07-02at7.13.40PM.png", title: "UI Screenshot (2025-07-02 19-13-40)" },
+  /* ――― 2025-07-09 additions ――― */
+  {
+    file: "QCA.pdf",
+    title: "Quantum Cellular Automata (QCA) Primer",
+    description: "Survey linking classical CA to quantum information processing."
+  },
+  {
+    file: "RDMA-Meta.pdf",
+    title: "RDMA Meta-Protocol",
+    description: "Design notes for an RDMA-accelerated meta-protocol in Ethernet 2025."
+  },
+  {
+    file: "TAP120_Set-Reconcilliation-Pat-Daniel.pdf",
+    title: "TAP #120 — Set Reconciliation (Pat & Daniel)",
+    description: "Time Appliances Project episode 120: provably-safe set reconciliation."
+  }
 ];
 
 /* ────────────────────────── 3. Self-seeding + GC ───────────────────── */
