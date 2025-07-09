@@ -1,0 +1,107 @@
+.editSituationContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: #e0e0e0;
+}
+
+.scrollableContent {
+  padding: 20px;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #a0a0a0;
+  margin-bottom: -10px;
+}
+
+.input,
+.textarea {
+  background-color: #333;
+  border: 1px solid #444;
+  color: #fff !important;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #007acc;
+}
+
+.textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.choicesSection {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.addButton,
+.deleteButton {
+  background-color: #b91c1c; /* Red */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+  width: 100%;
+}
+
+.addButton:hover {
+  background-color: #005a99;
+}
+
+.settingsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.deleteButton {
+  background-color: #007acc;
+}
+
+.deleteButton:hover {
+  background-color: #991b1b;
+}
+
+.mediaButtons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.mediaButtons button {
+    flex-grow: 1;
+    background-color: #4a4a4a;
+    color: #fff;
+    border: 1px solid #666;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.mediaButtons button:hover {
+    background-color: #5a5a5a;
+}

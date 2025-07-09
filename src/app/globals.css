@@ -1,9 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Daedalus/Scenar.io Theme Variables */
+  --background-color: white;
+  --navbar-color: white;
+  --text-color-dark: #33312E;
+  --text-color-medium: #495057;
+  --text-color-light: white;
+  --primary-color: #066;
+  --primary-color-hover: #099;
+  --secondary-color: #b2d8d8;
+  --secondary-color-hover: #c1e0dc;
+  --light-hover-color: #f5f5f5;
+  --accent-color: #630;
+  --accent-color-light: #dba392;
+  --accent-color-hover: #994d00;
+  --input-placeholder: #7e7e7e;
+  --font: "Helvetica";
+  --navbar-height: 3.625rem;
+  --tabsbar-height: 60px;
+  --speed: 500ms;
+  --toc-width: 16%;
+  --alert-color: red;
+  --canvas-topbar-height: 60px;
+
+  /* Integrated Variables from ddl_frontend */
+  --border-color: #ced4da;
+  --border-color-light: #e0e0e0;
+  --focus-ring-color: rgba(0, 102, 102, 0.25);
+  --warning-bg-color: #fff3cd;
+  --warning-text-color: #856404;
+  --warning-border-color: #ffeeba;
+}
+
+body,
+html {
+  color: var(--text-color-dark);
+  font-family: var(--font);
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+}
+
+input:not([type="checkbox"]):not([type="radio"]) {
+  font-family: var(--font);
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.3s;
+  color: var(--text-color-dark);
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+input::placeholder {
+  color: var(--input-placeholder);
+  font-family: var(--font);
+}
+
+input:focus:not([type="checkbox"]) {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px var(--primary-color);
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: var(--text-color-light);
+  border-radius: 0.5rem;
+  transition: background-color var(--speed) ease;
+  border: none; /* Add this to remove default borders */
+  cursor: pointer; /* Ensure buttons have a pointer cursor */
+}
+
+:root {
+  /* ... (keep existing variables) ... */
+
+    /* Integrated Variables from Scenario Editor */
+    --text-color-dark: #33312E;
+    --text-color-medium: #495057;
+    --text-color-light: white;
+    --secondary-color: #b2d8d8;
+    --secondary-color-hover: #c1e0dc;
+    --light-hover-color: #f5f5f5;
+    --input-placeholder: #7e7e7e;
+    --font: "Helvetica";
+    --tabsbar-height: 60px;
+    --toc-width: 16%;
+    --alert-color: red;
+    --canvas-topbar-height: 60px;
+}
+
+/* Base styles for editor inputs and buttons */
+input:not([type="checkbox"]):not([type="radio"]) {
+    font-family: var(--font);
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.3s;
+    color: var(--text-color-dark);
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+input::placeholder {
+    color: var(--input-placeholder);
+    font-family: var(--font);
+}
+
+input:focus:not([type="checkbox"]) {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px var(--primary-color);
+}
+
 .break-inside-avoid-column { break-inside: avoid-column; }
 /* ==========================================================================
-   Python Model Display
-   Styles for presenting Python code and its output as a computational essay.
-   This reflects the "Code as Proof" methodology, ensuring that our models are
-   not just functional but also clearly documented and visually coherent.
+   Python Model Display
+   Styles for presenting Python code and its output as a computational essay.
+   This reflects the "Code as Proof" methodology, ensuring that our models are
+   not just functional but also clearly documented and visually coherent.
 ========================================================================== */
 .python-model-container {
   padding: 1rem 2rem;
@@ -37,7 +157,7 @@
 }
 
 /* This is the final container for a code or output block.
-   By making it grow, we ensure it fills the available vertical space within its parent section. */
+   By making it grow, we ensure it fills the available vertical space within its parent section. */
 .code-block {
   background-color: #161b22;
   border: 1px solid #30363d;
@@ -1485,11 +1605,11 @@ input[type="text"].pl-10:focus, input[type="search"].pl-10:focus {
   color: hsl(var(--foreground));
 }
 /* ==========================================================================
-   Computational Model Presentation
-   Each model is presented as a distinct article, a self-contained unit of proof.
-   This structure avoids the undifferentiated stream of a simple list, giving each
-   computational essay the weight and clarity it deserves. The pagination reflects
-   a deliberate, sequential exploration of our foundational arguments.
+   Computational Model Presentation
+   Each model is presented as a distinct article, a self-contained unit of proof.
+   This structure avoids the undifferentiated stream of a simple list, giving each
+   computational essay the weight and clarity it deserves. The pagination reflects
+   a deliberate, sequential exploration of our foundational arguments.
 ========================================================================== */
 .content {
   margin: 0 auto;
@@ -1827,10 +1947,10 @@ input[type="text"].pl-10:focus, input[type="search"].pl-10:focus {
 }
 
 /* ==========================================================================
-   Python Model Display
-   Styles for presenting Python code and its output as a computational essay.
-   This reflects the "Code as Proof" methodology, ensuring that our models are
-   not just functional but also clearly documented and visually coherent.
+   Python Model Display
+   Styles for presenting Python code and its output as a computational essay.
+   This reflects the "Code as Proof" methodology, ensuring that our models are
+   not just functional but also clearly documented and visually coherent.
 ========================================================================== */
 .python-model-container {
   padding: 1rem 2rem;

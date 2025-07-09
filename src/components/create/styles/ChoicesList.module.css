@@ -1,0 +1,70 @@
+/* This stylesheet defines the visual language for a list of Links (Choices). */
+.choicesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 30px;
+  position: relative;
+  min-height: 100px;
+}
+
+.choiceItem {
+  user-select: none;
+  padding: 12px 15px;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out, background-color 0.2s ease;
+  cursor: grab;
+  overflow: hidden;
+}
+
+.choiceItem:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+  border-color: #cccccc;
+}
+
+.choiceTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 6px;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+.nextSituationTitle {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.3;
+}
+
+.linkLabel {
+  font-weight: 500;
+  color: var(--muted-foreground);
+  font-size: 0.8rem;
+}
+
+.dragging {
+  cursor: grabbing;
+  background-color: var(--accent-hover);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transform: rotate(1deg) scale(1.01);
+}
+
+.noChoices {
+  text-align: center;
+  color: var(--muted-foreground);
+  padding: 20px;
+  font-style: italic;
+}

@@ -1,0 +1,170 @@
+/**
+ * styles/SituationNode.module.css
+ *
+ * Styles the visual representation of a CELL. A CELL is not merely a node; it is a
+ * reactive, self-contained participant in a global program. Each CELL is an
+ * autonomous unit of compute, storage, and packet processing.
+ *
+ */
+ .nodeContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 250px;
+    min-width: 120px;
+    margin: auto;
+    text-align: center;
+    cursor: pointer;
+}
+
+
+.nodeContainer:active {
+    cursor: grabbing;
+}
+
+
+.nodeContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 50px;
+    min-width: 120px;
+    padding: 10px;
+    border: 1px solid var(--border-color, #ddd);
+    background-color: var(--fill-color, #fff);
+    transition: background-color 0.3s, border-color 0.3s;
+    word-break: break-word;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+.nodeContainer .nodeContent > * {
+    max-height: 40px;
+}
+
+/* A selected CELL becomes the focus of a potential transaction. It is the
+   causal initiator, the point from which a new operation will emanate.
+   This state highlights its role as the current serializability focus. */
+.nodeContainer.selected .nodeContent {
+    border-color: var(--primary-color);
+    border-width: 2px;
+    box-shadow: 0 0 15px 5px rgba(0, 153, 204, 0.6);
+    animation: glow 1.5s infinite;
+}
+
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 15px 5px rgba(0, 153, 204, 0.6);
+    }
+    50% {
+        box-shadow: 0 0 20px 10px rgba(0, 153, 204, 0.8);
+    }
+    100% {
+        box-shadow: 0 0 15px 5px rgba(0, 153, 204, 0.6);
+    }
+}
+
+
+
+.nodeContainer.regularNode .nodeContent {
+    border-radius: 10px;
+}
+
+/* The startNode represents the root of a spanning tree. Each CELL can be the
+   root of its own tree, providing certain guarantees for routing and in-order
+   delivery. */
+.nodeContainer.startNode .nodeContent {
+    border-radius: 25px;
+    border-style: double;
+    border-width: 3px;
+}
+
+
+.nodeContainer.endNode .nodeContent {
+    border-radius: 0;
+    border-style: dashed;
+    border-width: 2px;
+}
+
+
+.nodeLabel {
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    pointer-events: none;
+}
+
+
+.startNode .nodeLabel {
+    color: var(--start-node-label-color, green);
+}
+
+
+.endNode .nodeLabel {
+    color: var(--end-node-label-color, red);
+}
+
+
+/* A portHandle is the physical manifestation of a CELL's port. It is the
+   origin point for establishing a LINK, which is a bipartite, stateful, and
+   causally significant computational object. */
+.handle {
+    transition: all 0s ease !important;
+    z-index: 10 !important;
+}
+
+.handleTarget,
+.handleSource {
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 6px !important;
+    transform: translateY(-5px) !important;
+}
+
+.handleTarget {
+    background: #ff8000 !important;
+    transform: translateX(-2px) translateY(-5px) !important;
+}
+
+.handleTarget:hover {
+    background: #f93 !important;
+}
+
+.handleSource {
+    transform: translateX(2px) translateY(-5px) !important;
+    background: #099 !important;
+}
+
+.handleSource:hover {
+    background: #0cc !important;
+}
+
+
+
+.nodeContainer.edgeConnecting .nodeContent {
+    border-color: var(--primary-color);
+    border-style: dotted;
+    border-width: 2px;
+    box-shadow: 0 0 15px 5px rgba(0, 153, 204, 0.6);
+    animation: borderAnimation 1.5s infinite;
+}
+
+@keyframes borderAnimation {
+    0% {
+        border-color: var(--primary-color);
+    }
+    50% {
+        border-color: transparent;
+    }
+    100% {
+        border-color: var(--primary-color);
+    }
+}

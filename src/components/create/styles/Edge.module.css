@@ -1,0 +1,27 @@
+.edgePath {
+  stroke: #555;
+  stroke-width: 2;
+  fill: none;
+}
+
+/**
+ * styles/Edge.module.css
+ *
+ * Styles for the visual representation of a LINK.
+ */
+ .edgeLabel {
+  font-size: 12px;
+  /* fill: #000; */
+  fill: white;
+  text-anchor: middle;
+  alignment-baseline: middle;
+  user-select: none;
+}
+
+.edgeLabelSelected {
+  fill: #fff;
+}
+
+.edgeLabelGroup {
+  transition: all 0.3s ease-in-out;
+}

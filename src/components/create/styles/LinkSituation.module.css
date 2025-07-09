@@ -1,0 +1,101 @@
+.linkSituationContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.25rem;
+  background-color: var(--secondary-color);
+  overflow: hidden;
+}
+
+.selectedChoiceTitle {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: var(--text-color-dark);
+  line-height: 1.4;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.situationListTitle {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0 0 0.75rem 0;
+  color: var(--muted-foreground);
+}
+
+.searchContainer {
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: var(--foreground);
+  background-color: var(--card);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+.listWrapper {
+  flex-grow: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.situationList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.situationItem {
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.5rem;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  color: var(--foreground);
+  overflow: hidden;
+}
+
+.situationItem:hover {
+  background-color: var(--accent-hover);
+  border-color: var(--border);
+  transform: translateY(-1px);
+}
+
+.highlightedSituation {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--primary);
+  font-weight: 500;
+}
+
+.highlightedSituation:hover {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.situationItemTitle {
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.4;
+}

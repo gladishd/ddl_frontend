@@ -1,0 +1,42 @@
+.container {
+  padding: 10px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.situationsList {
+  padding: 0;
+  margin: 20px 0;
+  list-style: none;
+}
+
+.situationItem {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.situationTitle {
+  flex-grow: 1;
+  margin-right: 10px;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.positionNumber {
+  flex-shrink: 0;
+  font-weight: bold;
+  width: 30px;
+  text-align: center;
+  color: var(--muted-foreground);
+}
+
+.situationItemDragging {
+  background-color: var(--accent-hover);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}

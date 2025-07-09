@@ -1,0 +1,101 @@
+/* Styles for the UploadModal, a transactional interface for state modification. */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  width: 500px;
+  max-width: 90%;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modalTitle {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.buttonBase {
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  text-align: center;
+}
+
+.uploadButton {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.uploadButton:hover {
+  background-color: var(--primary-hover);
+}
+
+.previewContainer {
+  margin-bottom: 20px;
+}
+
+.previewImage, .previewMedia {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.errorMessage {
+  color: var(--destructive);
+  margin: 10px 0;
+  text-align: center;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.saveButton {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  flex: 1;
+}
+
+.saveButton:hover {
+  background-color: var(--primary-hover);
+}
+
+.saveButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+  flex: 1;
+}
+
+.cancelButton:hover {
+  background-color: var(--secondary-hover);
+}
