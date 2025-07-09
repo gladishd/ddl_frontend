@@ -28,7 +28,11 @@ const LinkSituation: React.FC<LinkSituationProps> = ({ nextSituation }) => {
     }
   };
 
-  const filteredSituations = situations.filter(s =>
+  // By explicitly typing the 's' parameter, we enforce a strict data contract.
+  // This ensures that all operations are verifiably correct, eliminating the
+  // ambiguity of an implicit 'any' type, which is antithetical to the
+  // deterministic and reliable nature of our system.
+  const filteredSituations = situations.filter((s: Situation) =>
     s.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
