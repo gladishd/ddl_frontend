@@ -59,12 +59,13 @@ export default function LandingPage() {
                         We challenge the industry's foundational assumptions by multiplexing the transactional capacity of a link, not its bandwidth. Our time-reversible constructors forge a new paradigm of distributed reliability.
                     </p>
                     <Link
-                        href="/Metcalfe+Boggs.pdf"
+                        // href="/Metcalfe+Boggs.pdf"
+                        href="/create"
                         target="_blank"
                         className="inline-block px-8 py-3 bg-white text-primary font-bold rounded-md hover:bg-gray-200 transition-transform hover:scale-105"
                         style={{ background: "rgb(184,58,75)" }}
                     >
-                        Revisit the Foundation: Metcalfe & Boggs 1976
+                        Revisit the Demolition: Borrill & Kennedy 2023
                     </Link>
                 </div>
             </section>
