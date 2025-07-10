@@ -191,6 +191,14 @@ const rawNotebooks: RawNotebook[] = [
     type: "wolfram",
     date: "July 6, 2025",
   },
+  {
+    id: 20,
+    title: "Model 20-1: The Dædælus Causality & Complexity Simulation Toolkit",
+    description: "An integrated, poly-paradigm Mathematica computational environment presenting a formally verifiable toolkit for analyzing Indefinite Causal Order (ICO) via an interactive Quantum Switch simulation, complete with functions for process tomography and Bloch sphere visualization. It includes a comprehensive suite for Semidefinite Programming (SDP) certificate generation, featuring robust helpers for partial trace, trace-and-replace operations, and the construction of projectors onto distinct causal structures. The notebook also features multiple models of distributed synchronization, including a message-passing Firing Squad simulation with Lamport-style 'happens-before' causal graph analysis, a validator for logical clock consistency, and a simulator for Hybrid Logical Clocks (HLC) that bridges physical and logical time. Finally, it provides several implementations of Cellular Automata to explore emergent complexity, from classic 1D Firing-Squad solutions with animated spacetime diagrams to the Nagel-Schreckenberg traffic model and a fully interactive multi-lane traffic GUI with stochastic breakdowns. Collectively, these modules serve as a laboratory for exploring the foundational tensions between classical, relativistic, and quantum models of time, demonstrating the breakdown of linear causality and motivating the need for the physically-grounded, transaction-multiplexed fabric of Æthernet.",
+    url: "https://www.wolframcloud.com/obj/gladishdean/Published/8.%20sahas.nb",
+    type: "wolfram",
+    date: "July 10, 2025",
+  },
   ];
 
 // Now map over the typed array to inject the slug field without widening `type`.
