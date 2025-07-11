@@ -42,6 +42,8 @@ const Footer = () => (
               Latency vs Bandwidth Primer
             </Link>
           </li>
+          <p>https://ocp-all.groups.io/g/ocp-oae</p>
+          <p>https://www.opencompute.org/w/index.php?title=Open_Atomic_Ethernet</p>
         </ul>
       </div>
 
@@ -103,6 +105,7 @@ const Footer = () => (
         <h3 className="font-bold mb-4 mt-6">Contact</h3>
         <p>sahas.munamala@ocproject.net</p>
         <p>dgladish3@gatech.edu</p>
+        <p>dean.gladish@ocproject.net</p>
       </div>
 
       {/* ─────────── Legal (unchanged) ─────────── */}

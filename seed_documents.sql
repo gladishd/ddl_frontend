@@ -202,6 +202,11 @@ INSERT INTO documents (title, description, image, href) VALUES
  'Time Appliances Project episode 120: provably-safe set reconciliation.',
  'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80',
  '/TAP120_Set-Reconcilliation-Pat-Daniel.pdf')
+
+('HammingMesh: A Network Topology for Large-Scale Deep Learning',
+ 'A novel network topology that provides high bandwidth at low cost with high job-scheduling flexibility, designed for large-scale deep learning systems.',
+ 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
+ '/3623490_HammingMesh:_A_Network_Topology_for_Large-Scale_Deep_Learning.pdf')
 ON CONFLICT (href) DO NOTHING;   -- safe to re-run
 
 COMMIT;

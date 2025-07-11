@@ -126,7 +126,12 @@ const PDF_META: DocMeta[] = [
     file: "TAP120_Set-Reconcilliation-Pat-Daniel.pdf",
     title: "TAP #120 — Set Reconciliation (Pat & Daniel)",
     description: "Time Appliances Project episode 120: provably-safe set reconciliation."
-  }
+  },
+  {
+    file: "3623490_HammingMesh:_A_Network_Topology_for_Large-Scale_Deep_Learning.pdf",
+    title: "HammingMesh: A Topology for Deep Learning",
+    description: "A novel network topology optimized for large-scale deep learning, balancing high bandwidth, cost, and flexibility.",
+  },
 ];
 
 /* ────────────────────────── 3. Self-seeding + GC ───────────────────── */
