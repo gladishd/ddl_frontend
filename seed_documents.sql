@@ -183,7 +183,7 @@ INSERT INTO documents (title, description, image, href) VALUES
 ('Screenshot – 07-02-2025 19-13-40',
  'UI mock-up of the new library view.',
  'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80',
- '/Screenshot2025-07-02at7.13.40PM.png')
+ '/Screenshot2025-07-02at7.13.40PM.png'),
 
 --------------------------------------------------------------------------------
 -- ░░ NEW ENTRIES (2025-07-09) ░░
@@ -201,12 +201,35 @@ INSERT INTO documents (title, description, image, href) VALUES
 ('TAP #120 — Set Reconciliation (Pat & Daniel)',
  'Time Appliances Project episode 120: provably-safe set reconciliation.',
  'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80',
- '/TAP120_Set-Reconcilliation-Pat-Daniel.pdf')
+ '/TAP120_Set-Reconcilliation-Pat-Daniel.pdf'),
 
 ('HammingMesh: A Network Topology for Large-Scale Deep Learning',
  'A novel network topology that provides high bandwidth at low cost with high job-scheduling flexibility, designed for large-scale deep learning systems.',
  'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
- '/3623490_HammingMesh:_A_Network_Topology_for_Large-Scale_Deep_Learning.pdf')
+ '/3623490_HammingMesh:_A_Network_Topology_for_Large-Scale_Deep_Learning.pdf'),
+
+--------------------------------------------------------------------------------
+-- ░░ NEW ENTRIES (2025-07-13) ░░
+--------------------------------------------------------------------------------
+('Cost and Bandwidth Comparison',
+ 'Detailed comparison of network topologies from the HammingMesh paper.',
+ 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80',
+ '/PastedGraphic-1 (1).png'),
+
+('Welcome, David – Dædælus Intro',
+ 'Introductory document for new team members, outlining the core problems Daedaelus addresses.',
+ 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
+ '/Welcome-David.pdf'),
+
+('Chiplet Mesh Networking (Apr 2024)',
+ 'Presentation on applying graph theory and novel protocols to chiplet mesh networks.',
+ 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=800&q=80',
+ '/Chiplet-Mesh-Networking-02024-Apr-18.pdf'),
+
+('PROMELA Modeling for FSP',
+ 'Technical document on using PROMELA for modeling the Firing Squad Problem.',
+ 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=800&q=80',
+ '/promela_modeling.pdf'),
 ON CONFLICT (href) DO NOTHING;   -- safe to re-run
 
 COMMIT;

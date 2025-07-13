@@ -132,6 +132,27 @@ const PDF_META: DocMeta[] = [
     title: "HammingMesh: A Topology for Deep Learning",
     description: "A novel network topology optimized for large-scale deep learning, balancing high bandwidth, cost, and flexibility.",
   },
+  /* ――― 2025-07-13 additions ――― */
+  {
+    file: "PastedGraphic-1 (1).png",
+    title: "Cost and Bandwidth Comparison",
+    description: "Detailed comparison of network topologies from the HammingMesh paper."
+  },
+  {
+    file: "Welcome-David.pdf",
+    title: "Welcome, David – Dædælus Intro",
+    description: "Introductory document outlining the core problems Daedaelus addresses."
+  },
+  {
+    file: "Chiplet-Mesh-Networking-02024-Apr-18.pdf",
+    title: "Chiplet Mesh Networking (Apr 2024)",
+    description: "Presentation on applying graph theory to chiplet mesh networks."
+  },
+  {
+    file: "promela_modeling.pdf",
+    title: "PROMELA Modeling for FSP",
+    description: "Using PROMELA to model the Firing Squad Problem."
+  },
 ];
 
 /* ────────────────────────── 3. Self-seeding + GC ───────────────────── */
