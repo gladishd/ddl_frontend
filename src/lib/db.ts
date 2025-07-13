@@ -134,7 +134,7 @@ const PDF_META: DocMeta[] = [
   },
   /* ――― 2025-07-13 additions ――― */
   {
-    file: "PastedGraphic-1 (1).png",
+    file: "PastedGraphic-1_(1).png",
     title: "Cost and Bandwidth Comparison",
     description: "Detailed comparison of network topologies from the HammingMesh paper."
   },
@@ -154,6 +154,55 @@ const PDF_META: DocMeta[] = [
     description: "Using PROMELA to model the Firing Squad Problem."
   },
 ];
+
+// /* ────────────────────────── 3. Self-seeding + GC with "first-time" create_document_features.sql ───────────────────── */
+// let seeded = false;
+
+// async function ensureDocuments() {
+//   if (seeded) return;
+
+//   // Before interacting with the database, we must ensure the foundational schema exists.
+//   // We read our canonical schema from the SQL file and apply it. This makes the system
+//   // self-sufficient, capable of initializing its own data layer from a blueprint.
+//   const client = await pool.connect();
+//   try {
+//     const schemaSql = fs.readFileSync(path.join(process.cwd(), 'create_document_features.sql'), 'utf-8');
+//     await client.query(schemaSql);
+
+//     // Now proceed with the reversible subtransaction to sync the documents.
+//     const publicDir = path.join(process.cwd(), "public");
+//     const exists = (f: string) => fs.existsSync(path.join(publicDir, f));
+
+//     const validMeta = PDF_META.filter(m => exists(m.file));
+//     const currentHrefs = validMeta.map(m => `/${m.file}`);
+
+//     await client.query("BEGIN");
+
+//     for (const { file, title, description } of validMeta) {
+//       await client.query(
+//         `INSERT INTO documents (title, description, href)
+//          VALUES ($1, $2, $3)
+//          ON CONFLICT (href) DO NOTHING;`,
+//         [title, description ?? null, `/${file}`],
+//       );
+//     }
+
+//     await client.query(
+//       `DELETE FROM documents
+//         WHERE href <> ALL ($1::text[]);`,
+//       [currentHrefs],
+//     );
+
+//     await client.query("COMMIT");
+//     seeded = true; // Mark as seeded only after a successful full run
+//   } catch (err) {
+//     await client.query("ROLLBACK");
+//     console.error("Failed to seed/prune documents:", err);
+//     throw err;
+//   } finally {
+//     client.release();
+//   }
+// }
 
 /* ────────────────────────── 3. Self-seeding + GC ───────────────────── */
 let seeded = false;
@@ -205,8 +254,8 @@ export async function listDocuments(): Promise<DocumentRecord[]> {
 
   const { rows } = await pool.query(`
     SELECT  d.*,
-            COALESCE(l.count, 10)  AS likes,
-            COALESCE(v.count, 20)  AS views,
+            COALESCE(l.count, 1)  AS likes,
+            COALESCE(v.count, 1)  AS views,
             COALESCE(
               (SELECT array_agg(tag)
                  FROM document_tags t
