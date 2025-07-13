@@ -199,6 +199,14 @@ const rawNotebooks: RawNotebook[] = [
     type: "wolfram",
     date: "July 10, 2025",
   },
+  {
+    id: 21,
+    title: "Clos vs. Directly Connected Networks",
+    description: "An executable Wolfram Mathematica notebook comparing a multi-stage Clos network topology against a directly connected mesh network. It serves as 'Code as Proof' for demonstrating the trade-offs in resilience, latency, and path diversity between hierarchical spine-leaf architectures and flat mesh designs, using agent-based path enumeration and spanning-tree count analysis.",
+    url: "https://www.wolframcloud.com/obj/gladishdean/Published/10Ants.nb",
+    type: 'wolfram',
+    date: "July 13, 2025",
+  },
   ];
 
 // Now map over the typed array to inject the slug field without widening `type`.
