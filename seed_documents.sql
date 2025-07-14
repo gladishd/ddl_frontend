@@ -230,6 +230,46 @@ INSERT INTO documents (title, description, image, href) VALUES
  'Technical document on using PROMELA for modeling the Firing Squad Problem.',
  'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=800&q=80',
  '/promela_modeling.pdf'),
+
+('Dual SAW Petri-Spekkens Protocol',
+ 'Details the Dual Stop-and-Wait protocol using Petri Nets and the Spekkens Toy Model for epistricted consistency.',
+ 'https://images.unsplash.com/photo-1534723452862-4c874018d66d?auto=format&fit=crop&w=800&q=80',
+ '/Dual-SAW-Spekkens.pdf'),
+
+('The Evolution of Ethernet (2022)',
+ 'A 2022 perspective on Ethernets evolution, challenging classic assumptions and proposing optimizations for latency over bandwidth.',
+ 'https://images.unsplash.com/photo-1580582932707-520aed93a94d?auto=format&fit=crop&w=800&q=80',
+ '/Ethernet2022.pdf'),
+
+('Information is a Surprise',
+ 'Explores the concept that information is surprisal and must be paired, applying it to network protocols.',
+ 'https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?auto=format&fit=crop&w=800&q=80',
+ '/Information-Surprise.pdf'),
+
+('Liveness Tensor',
+ 'Describes a transitively coherent data structure for liveness awareness in directly connected datacenter networks.',
+ 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80',
+ '/Liveness_Tensor.pdf'),
+
+('Project Requirements (Charlie-2)',
+ 'Core requirements for the Daedaelus project, including hardware targets and protocol state machine principles.',
+ 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=800&q=80',
+ '/Requirements-Charlie-2.pdf'),
+
+('Slice Engine Specification',
+ 'Defines the protocol for processing 8-byte slices, confinement, and port-addressing solutions.',
+ 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=800&q=80',
+ '/Slice-Engine.pdf'),
+
+('State Machine Specification',
+ 'Defines the reversible state machine models, including 1-state, 2-state, and 4-state transfer protocols.',
+ 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+ '/State-Machine-Specification.pdf'),
+
+('Superposition Engine',
+ 'Details the MORTS (Morphism pORTS) Open Petri Net Model for managing connected information and event ordering.',
+ 'https://images.unsplash.com/photo-1507146426996-32f275980346?auto=format&fit=crop&w=800&q=80',
+ '/Superposition-Engine.pdf'),
 ON CONFLICT (href) DO NOTHING;   -- safe to re-run
 
 COMMIT;

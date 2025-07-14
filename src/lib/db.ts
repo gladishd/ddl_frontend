@@ -153,6 +153,46 @@ const PDF_META: DocMeta[] = [
     title: "PROMELA Modeling for FSP",
     description: "Using PROMELA to model the Firing Squad Problem."
   },
+  {
+    file: "Dual-SAW-Spekkens.pdf",
+    title: "Dual SAW Petri-Spekkens Protocol",
+    description: "Details the Dual Stop-and-Wait protocol using Petri Nets and the Spekkens Toy Model for epistricted consistency.",
+  },
+  {
+    file: "Ethernet2022.pdf",
+    title: "The Evolution of Ethernet (2022)",
+    description: "A 2022 perspective on Ethernet's evolution, challenging classic assumptions and proposing optimizations for latency over bandwidth.",
+  },
+  {
+    file: "Information-Surprise.pdf",
+    title: "Information is a Surprise",
+    description: "Explores the concept that information is surprisal and must be paired, applying it to network protocols.",
+  },
+  {
+    file: "Liveness_Tensor.pdf",
+    title: "Liveness Tensor",
+    description: "Describes a transitively coherent data structure for liveness awareness in directly connected datacenter networks.",
+  },
+  {
+    file: "Requirements-Charlie-2.pdf",
+    title: "Project Requirements (Charlie-2)",
+    description: "Core requirements for the Daedaelus project, including hardware targets and protocol state machine principles.",
+  },
+  {
+    file: "Slice-Engine.pdf",
+    title: "Slice Engine Specification",
+    description: "Defines the protocol for processing 8-byte slices, confinement, and port-addressing solutions.",
+  },
+  {
+    file: "State-Machine-Specification.pdf",
+    title: "State Machine Specification",
+    description: "Defines the reversible state machine models, including 1-state, 2-state, and 4-state transfer protocols.",
+  },
+  {
+    file: "Superposition-Engine.pdf",
+    title: "Superposition Engine",
+    description: "Details the MORTS (Morphism pORTS) Open Petri Net Model for managing connected information and event ordering.",
+  },
 ];
 
 // /* ────────────────────────── 3. Self-seeding + GC with "first-time" create_document_features.sql ───────────────────── */
