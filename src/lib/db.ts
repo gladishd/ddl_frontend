@@ -195,7 +195,7 @@ const PDF_META: DocMeta[] = [
   },
   /* ――― New Entries ――― */
   {
-    file: "Slowdown-Theorem-on-Links.pdf",
+    file: "Slowdown-Theorem-on-Links-FILE_3981.pdf",
     title: "Slowdown Theorem on Links",
     description: "Critiques 'Forward-In-Time-Only' thinking and proposes a reversible link protocol model that accounts for indefinite causality.",
   },
