@@ -1,5 +1,7 @@
 import sys
 import collections
+import io
+import os  # This is the required import that was missing.
 
 # This Python script provides a functional equivalent of the C-based network simulation.
 # It encapsulates the core concepts of Ethernet communication, such as MAC and IP addressing,
@@ -207,6 +209,32 @@ class Switch:
 # (stations, switches) and the connections (edges) between them.
 class NetworkGraph:
     """Represents the entire network topology as a graph."""
+    # This default topology is used if the stp_test file is not found.
+    # This makes the script self-contained and demonstrates the STP algorithm's
+    # ability to resolve loops.
+    DEFAULT_TOPOLOGY = """10 12
+2;00:00:00:00:00:01;4;100
+2;00:00:00:00:00:02;4;200
+2;00:00:00:00:00:03;4;300
+1;aa:bb:cc:dd:ee:01;192.168.1.1
+1;aa:bb:cc:dd:ee:02;192.168.1.2
+1;aa:bb:cc:dd:ee:03;192.168.1.3
+1;aa:bb:cc:dd:ee:04;192.168.1.4
+1;aa:bb:cc:dd:ee:05;192.168.1.5
+1;aa:bb:cc:dd:ee:06;192.168.1.6
+1;aa:bb:cc:dd:ee:07;192.168.1.7
+3;0;10
+4;0;10
+5;1;10
+6;1;10
+7;2;10
+8;2;10
+9;2;10
+0;1;19
+0;2;12
+1;2;8
+"""
+
     def __init__(self, filename):
         self.ordre = 0
         self.aretes_capacite = 0
@@ -214,55 +242,64 @@ class NetworkGraph:
         self.stListe = []
         self.aretes = []
         self.conditionArret = False
-        self._init_from_file(filename)
+        self._init_from_source(filename)
 
-    def _init_from_file(self, filename):
-        # Parsing a configuration file is the first step in constructing the network model.
+    def _init_from_source(self, source):
+        # Parsing a configuration is the first step in constructing the network model.
         # This process translates a high-level description of a network into the concrete
         # data structures required for simulation.
         try:
-            with open(filename, 'r') as f:
-                lines = f.readlines()
-                
-                # First line defines the order and number of edges
-                self.ordre, self.aretes_capacite = map(int, lines[0].strip().split())
-                
-                # The next 'ordre' lines define the devices (switches and stations)
-                for i in range(1, self.ordre + 1):
-                    parts = lines[i].strip().split(';')
-                    dev_type = int(parts[0])
-                    
-                    if dev_type == 2:  # Switch
-                        mac_parts = parts[1].split(':')
-                        num_ports = int(parts[2])
-                        priority = int(parts[3])
-                        sw = Switch(
-                            mac=AdrMac(mac_parts), 
-                            name=f"sw{len(self.swListe) + 1}",
-                            num_ports=num_ports, 
-                            priority=priority
-                        )
-                        self.swListe.append(sw)
-                    elif dev_type == 1: # Station
-                        mac_parts = parts[1].split(':')
-                        ip_parts = list(map(int, parts[2].split('.')))
-                        st = Station(
-                            mac=AdrMac(mac_parts),
-                            ip=AdrIP(ip_parts),
-                            name=f"st{len(self.stListe) + 1}"
-                        )
-                        self.stListe.append(st)
-                
-                # The remaining lines define the edges
-                for i in range(self.ordre + 1, self.ordre + 1 + self.aretes_capacite):
-                    if i < len(lines):
-                        s1, s2, cost = map(int, lines[i].strip().split(';'))
-                        self.ajouter_arete(s1, s2, cost)
-
-        except FileNotFoundError:
-            print(f"Erreur d'ouverture du fichier: {filename}", file=sys.stderr)
-            sys.exit(1)
+            if os.path.exists(source):
+                with open(source, 'r') as f:
+                    lines = f.readlines()
+            else:
+                print(f"File not found: '{source}'. Using default built-in topology.", file=sys.stderr)
+                lines = io.StringIO(self.DEFAULT_TOPOLOGY).readlines()
             
+            # First line defines the order and number of edges
+            self.ordre, self.aretes_capacite = map(int, lines[0].strip().split())
+            
+            # The next 'ordre' lines define the devices (switches and stations)
+            for i in range(1, self.ordre + 1):
+                parts = lines[i].strip().split(';')
+                dev_type = int(parts[0])
+                
+                if dev_type == 2:  # Switch
+                    mac_parts = parts[1].split(':')
+                    num_ports = int(parts[2])
+                    priority = int(parts[3])
+                    sw = Switch(
+                        mac=AdrMac(mac_parts), 
+                        name=f"sw{len(self.swListe) + 1}",
+                        num_ports=num_ports, 
+                        priority=priority
+                    )
+                    self.swListe.append(sw)
+                elif dev_type == 1: # Station
+                    mac_parts = parts[1].split(':')
+                    ip_parts = list(map(int, parts[2].split('.')))
+                    st = Station(
+                        mac=AdrMac(mac_parts),
+                        ip=AdrIP(ip_parts),
+                        name=f"st{len(self.stListe) + 1}"
+                    )
+                    self.stListe.append(st)
+            
+            # The remaining lines define the edges
+            for i in range(self.ordre + 1, self.ordre + 1 + self.aretes_capacite):
+                if i < len(lines):
+                    s1, s2, cost = map(int, lines[i].strip().split(';'))
+                    self.ajouter_arete(s1, s2, cost)
+
+        except (FileNotFoundError, IOError):
+            print(f"Erreur d'ouverture du fichier: {source}", file=sys.stderr)
+            sys.exit(1)
+        except Exception as e:
+            print(f"Error processing topology data: {e}", file=sys.stderr)
+            sys.exit(1)
+
+    # ... (the rest of the NetworkGraph class and other classes remain the same)
+
     def get_station_by_mac(self, mac):
         for station in self.stListe:
             if station.mac == mac:
@@ -445,8 +482,8 @@ class NetworkGraph:
                 original_cost = 1
                 for u, v, c in self.aretes:
                     if u == s1 and v == s2:
-                       original_cost = c
-                       break
+                        original_cost = c
+                        break
                 new_aretes.append((s1, s2, original_cost))
         
         self.aretes = new_aretes
@@ -497,31 +534,9 @@ def main():
     switch_test.display_commutation_table()
 
     print("-----TEST GRAPHE-----")
-    # The simulation uses a file that describes a network with a loop,
-    # making it a perfect candidate to demonstrate the necessity and function of STP.
-    try:
-        g = NetworkGraph("stp_test")
-    except Exception as e:
-        print(f"Could not initialize graph. Ensure 'stp_test' file exists. Error: {e}")
-        # Create a dummy stp_test file if it doesn't exist
-        with open("stp_test", "w") as f:
-            f.write("10 12\n")
-            f.write("2;00:00:00:00:00:01;4;100\n")
-            f.write("2;00:00:00:00:00:02;4;200\n")
-            f.write("2;00:00:00:00:00:03;4;300\n")
-            f.write("1;aa:bb:cc:dd:ee:01;192.168.1.1\n")
-            f.write("1;aa:bb:cc:dd:ee:02;192.168.1.2\n")
-            f.write("1;aa:bb:cc:dd:ee:03;192.168.1.3\n")
-            f.write("1;aa:bb:cc:dd:ee:04;192.168.1.4\n")
-            f.write("1;aa:bb:cc:dd:ee:05;192.168.1.5\n")
-            f.write("1;aa:bb:cc:dd:ee:06;192.168.1.6\n")
-            f.write("1;aa:bb:cc:dd:ee:07;192.168.1.7\n")
-            f.write("3;0;10\n4;0;10\n5;1;10\n6;1;10\n")
-            f.write("7;2;10\n8;2;10\n9;2;10\n")
-            f.write("0;1;19\n0;2;12\n1;2;8\n")
-        print("Created dummy 'stp_test' file. Please re-run.")
-        sys.exit(0)
-
+    # The simulation now uses a built-in default topology if 'stp_test' is not found.
+    g = NetworkGraph("stp_test")
+    
     print(f"Ordre : {g.ordre}")
     print(f"Aretes : {len(g.aretes)}")
     print("AFFICHER GRAPHE AVANT STP\n")

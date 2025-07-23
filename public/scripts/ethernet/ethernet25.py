@@ -1,9 +1,9 @@
 """
 Dædælus Active Building Agent-Based Simulation
-Version: 1.0
+Version: 1.1
 Author: (see code history)
 Formal agent-based simulation of an Active Building, with multiple subsystems (HVAC, Lighting, Lift, Security, Smart Energy).
-This script is designed to demonstrate autonomous agent control, logging, event-driven communication, and 
+This script is designed to demonstrate autonomous agent control, logging, event-driven communication, and
 research-grade timeline emergence, as specified in the Active_Building_Model documentation.
 
 - Each subsystem is a Python thread/agent with simulated sensors/actuators.
@@ -73,11 +73,13 @@ class Agent(threading.Thread):
         self.sim_duration = sim_duration
         self.tick_interval = tick_interval
         self.time = 0
-        self._stop = threading.Event()
+        # This is the corrected line. The event object is renamed to avoid a conflict
+        # with the private `_stop` method of the parent threading.Thread class.
+        self._stop_event = threading.Event()
         self._stats = []
 
     def run(self):
-        while not self._stop.is_set() and self.time < self.sim_duration:
+        while not self._stop_event.is_set() and self.time < self.sim_duration:
             self.step()
             self.time += 1
             time.sleep(self.tick_interval)
@@ -87,7 +89,7 @@ class Agent(threading.Thread):
         pass
 
     def stop(self):
-        self._stop.set()
+        self._stop_event.set()
 
     def log(self, msg):
         entry = f"[{self.name}][T={self.time}] {msg}"

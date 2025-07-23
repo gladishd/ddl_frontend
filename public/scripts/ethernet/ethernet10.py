@@ -1,8 +1,8 @@
-# python ethernet10.py -i stp_simulator/examples/testnet.dot
+# python ethernet10.py
 # -*- coding: utf-8 -*-
 
 #
-# DDL_Emulator.stp_simulator
+# DDL_Emulator.stp_simulator (ethernet10.py)
 #
 # Copyright (c) 2021-2023 Maen Artimy
 # Copyright (c) 2025 Dædælus
@@ -37,11 +37,20 @@ Dædælus, where the network itself enforces reliability rather than leaving it 
 afterthought for the application to clean up.
 """
 
-import networkx.drawing as nxd
 import logging
-from netaddr import EUI
 import sys
 import argparse
+import io
+import os
+
+try:
+    import networkx as nx
+    from netaddr import EUI
+    import pydot
+except ImportError as e:
+    print(f"Error: Missing dependency. Please install required libraries: pip install networkx netaddr pydot")
+    print(f"({e})")
+    sys.exit(1)
 
 
 class BPDU(object):
@@ -190,7 +199,7 @@ class GraphVirtualMachine(object):
         # A GVM's understanding of the network is built from the BPDUs received on its ports.
         # It calculates a potential new BPDU for each port based on received information.
         potential_bpdu_candidates = [BPDU(p.best_bpdu.root, p.best_bpdu.cost + p.cost,
-                                     self.id, p.num) for p in self.ports if p.best_bpdu]
+                                          self.id, p.num) for p in self.ports if p.best_bpdu]
 
         # From all potential paths, the GVM determines the single best path to the root.
         current_best_bpdu = BPDU(self.id, 0, self.id, 0)
@@ -248,7 +257,8 @@ class GraphVirtualMachine(object):
         print("-" * 65)
         for p in sorted(self.ports, key=lambda x: x.num):
             cost_to_root_str = p.cost_to_root if p.cost_to_root is not None else '-'
-            print(row_format.format(p.num, p.role, p.status, p.cost, cost_to_root_str))
+            print(row_format.format(
+                p.num, p.role, p.status, p.cost, cost_to_root_str))
         print()
 
 
@@ -297,21 +307,22 @@ class N2N_Lattice(object):
         gvm2.ports.append(port2)
 
 
-def build_lattice_from_dot(file_path):
+def build_lattice_from_dot(dot_data):
     """
-    Parses a DOT file describing the physical network topology and constructs
-    an N2N_Lattice object. This function translates a static graph definition
-    into a live, emulated structure.
+    Parses a DOT string or file path describing the physical network topology
+    and constructs an N2N_Lattice object. This function translates a static
+    graph definition into a live, emulated structure.
     """
     try:
-        graph = nxd.nx_pydot.read_dot(file_path)
-    except FileNotFoundError:
-        print(f"Error: Input file not found at '{file_path}'")
+        if os.path.exists(dot_data):
+            graph = nx.drawing.nx_pydot.read_dot(dot_data)
+        else:
+            pydot_graph = pydot.graph_from_dot_data(dot_data)[0]
+            graph = nx.drawing.nx_pydot.from_pydot(pydot_graph)
+    except Exception as e:
+        print(f"Error: Failed to parse DOT data. Ensure 'pydot' is installed and the data is valid.")
+        print(f"({e})")
         sys.exit(1)
-    except ImportError:
-        print("Error: pydot is required to read DOT files. Please run 'pip install pydot'.")
-        sys.exit(1)
-
 
     lattice = N2N_Lattice()
     node_map = {}
@@ -325,8 +336,12 @@ def build_lattice_from_dot(file_path):
         if ':' in node_label:
             continue
 
-        mac = attributes.get('mac', '00:00:00:00:00:00').replace('"', '')
-        priority = int(attributes.get('priority', '32768'))
+        # This is the corrected section. Parsing attributes from pydot can include
+        # quotes, which must be stripped before converting to a number.
+        mac = attributes.get('mac', '00:00:00:00:00:00').strip('\'"')
+        priority_str = attributes.get('priority', '32768').strip('\'"')
+        priority = int(priority_str)
+        
         # The Bridge ID is a concatenation of a 16-bit priority and a 48-bit MAC address.
         bridge_id = priority * (2**48) + int(EUI(mac))
         node_map[node_label] = bridge_id
@@ -341,7 +356,7 @@ def build_lattice_from_dot(file_path):
 
         gvm1 = lattice.get_gvm(source_label, node_map[source_label])
         gvm2 = lattice.get_gvm(dest_label, node_map[dest_label])
-        speed = int(attributes.get('speed', '100'))
+        speed = int(attributes.get('speed', '100').strip('\'"'))
         lattice.connect_nodes(gvm1, source_port, gvm2, dest_port, speed)
 
     return lattice
@@ -350,7 +365,24 @@ def build_lattice_from_dot(file_path):
 # Default simulation parameters
 DEFAULT_STEPS = 5
 LOG_FILE_NAME = 'daedalus_stp_emulator.log'
+# To make the emulator self-contained and easily demonstrable, we define a default
+# N2N Lattice topology that will be used if no input file is provided.
+# This topology includes a loop, which allows the Spanning Tree Protocol
+# to demonstrate its primary function of creating a loop-free logical tree.
+DEFAULT_DOT_TOPOLOGY = """
+graph testnet {
+    node [mac="00:00:00:00:01:01"];
+    SW1 [priority="4096"];
+    node [mac="00:00:00:00:01:02"];
+    SW2 [priority="8192"];
+    node [mac="00:00:00:00:01:03"];
+    SW3;
 
+    SW1:1 -- SW2:1 [speed="1000"];
+    SW2:2 -- SW3:1 [speed="100"];
+    SW3:2 -- SW1:2 [speed="1000"];
+}
+"""
 
 def main():
     """
@@ -360,7 +392,7 @@ def main():
     parser = argparse.ArgumentParser(
         description="A Dædælus-inspired emulator for the Spanning Tree Protocol."
     )
-    parser.add_argument("-i", "--infile", required=True, help="Input DOT file describing the network topology.")
+    parser.add_argument("-i", "--infile", required=False, default=None, help="Input DOT file describing the network topology. Runs a default demo if not provided.")
     parser.add_argument("-s", "--steps", type=int, default=DEFAULT_STEPS, help=f"Number of simulation steps. Default: {DEFAULT_STEPS}.")
     parser.add_argument("-l", "--loglevel", choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'], help="Set the logging level (outputs to log file).")
     args = parser.parse_args()
@@ -373,10 +405,16 @@ def main():
     else:
         logging.basicConfig(filename=LOG_FILE_NAME, filemode='w', level=logging.INFO,
                             format='%(levelname)s:%(name)s:%(message)s')
+    
+    if args.infile:
+        logging.info(f"Reading network definition from: {args.infile}")
+        dot_data = args.infile
+    else:
+        logging.info("No input file provided. Using default built-in topology.")
+        dot_data = DEFAULT_DOT_TOPOLOGY
 
-    logging.info(f"Reading network definition from: {args.infile}")
-    # Build the N2N Lattice from the specified DOT file.
-    lattice = build_lattice_from_dot(args.infile)
+    # Build the N2N Lattice from the specified DOT file or default string.
+    lattice = build_lattice_from_dot(dot_data)
 
     logging.info("Simulation starting: All GVMs are booting.")
     # Boot all GVMs, initializing their STP state.
