@@ -12,6 +12,97 @@ interface NewsItem {
 }
 
 const newsItems: NewsItem[] = [
+  // Insert these new items at the beginning of the 'newsItems' array.
+  {
+    date: 'July 23, 2025',
+    title: 'Paxos Consensus Protocol',
+    link: 'https://en.wikipedia.org/wiki/Paxos_(computer_science)',
+    description: 'An overview of the Paxos family of protocols for achieving consensus in unreliable distributed systems, a foundational concept for building fault-tolerant state machines.',
+  },
+  {
+    date: 'July 23, 2025',
+    title: 'Time Appliances Project (TAP) on GitHub',
+    link: 'https://github.com/Time-Appliances-Project',
+    description: 'The official GitHub organization for the Time Appliances Project (TAP), providing open-source tools and standards for high-precision time synchronization.',
+  },
+  {
+    date: 'July 23, 2025',
+    title: 'IEEE Milestone Proposal: Manchester Code',
+    link: 'https://ieeemilestones.ethw.org/Milestone-Proposal:Manchester_Code',
+    description: 'The proposal to recognize Manchester Code, a foundational line code for self-clocking digital data used in early computing and Ethernet, as an IEEE Milestone.',
+  },
+  {
+    date: 'July 23, 2025',
+    title: 'Open Atomic Ethernet (OAE) Wiki',
+    link: 'https://www.opencompute.org/w/index.php?title=Open_Atomic_Ethernet#Ethernet_History_and_Interesting_Links',
+    description: 'The official Open Compute Project wiki for the Open Atomic Ethernet (OAE) initiative, detailing its vision for a formally verifiable, transactional Ethernet.',
+  },
+  {
+    date: 'July 23, 2025',
+    title: 'Claude Chat: LaTeX Compilation Debugging',
+    link: 'https://claude.ai/share/742b1496-fde3-47b4-8de5-965bd60b7746',
+    description: 'A shared conversation detailing the debugging process for a complex LaTeX document, highlighting common issues with graphics paths and auxiliary file corruption.',
+  },
+  {
+    date: 'July 23, 2025',
+    title: 'The Twelve-Factor App Methodology',
+    link: 'https://12factor.net/',
+    description: 'A methodology for building modern, scalable, and maintainable software-as-a-service applications, focusing on declarative configurations and clean architecture.',
+  },
+  {
+    date: 'July 23, 2025',
+    title: 'OpenTofu: Open-Source Infrastructure as Code',
+    link: 'https://opentofu.org/',
+    description: 'The official site for OpenTofu, a community-driven, open-source fork of Terraform for building, changing, and versioning infrastructure safely and efficiently.',
+  },
+  {
+    date: 'July 23, 2025',
+    title: 'arXiv: A Class of Models with the Potential to Represent Fundamental Physics',
+    link: 'https://arxiv.org/abs/2004.08210',
+    description: "Stephen Wolfram's paper introducing a class of simple models that generate complex behavior, exploring their potential as a foundation for a new theory of physics.",
+  },
+  {
+    date: 'July 23, 2025',
+    title: 'arXiv: Step-by-Step Diffusion: An Elementary Tutorial',
+    link: 'https://arxiv.org/abs/2406.08929',
+    description: 'An accessible tutorial on diffusion models and flow matching for machine learning, simplifying the mathematical details for a technical audience.',
+  },
+  {
+    date: 'July 23, 2025',
+    title: 'OAE Discussion: Clos vs. Directly Connected Networks',
+    link: 'https://ocp-all.groups.io/g/ocp-oae/topic/114067018#msg636',
+    description: 'A discussion thread in the Open Atomic Ethernet group on the trade-offs between Clos and direct-connect mesh networks, focusing on resilience and latency.',
+  },
+  {
+    date: 'July 23, 2025',
+    title: 'YC Lecture: How to Raise Money',
+    link: 'https://genius.com/Marc-andreessen-lecture-9-how-to-raise-money-annotated',
+    description: 'An annotated transcript of Marc Andreessen, Ron Conway, and Parker Conrad\'s lecture on fundraising from the Y Combinator "How to Start a Startup" series.',
+  },
+  {
+    date: 'July 23, 2025',
+    title: 'Startup Archive on X: Marc Andreessen on VC',
+    link: 'https://x.com/StartupArchive_/status/1944064804735385830',
+    description: "A post summarizing Marc Andreessen's insights on the outlier-driven nature of venture capital and what VCs look for in startups.",
+  },
+  {
+    date: 'July 23, 2025',
+    title: 'Grok Chat: Clos vs. Mesh Network Simulation',
+    link: 'https://grok.com/share/c2hhcmQtMg%3D%3D_bab388ed-4af4-417f-a942-01ac827ce54e',
+    description: 'A shared conversation detailing the creation of a Mathematica simulation to compare the resilience and latency of Clos vs. direct-connect network topologies.',
+  },
+  {
+    date: 'July 23, 2025',
+    title: 'Claude Chat: Slowdown Theorem & Atomic Ethernet',
+    link: 'https://claude.ai/share/bb40fbe9-e328-4753-9fe2-70d46ef3e808',
+    description: 'A deep analysis of the "Slowdown Theorem on Links," connecting computational irreducibility and time symmetry to the theory behind Open Atomic Ethernet.',
+  },
+  {
+    date: 'July 23, 2025',
+    title: 'Wolfram Summer School: Physics Track Keynote',
+    link: 'https://www.youtube.com/watch?v=XAg69DoChbw',
+    description: "Stephen Wolfram's opening keynote for the Wolfram Summer School 2025, discussing the current state of the Wolfram Physics Project.",
+  },
   {
     date: 'August 5–7, 2025',
     title: 'FMS: the Future of Memory & Storage Summit 2025',
