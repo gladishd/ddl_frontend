@@ -193,6 +193,22 @@ const PDF_META: DocMeta[] = [
     title: "Superposition Engine",
     description: "Details the MORTS (Morphism pORTS) Open Petri Net Model for managing connected information and event ordering.",
   },
+  /* ――― New Entries ――― */
+  {
+    file: "Slowdown-Theorem-on-Links.pdf",
+    title: "Slowdown Theorem on Links",
+    description: "Critiques 'Forward-In-Time-Only' thinking and proposes a reversible link protocol model that accounts for indefinite causality.",
+  },
+  {
+    file: "DAE-FAQ-Bandwidth_20230709a.pdf",
+    title: "FAQ – Bandwidth",
+    description: "Compares the bandwidth and resilience of the Daedaelus Transaction Fabrix with conventional Clos networks.",
+  },
+  {
+    file: "FAQ-Latency-2-copy.pdf",
+    title: "FAQ – Latency",
+    description: "Explores the predictable, low-latency characteristics of the Transaction Fabrix versus the tail latency of switched networks.",
+  },
 ];
 
 // /* ────────────────────────── 3. Self-seeding + GC with "first-time" create_document_features.sql ───────────────────── */

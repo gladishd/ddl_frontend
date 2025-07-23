@@ -270,6 +270,24 @@ INSERT INTO documents (title, description, image, href) VALUES
  'Details the MORTS (Morphism pORTS) Open Petri Net Model for managing connected information and event ordering.',
  'https://images.unsplash.com/photo-1507146426996-32f275980346?auto=format&fit=crop&w=800&q=80',
  '/Superposition-Engine.pdf'),
+
+ --------------------------------------------------------------------------------
+-- ░░ NEW ENTRIES ░░
+--------------------------------------------------------------------------------
+('Slowdown Theorem on Links',
+ 'Critiques ''Forward-In-Time-Only'' thinking and proposes a reversible link protocol model that accounts for indefinite causality.',
+ 'https://images.unsplash.com/photo-1634733510042-41d35e5333e3?auto=format&fit=crop&w=800&q=80',
+ '/Slowdown-Theorem-on-Links-FILE_3981.pdf'),
+
+('FAQ – Bandwidth',
+ 'Compares the bandwidth and resilience of the Daedaelus Transaction Fabrix with conventional Clos networks.',
+ 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
+ '/DAE-FAQ-Bandwidth_20230709a.pdf'),
+
+('FAQ – Latency',
+ 'Explores the predictable, low-latency characteristics of the Transaction Fabrix versus the tail latency of switched networks.',
+ 'https://images.unsplash.com/photo-1587573750242-a162d42a92e3?auto=format&fit=crop&w=800&q=80',
+ '/FAQ-Latency-2-copy.pdf'),
 ON CONFLICT (href) DO NOTHING;   -- safe to re-run
 
 COMMIT;
