@@ -1,9 +1,9 @@
 #
 # DDL_Emulator_Fabric.py (ethernet9.py)
 #
-# This script provides a unified interface for interacting with various network 
+# This script provides a unified interface for interacting with various network
 # fabrics, serving as a foundational component of the DDL_Emulator. This version
-# includes a Virtual Fabric Mode, allowing it to run as a self-contained, 
+# includes a Virtual Fabric Mode, allowing it to run as a self-contained,
 # information-theoretic emulator without requiring physical hardware.
 #
 
@@ -27,8 +27,6 @@ try:
     if platform.system() == "Windows":
         from TSMasterAPI import *
     else:
-        # On non-windows, we must ensure the path is set for the real library,
-        # even if we end up not using it in virtual mode.
         script_dir = os.path.dirname(os.path.realpath(__file__))
         lib_path = os.path.abspath(os.path.join(script_dir, 'TSMasterDemos/Python/Linux/lib'))
         if lib_path not in sys.path:
@@ -42,13 +40,36 @@ except (ImportError, NameError):
         # Define minimal structures needed for the script to be syntactically valid
         # when the real libraries are missing and VIRTUAL_MODE is on.
         print("Info: Real hardware libraries not found. Proceeding in VIRTUAL_MODE.")
-        class Structure: pass
-        class TLIBCAN(Structure):
-             def __init__(self, **kwargs): [setattr(self, k, v) for k, v in kwargs.items()]
-        class TLIBCANFD(Structure):
-             def __init__(self, **kwargs): [setattr(self, k, v) for k, v in kwargs.items()]
-        class TLIBLIN(Structure):
+        
+        # This is the corrected section. The stub classes must inherit from ctypes.Structure
+        # and define their _fields_ to have a C-compatible memory layout, allowing
+        # functions like ctypes.memmove and ctypes.sizeof to operate on them correctly.
+        class TLIBCAN(ctypes.Structure):
+            _fields_ = [
+                ("FIdentifier", ctypes.c_uint32),
+                ("FProperties", ctypes.c_ubyte),
+                ("FDLC", ctypes.c_ubyte),
+                ("FIdxChn", ctypes.c_ubyte),
+                ("FReserved", ctypes.c_ubyte),
+                ("FData", ctypes.c_ubyte * 8),
+                ("FTimeUS", ctypes.c_uint64)
+            ]
+            def __init__(self, **kwargs):
+                super().__init__()
+                for k, v in kwargs.items():
+                    if k == "FData":
+                        for i in range(len(v)): self.FData[i] = v[i]
+                    else:
+                        setattr(self, k, v)
+
+        class TLIBCANFD(ctypes.Structure):
+            _fields_ = [("FIdentifier", ctypes.c_uint32)] # Minimal stub
             def __init__(self, **kwargs): [setattr(self, k, v) for k, v in kwargs.items()]
+            
+        class TLIBLIN(ctypes.Structure):
+            _fields_ = [("FIdentifier", ctypes.c_uint32)] # Minimal stub
+            def __init__(self, **kwargs): [setattr(self, k, v) for k, v in kwargs.items()]
+
         class TLIBApplicationChannelType: APP_CAN, APP_LIN = 0, 1
         class TLIBBusToolDeviceType: TS_USB_DEVICE = 3
         class TLIB_TS_Device_Sub_Type: TC1016 = 11
@@ -57,6 +78,7 @@ except (ImportError, NameError):
         class TLINProtocol: LIN_PROTOCL_21 = 2
         class READ_TX_RX_DEF: TX_RX_MESSAGES, ONLY_RX_MESSAGES = 1, 0
         def c_float(val): return val
+        c_size_t = ctypes.c_size_t
 
 
 # --- Daedalus Virtual Hardware Abstraction Layer ---
@@ -88,6 +110,9 @@ class VirtualTSMasterAPI:
     def tsfifo_enable_receive_fifo(self): pass
 
     def tsapp_transmit_can_async(self, handle, msg):
+        if not hasattr(msg, 'FIdxChn'):
+            raise AttributeError("'TLIBCAN' object has no attribute 'FIdxChn'. Please ensure it is set during initialization.")
+        
         # Emulate loopback: a sent message is placed in the receive queue.
         if msg.FIdxChn not in self._channels:
             self._channels[msg.FIdxChn] = queue.Queue()
@@ -162,7 +187,6 @@ class DDL_Emulator_Fabric:
         print("Fabric Initialized.")
 
     def connect_fabric(self, channel_configs: list):
-        # ... (rest of the class is identical to the previous version)
         can_channels = sum(1 for cfg in channel_configs if cfg.get('type') in ('CAN', 'CANFD'))
         lin_channels = sum(1 for cfg in channel_configs if cfg.get('type') == 'LIN')
         self.api.tsapp_set_can_channel_count(can_channels)
@@ -179,8 +203,10 @@ class DDL_Emulator_Fabric:
             elif config.get('type') == 'CAN':
                 self.api.tsapp_configure_baudrate_can(i, c_float(config.get('rate_kbps', 500.0)), False, config.get('termination', True))
         
-        connect_fn = self.api.tsapp_connect if not VIRTUAL_MODE else self.api.tsapp_connect
-        ret = connect_fn() if VIRTUAL_MODE else connect_fn(b'', c_size_t(0))
+        if VIRTUAL_MODE:
+            ret = self.api.tsapp_connect()
+        else:
+            ret = self.api.tsapp_connect(b'', c_size_t(0))
 
         if ret == 0:
             self._connected = True
@@ -200,7 +226,7 @@ class DDL_Emulator_Fabric:
 
     def receive_token_stream(self, channel_index: int, msg_type: str, count: int, include_tx: bool = False):
         if not self._connected: return []
-        handle = c_size_t(0)    
+        handle = c_size_t(0)   
         buf_size = ctypes.c_int32(count)
         flag = READ_TX_RX_DEF.TX_RX_MESSAGES if include_tx else READ_TX_RX_DEF.ONLY_RX_MESSAGES
         if msg_type.upper() == 'CAN':
@@ -251,7 +277,7 @@ def main():
         fabric.connect_fabric(configs)
         
         print("\n--- DEMO 1: Transmitting a single token ---")
-        tok = TLIBCAN(FIdentifier=0x123, FDLC=8, FData=[1,2,3,4,5,6,7,8])
+        tok = TLIBCAN(FIdentifier=0x123, FDLC=8, FData=[1,2,3,4,5,6,7,8], FIdxChn=0)
         fabric.send_token(tok)
         print(f"Token 0x{tok.FIdentifier:X} sent on channel {tok.FIdxChn}.")
         time.sleep(0.1)
