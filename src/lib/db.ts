@@ -90,7 +90,47 @@ const PDF_META: DocMeta[] = [
     description: "Charles H. Bennett’s foundational paper on logical reversibility and thermodynamics of computation."
   },
   // ─── new 2025-07 additions ───
-  { file: "OAE-SPEC-MAIN.pdf", title: "OAE Spec (Main)" },
+  /* ――― NEW ENTRIES (Daedalus New) ――― */
+  {
+    file: "OAE-SPEC-MAIN.pdf",
+    title: "Open Atomic Ethernet Specification",
+    description: "The main specification document for the Open Atomic Ethernet (OAE) workstream, detailing its principles, architecture, and protocols.",
+  },
+  {
+    file: "Instructions for Daedaelus.pdf",
+    title: "Daedaelus Project Instructions",
+    description: "Internal project notes, tasks, and discussions related to the Daedaelus platform and its development.",
+  },
+  {
+    file: "main-resend-Sahas.pdf",
+    title: "Bandwidth Works in Practice, not in Theory (Sahas Resend)",
+    description: "A version of the core Daedaelus thesis on reliable networking, challenging the industry's focus on bandwidth over transactional integrity.",
+  },
+  {
+    file: "Finite-Automata.pdf",
+    title: "Finite Automata and Decision Problems",
+    description: "A deep dive into the theory of finite automata, their decision problems, and their foundational role in computer science.",
+  },
+  {
+    file: "Mulligan-Stew-FAQ.pdf",
+    title: "Mulligan Stew FAQ",
+    description: "A compilation of questions and detailed answers from the Daedaelus team, clarifying core concepts like atomicity, problem space, and architectural principles.",
+  },
+  {
+    file: "simon_wacker_graphFSP.pdf",
+    title: "Time-Optimal Firing Squad/Mob Synchronisation",
+    description: "Simon Wacker's paper on a time-optimal quasi-solution of the firing mob synchronisation problem on connected graphs.",
+  },
+  {
+    file: "1402958.1402967.pdf",
+    title: "A Scalable, Commodity Data Center Network Architecture",
+    description: "The influential 2008 SIGCOMM paper proposing a scalable data center architecture using fat-tree topologies with commodity switches.",
+  },
+  {
+    file: "PatHellandQuestions.pdf",
+    title: "Pat Helland's Questions (Mulligan Stew FAQ)",
+    description: "A focused FAQ addressing specific, challenging questions from Pat Helland regarding the core problem and definition of atomicity.",
+  },
   { file: "DeansPresentation.pdf", title: "Dean Gladish – Keynote Slides" },
   { file: "OCP-OAE-02025-EVOLVING.pdf", title: "OCP-OAE 2025 – Evolving Interconnects" },
   { file: "CellularAutomata-FromClassicalComputationtoQuantumErrorCorrection.pdf", title: "Cellular Automata – Classical to Quantum EC" },
@@ -369,3 +409,6 @@ export async function setTags(id: number, tags: string[]) {
     client.release();
   }
 }
+/* psql "postgresql://ddl_database_3_user:PkAC1BE0W4lB1dzgJ8aM422LpU1DNBQc@dpg-d2e4lpqdbo4c73emr7t0-a.ohio-postgres.render.com/ddl_database_3" -f create_document_features.sql
+// psql "postgresql://ddl_database_3_user:PkAC1BE0W4lB1dzgJ8aM422LpU1DNBQc@dpg-d2e4lpqdbo4c73emr7t0-a.ohio-postgres.render.com/ddl_database_3" -f seed_documents.sql
+//  */

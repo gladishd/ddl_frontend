@@ -95,8 +95,8 @@ INSERT INTO documents (title, description, image, href) VALUES
 --------------------------------------------------------------------------------
 -- ░░ NEW ENTRIES ░░
 --------------------------------------------------------------------------------
-('OAE Spec (Main)',
- 'Latest open-availability Ethernet spec.',
+('Open Atomic Ethernet Specification',
+ 'The main specification document for the Open Atomic Ethernet (OAE) workstream, detailing its principles, architecture, and protocols.',
  'https://images.unsplash.com/photo-1542224566-2e40f87baf79?auto=format&fit=crop&w=800&q=80',
  '/OAE-SPEC-MAIN.pdf'),
 
@@ -288,6 +288,41 @@ INSERT INTO documents (title, description, image, href) VALUES
  'Explores the predictable, low-latency characteristics of the Transaction Fabrix versus the tail latency of switched networks.',
  'https://images.unsplash.com/photo-1587573750242-a162d42a92e3?auto=format&fit=crop&w=800&q=80',
  '/FAQ-Latency-2-copy.pdf'),
+
+('Daedaelus Project Instructions',
+ 'Internal project notes, tasks, and discussions related to the Daedaelus platform and its development.',
+ 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=800&q=80',
+ '/Instructions for Daedaelus.pdf'),
+
+('Bandwidth Works in Practice, not in Theory (Sahas Resend)',
+ 'A version of the core Daedaelus thesis on reliable networking, challenging the industry''s focus on bandwidth over transactional integrity.',
+ 'https://images.unsplash.com/photo-1581094794329-c8112a89af10?auto=format&fit=crop&w=800&q=80',
+ '/main-resend-Sahas.pdf'),
+
+('Finite Automata and Decision Problems',
+ 'A deep dive into the theory of finite automata, their decision problems, and their foundational role in computer science, from the 1959 Rabin-Scott paper to modern applications.',
+ 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
+ '/Finite-Automata.pdf'),
+
+('Mulligan Stew FAQ',
+ 'A compilation of questions and detailed answers from the Daedaelus team, clarifying core concepts like atomicity, problem space, and architectural principles.',
+ 'https://images.unsplash.com/photo-1526401281623-3ad9882883b4?auto=format&fit=crop&w=800&q=80',
+ '/Mulligan-Stew-FAQ.pdf'),
+
+('Time-Optimal Firing Squad/Mob Synchronisation',
+ 'Simon Wacker''s paper on a time-optimal quasi-solution of the firing mob synchronisation problem on connected graphs, using signal machines and cellular automata.',
+ 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=800&q=80',
+ '/simon_wacker_graphFSP.pdf'),
+
+('A Scalable, Commodity Data Center Network Architecture',
+ 'The influential 2008 SIGCOMM paper by Al-Fares, Loukissas, and Vahdat proposing a scalable data center architecture using fat-tree topologies with commodity switches.',
+ 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80',
+ '/1402958.1402967.pdf'),
+
+('Pat Helland''s Questions (Mulligan Stew FAQ)',
+ 'A focused FAQ addressing specific, challenging questions from Pat Helland regarding the core problem, participants, and definition of atomicity in the Daedaelus system.',
+ 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
+ '/PatHellandQuestions.pdf')
 ON CONFLICT (href) DO NOTHING;   -- safe to re-run
 
 COMMIT;
