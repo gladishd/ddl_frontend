@@ -322,7 +322,34 @@ INSERT INTO documents (title, description, image, href) VALUES
 ('Pat Helland''s Questions (Mulligan Stew FAQ)',
  'A focused FAQ addressing specific, challenging questions from Pat Helland regarding the core problem, participants, and definition of atomicity in the Daedaelus system.',
  'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
- '/PatHellandQuestions.pdf')
+ '/PatHellandQuestions.pdf'),
+
+ -- ░░ NEW ENTRIES (2025-08-17) ░░
+('Arista',
+ 'Vendor architecture overview and reference PDF.',
+ 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80',
+ '/Arista.pdf'),
+
+('Clos Fabric (OmniGraffle export)',
+ 'Clos fabric diagrams exported from OmniGraffle.',
+ 'https://images.unsplash.com/photo-1534081333815-ae5019106622?auto=format&fit=crop&w=800&q=80',
+ '/Clos-Fabric.graffle.pdf'),
+
+('Conventional Networking',
+ 'Overview of conventional (pre-transactional) networking designs.',
+ 'https://images.unsplash.com/photo-1581093448795-5f9f0c2a1f2c?auto=format&fit=crop&w=800&q=80',
+ '/ConventionalNetworking.pdf'),
+
+('Ethernet Animation (legacy)',
+ 'Legacy animated slides illustrating historical behaviors.',
+ 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
+ '/Old-Animated.pdf'),
+
+('Transaction Processing Spec',
+ 'Daedaelus transaction-processing specification (draft).',
+ 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=800&q=80',
+ '/Tranzaction-Processing-Spec.pdf'),
+
 ON CONFLICT (href) DO NOTHING;   -- safe to re-run
 
 COMMIT;

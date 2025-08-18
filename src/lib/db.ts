@@ -249,6 +249,11 @@ const PDF_META: DocMeta[] = [
     title: "FAQ – Latency",
     description: "Explores the predictable, low-latency characteristics of the Transaction Fabrix versus the tail latency of switched networks.",
   },
+  { file: "Arista.pdf", title: "Arista" },
+  { file: "Clos-Fabric.graffle.pdf", title: "Clos Fabric (OmniGraffle export)" },
+  { file: "ConventionalNetworking.pdf", title: "Conventional Networking" },
+  { file: "Old-Animated.pdf", title: "Ethernet Animation (legacy)" },
+  { file: "Tranzaction-Processing-Spec.pdf", title: "Transaction Processing Spec" },
 ];
 
 // /* ────────────────────────── 3. Self-seeding + GC with "first-time" create_document_features.sql ───────────────────── */
