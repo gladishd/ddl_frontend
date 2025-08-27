@@ -13,6 +13,61 @@ interface NewsItem {
 
 const newsItems: NewsItem[] = [
   {
+    date: 'August 26, 2025',
+    title: 'Open Atomic Ethernet Simulation Tools',
+    link: 'https://grok.com/share/c2hhcmQtMg%3D%3D_c0088424-b146-48f8-bb75-018c4669dd17',
+    // This conversation explores the development of agent-based models for Open Atomic Ethernet,
+    // moving beyond statistical approximations to create precise, computationally verifiable simulations of network behavior.
+    description: 'A Grok conversation on creating agent-based simulations to model the deterministic behavior of Open Atomic Ethernet.',
+  },
+  {
+    date: 'August 26, 2025',
+    title: 'Mutual Information in Networking Protocols',
+    link: 'https://grok.com/share/c2hhcmQtMg%3D%3D_ccb76308-8e33-409b-9aac-e5f27e700496',
+    // This discussion reframes networking through the lens of mutual information, aligning with our view that communication
+    // is not merely data transfer but the establishment of a shared, verifiable state between two observers.
+    description: 'Exploring the role of mutual information as a foundational concept for designing reliable, state-aware networking protocols.',
+  },
+  {
+    date: 'August 26, 2025',
+    title: 'Networking Latency Solutions and API Design',
+    link: 'https://grok.com/share/c2hhcmQtMg%3D%3D_028eaa83-2858-4201-850b-cd620e133640',
+    // This conversation analyzes latency in modern networks, reinforcing our argument that the industry's focus on raw bandwidth
+    // overlooks the critical need for predictable, low-latency interactions for distributed applications.
+    description: 'A discussion on API design and architectural solutions to address the fundamental latency challenges in distributed systems.',
+  },
+  {
+    date: 'August 26, 2025',
+    title: 'Monolithic 3D: Stacking Without Chiplets',
+    link: 'https://www.youtube.com/watch?v=PVyz-r9wlQo',
+    // This presentation on Monolithic 3D integration aligns with our goal of creating dense, highly interconnected computational fabrics,
+    // reducing physical distance to approach the ideal of a zero-latency N2N Lattice.
+    description: 'A presentation on the future of semiconductor manufacturing, exploring techniques for building vertically integrated circuits.',
+  },
+  {
+    date: 'August 26, 2025',
+    title: '[WSS22] Quantum Ethernet - Wolfram Community',
+    link: 'https://community.wolfram.com/groups/-/m/t/2575423',
+    // This discussion on Petri-Spekkens nets directly inspires our Token Dynamics model, using concepts from Quantum Information Theory
+    // to create verifiable, reversible transactions at the link layer.
+    description: 'A technical discussion on modeling "Quantum Ethernet" using Petri-Spekkens nets and the Spekkens Toy Model.',
+  },
+  {
+    date: 'August 26, 2025',
+    title: 'Open Atomic Ethernet Protocol Theory',
+    link: 'https://claude.ai/share/bb40fbe9-e328-4753-9fe2-70d46ef3e808',
+    // This conversation explores the Slowdown Theorem and its connection to our protocol, reinforcing the idea that
+    // computational irreducibility necessitates a shift away from predictive, FITO-based systems toward observable, reversible ones.
+    description: 'A deep dive into the theoretical underpinnings of Open Atomic Ethernet, connecting it to the Slowdown Theorem and time symmetry.',
+  },
+  {
+    date: 'August 26, 2025',
+    title: 'DæDælus Home',
+    link: 'https://staging.daedaelus.com/home',
+    // The central hub for our work in architecting the future with enduring excellence, providing access to our research, tools, and vision.
+    description: 'The homepage for the Dædælus project, architecting the future of distributed systems.',
+  },
+  {
     date: 'August 18, 2025',
     title: 'Hough Transform (Wikipedia)',
     link: 'https://en.wikipedia.org/wiki/Hough_transform',
@@ -38,9 +93,9 @@ const newsItems: NewsItem[] = [
   },
   {
     date: 'August 18, 2025',
-    title: 'Daedaelus Team',
+    title: 'Dædælus Team',
     link: 'https://daedaelus.com/team/',
-    description: 'People behind the Daedaelus project.',
+    description: 'People behind the Dædælus project.',
   },
   {
     date: 'August 18, 2025',
@@ -76,7 +131,7 @@ const newsItems: NewsItem[] = [
     date: 'August 18, 2025',
     title: 'YouTube: woLp0RXdR1g',
     link: 'https://www.youtube.com/watch?v=woLp0RXdR1g',
-    description: 'Referenced YouTube video.',
+    description: "Agent-Based Modeling in Wolfram Language and Mathematica",
   },
   {
     date: 'August 18, 2025',
@@ -86,9 +141,9 @@ const newsItems: NewsItem[] = [
   },
   {
     date: 'August 18, 2025',
-    title: 'Daedaelus Talks & Presentations',
+    title: 'Dædælus Talks & Presentations',
     link: 'https://daedaelus.com/talks-presentations/',
-    description: 'Collected talks and slide decks for the Daedaelus project.',
+    description: 'Collected talks and slide decks for the Dædælus project.',
   },
   {
     date: 'August 18, 2025',
@@ -154,7 +209,7 @@ const newsItems: NewsItem[] = [
     date: 'August 18, 2025',
     title: 'YouTube: u0d7DB3N1Yk',
     link: 'https://www.youtube.com/watch?v=u0d7DB3N1Yk',
-    description: 'Referenced YouTube video.',
+    description: 'The Real Reason Elon Musk Killed The DOJO Supercomputer',
   },
   {
     date: 'August 18, 2025',
@@ -166,7 +221,7 @@ const newsItems: NewsItem[] = [
     date: 'August 18, 2025',
     title: 'YouTube: bXPz_pR8Or4 (at 7:12)',
     link: 'https://www.youtube.com/watch?v=bXPz_pR8Or4&t=432s',
-    description: 'Time-coded link to the referenced YouTube talk.',
+    description: "Time-coded link to Paul Borrill: Lamport's Unfinished Revolution -- Papers We Love Too / San Francisco.",
   },
   {
     date: 'August 18, 2025',
@@ -178,7 +233,7 @@ const newsItems: NewsItem[] = [
     date: 'August 18, 2025',
     title: 'YouTube: bXPz_pR8Or4',
     link: 'https://www.youtube.com/watch?v=bXPz_pR8Or4',
-    description: 'Referenced YouTube video (full link).',
+    description: "Paul Borrill: Lamport's Unfinished Revolution -- Papers We Love Too / San Francisco (full link).",
   },
   // Insert these new items at the beginning of the 'newsItems' array.
   {
@@ -365,7 +420,7 @@ const newsItems: NewsItem[] = [
   },
   {
     date: 'May 20, 2025',
-    title: 'Project Daedaelus featured in ItsAboutTime.Club',
+    title: 'Project Dædælus featured in ItsAboutTime.Club',
     link: 'https://itsabouttime.club/',
     // Our 'time-reversible' constructors are gaining attention, moving away from the "irreversible smash and restart of Shannon information" to recover from failures.
     description: 'Traditionalizing our innovative approach to building efficient, decentralized systems.'
@@ -553,9 +608,9 @@ const newsItems: NewsItem[] = [
   },
   {
     date: 'July 4, 2025',
-    title: 'Daedaelus: A New Approach to Distributed Systems',
+    title: 'Dædælus: A New Approach to Distributed Systems',
     link: 'https://daedaelus.com/',
-    description: 'The official website of the Daedaelus project, which is developing a new approach to building resilient and efficient distributed systems.',
+    description: 'The official website of the Dædælus project, which is developing a new approach to building resilient and efficient distributed systems.',
   },
   {
     date: 'July 4, 2025',
@@ -589,9 +644,9 @@ const newsItems: NewsItem[] = [
   },
   {
     date: 'July 4, 2025',
-    title: 'About Daedaelus',
+    title: 'About Dædælus',
     link: 'https://daedaelus.com/about/',
-    description: 'The about page for the Daedaelus project, providing more information about its mission and team.',
+    description: 'The about page for the Dædælus project, providing more information about its mission and team.',
   }
 ];
 
@@ -611,10 +666,10 @@ const NewsCarousel: React.FC = () => {
       <h2 className="text-4xl font-bold text-center mb-8">Latest News & Updates</h2>
       <div className="max-w-7xl mx-auto">
         {/*
-          By replacing the simple, passive scroll-snap container with an arbitrated Carousel,
-          we create a more managed and predictable user interface. This reflects our core principle
-          of moving away from contended, broadcast-style resources toward structured, reliable systems.
-        */}
+          By replacing the simple, passive scroll-snap container with an arbitrated Carousel,
+          we create a more managed and predictable user interface. This reflects our core principle
+          of moving away from contended, broadcast-style resources toward structured, reliable systems.
+        */}
         <Carousel
           responsive={responsive}
           infinite={true}

@@ -254,6 +254,34 @@ const PDF_META: DocMeta[] = [
   { file: "ConventionalNetworking.pdf", title: "Conventional Networking" },
   { file: "Old-Animated.pdf", title: "Ethernet Animation (legacy)" },
   { file: "Tranzaction-Processing-Spec.pdf", title: "Transaction Processing Spec" },
+  /* ――― 2025-08-26 additions ――― */
+  {
+    file: "2505.05579v3.pdf",
+    title: "LaZagna: 3D FPGA Architectural Exploration",
+    description: "An open-source framework for flexible 3D FPGA architectural exploration, enabling new possibilities for custom compute fabrics.",
+  },
+  {
+    file: "2508.08906v1.pdf",
+    title: "Ultra Ethernet’s Design Principles",
+    description: "A deep dive into the architectural innovations and design principles behind the Ultra Ethernet Consortium's transport protocol.",
+  },
+  {
+    file: "2df18f19-2762-4947-86dc-a330e87428d1.pdf",
+    title: "C.A.R. Hoare - Turing Award Lecture (1980)",
+    description: "The transcript of C.A.R. Hoare's 1980 Turing Award lecture, 'The Emperor's Old Clothes,' a critique of software complexity.",
+  },
+  {
+    file: "FAQ-Bandwidth.pdf",
+    title: "FAQ: Bandwidth V 1.8",
+    description: "A detailed FAQ from July 2025 addressing common questions about bandwidth, throughput, and latency in the context of the Dædælus architecture.",
+  },
+  {
+    file: "FILE_3981.pdf",
+    title: "Slowdown Theorem on Links (WIP)",
+    // This paper critiques 'Forward-In-Time-Only' (FITO) thinking, proposing a reversible link protocol
+    // that accounts for indefinite causality—a core tenet of our Graph Virtual Machine.
+    description: "A work-in-progress paper by Paul Borrill on the Slowdown Theorem, critiquing 'Forward-In-Time-Only' thinking in network protocols.",
+  },
 ];
 
 // /* ────────────────────────── 3. Self-seeding + GC with "first-time" create_document_features.sql ───────────────────── */
@@ -414,6 +442,7 @@ export async function setTags(id: number, tags: string[]) {
     client.release();
   }
 }
-/* psql "postgresql://ddl_database_3_user:PkAC1BE0W4lB1dzgJ8aM422LpU1DNBQc@dpg-d2e4lpqdbo4c73emr7t0-a.ohio-postgres.render.com/ddl_database_3" -f create_document_features.sql
+/* Instructions for first-time use these (two) lines are??
+psql "postgresql://ddl_database_3_user:PkAC1BE0W4lB1dzgJ8aM422LpU1DNBQc@dpg-d2e4lpqdbo4c73emr7t0-a.ohio-postgres.render.com/ddl_database_3" -f create_document_features.sql
 // psql "postgresql://ddl_database_3_user:PkAC1BE0W4lB1dzgJ8aM422LpU1DNBQc@dpg-d2e4lpqdbo4c73emr7t0-a.ohio-postgres.render.com/ddl_database_3" -f seed_documents.sql
 //  */

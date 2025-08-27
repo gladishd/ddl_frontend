@@ -350,6 +350,31 @@ INSERT INTO documents (title, description, image, href) VALUES
  'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=800&q=80',
  '/Tranzaction-Processing-Spec.pdf'),
 
+-- ░░ NEW ENTRIES (2025-08-26) ░░
+('LaZagna: 3D FPGA Architectural Exploration',
+ 'An open-source framework for flexible 3D FPGA architectural exploration, enabling new possibilities for custom compute fabrics.',
+ 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+ '/2505.05579v3.pdf'),
+
+('Ultra Ethernet’s Design Principles',
+ 'A deep dive into the architectural innovations and design principles behind the Ultra Ethernet Consortium''s transport protocol.',
+ 'https://images.unsplash.com/photo-1581091226825-a6a2a5a0a48a?auto=format&fit=crop&w=800&q=80',
+ '/2508.08906v1.pdf'),
+
+('C.A.R. Hoare - Turing Award Lecture (1980)',
+ 'The transcript of C.A.R. Hoare''s 1980 Turing Award lecture, ''The Emperor''s Old Clothes,'' a critique of software complexity.',
+ 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80',
+ '/2df18f19-2762-4947-86dc-a330e87428d1.pdf'),
+
+('FAQ: Bandwidth V 1.8',
+ 'A detailed FAQ from July 2025 addressing common questions about bandwidth, throughput, and latency in the context of the Dædælus architecture.',
+ 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
+ '/FAQ-Bandwidth.pdf'),
+
+('Slowdown Theorem on Links (WIP)',
+ 'A work-in-progress paper by Paul Borrill on the Slowdown Theorem, critiquing ''Forward-In-Time-Only'' thinking in network protocols.',
+ 'https://images.unsplash.com/photo-1634733510042-41d35e5333e3?auto=format&fit=crop&w=800&q=80',
+ '/FILE_3981.pdf'),
 ON CONFLICT (href) DO NOTHING;   -- safe to re-run
 
 COMMIT;
