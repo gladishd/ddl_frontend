@@ -375,6 +375,86 @@ INSERT INTO documents (title, description, image, href) VALUES
  'A work-in-progress paper by Paul Borrill on the Slowdown Theorem, critiquing ''Forward-In-Time-Only'' thinking in network protocols.',
  'https://images.unsplash.com/photo-1634733510042-41d35e5333e3?auto=format&fit=crop&w=800&q=80',
  '/FILE_3981.pdf'),
+ -- ░░ NEW ENTRIES (2025-09-12) ░░
+ ('CS Fellow — Martha Kim',
+ 'CS fellowship materials referencing Prof. Martha Kim.',
+ 'https://images.unsplash.com/photo-1550745165-9bc0b252726a?auto=format&fit=crop&w=800&q=80',
+ '/CS-Fellow-Martha-Kim.pdf'),
+
+('CS Link Wars (2025–2026)',
+ 'Debate packet on interconnect competition for 2025–2026.',
+ 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80',
+ '/CS-Link-Wars-2025-2026.pdf'),
+
+('Chiplet Summit — Summit Debates',
+ 'Discussion deck compiling key debate topics for the Chiplet Summit.',
+ 'https://images.unsplash.com/photo-1534081333815-ae5019106622?auto=format&fit=crop&w=800&q=80',
+ '/Chiplet-Summit-Summit-Debates.pdf'),
+
+('Clos (Notes)',
+ 'Short notes/background on the Clos fabric.',
+ 'https://images.unsplash.com/photo-1581091226825-a6a2a5a0a48a?auto=format&fit=crop&w=800&q=80',
+ '/Clos.pdf'),
+
+('Dual–Shannon Ethernet',
+ 'Explainer connecting dual-channel reasoning to classic Shannon limits.',
+ 'https://images.unsplash.com/photo-1581091012184-38d3b93dc357?auto=format&fit=crop&w=800&q=80',
+ '/Dual-Shannon-Ethernet.pdf'),
+
+('Email Trail (2025)',
+ 'Context emails collected for 2025 Ethernet work.',
+ 'https://images.unsplash.com/photo-1556742031-c6961e8560b0?auto=format&fit=crop&w=800&q=80',
+ '/Email-Trail-2025.pdf'),
+
+('The Façade of Newtonianism',
+ 'Critique of Newtonian assumptions in distributed systems timing.',
+ 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80',
+ '/Facade_of_Newtonianism.pdf'),
+
+('Georgia Tech — Proposal',
+ 'Proposal materials prepared for Georgia Tech.',
+ 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
+ '/Georgia-Tech-Proposal.pdf'),
+
+('Goldilocks Radix',
+ 'Right-sizing radix considerations for interconnects.',
+ 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80',
+ '/Goldilocks-Radix.pdf'),
+
+('ItsAboutTime — Master Copy 2',
+ 'Timing-centric deck (master copy 2).',
+ 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80',
+ '/ItsAboutTime-Master copy 2.pdf'),
+
+('Journals 1',
+ 'Collected research journal excerpts.',
+ 'https://images.unsplash.com/photo-1526401281623-3ad9882883b4?auto=format&fit=crop&w=800&q=80',
+ '/Journals1.pdf'),
+
+('Networking — Distinction',
+ 'Notes on distinguishing networking approaches and their trade-offs.',
+ 'https://images.unsplash.com/photo-1587573750242-a162d42a92e3?auto=format&fit=crop&w=800&q=80',
+ '/Networking-Distinction.pdf'),
+
+('Summary — Side Meetings',
+ 'Summaries from various side meetings.',
+ 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80',
+ '/Summary-side-meetings.pdf'),
+
+('Systems Management',
+ 'Systems management overview and action items.',
+ 'https://images.unsplash.com/photo-1542224566-2e40f87baf79?auto=format&fit=crop&w=800&q=80',
+ '/Systems-Management.pdf'),
+
+('YouTube Luminaries',
+ 'Reference list of YouTube channels and presenters.',
+ 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=800&q=80',
+ '/YouTube-Luminaries.pdf'),
+
+('New Graph',
+ 'Newly generated graph figure.',
+ 'https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?auto=format&fit=crop&w=800&q=80',
+ '/new-graph.pdf')
 ON CONFLICT (href) DO NOTHING;   -- safe to re-run
 
 COMMIT;

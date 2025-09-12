@@ -282,6 +282,23 @@ const PDF_META: DocMeta[] = [
     // that accounts for indefinite causality—a core tenet of our Graph Virtual Machine.
     description: "A work-in-progress paper by Paul Borrill on the Slowdown Theorem, critiquing 'Forward-In-Time-Only' thinking in network protocols.",
   },
+  /* ─── 2025-09-12 additions ─── */
+  { file: "CS-Fellow-Martha-Kim.pdf", title: "CS Fellow — Martha Kim" },
+  { file: "CS-Link-Wars-2025-2026.pdf", title: "CS Link Wars (2025–2026)" },
+  { file: "Chiplet-Summit-Summit-Debates.pdf", title: "Chiplet Summit — Summit Debates" },
+  { file: "Clos.pdf", title: "Clos (Notes)" },
+  { file: "Dual-Shannon-Ethernet.pdf", title: "Dual–Shannon Ethernet" },
+  { file: "Email-Trail-2025.pdf", title: "Email Trail (2025)" },
+  { file: "Facade_of_Newtonianism.pdf", title: "The Façade of Newtonianism" },
+  { file: "Georgia-Tech-Proposal.pdf", title: "Georgia Tech — Proposal" },
+  { file: "Goldilocks-Radix.pdf", title: "Goldilocks Radix" },
+  { file: "ItsAboutTime-Master copy 2.pdf", title: "ItsAboutTime — Master Copy 2" },
+  { file: "Journals1.pdf", title: "Journals 1" },
+  { file: "Networking-Distinction.pdf", title: "Networking — Distinction" },
+  { file: "Summary-side-meetings.pdf", title: "Summary — Side Meetings" },
+  { file: "Systems-Management.pdf", title: "Systems Management" },
+  { file: "YouTube-Luminaries.pdf", title: "YouTube Luminaries" },
+  { file: "new-graph.pdf", title: "New Graph" },
 ];
 
 // /* ────────────────────────── 3. Self-seeding + GC with "first-time" create_document_features.sql ───────────────────── */
