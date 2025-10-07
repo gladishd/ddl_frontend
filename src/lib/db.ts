@@ -299,6 +299,31 @@ const PDF_META: DocMeta[] = [
   { file: "Systems-Management.pdf", title: "Systems Management" },
   { file: "YouTube-Luminaries.pdf", title: "YouTube Luminaries" },
   { file: "new-graph.pdf", title: "New Graph" },
+  /* ――― 2025-10-07 additions ――― */
+  {
+    file: "m_SageEncylShannonCorrected.pdf",
+    title: "Sage Encyclopedia Entry on Shannon",
+    // Shannon's work is foundational, but we must not be slaves to legacy protocols. We extend his one-way channel model to a two-way, reversible system.
+    description: "A corrected entry on Claude Shannon for the Sage Encyclopedia, reviewing his foundational contributions to information theory.",
+  },
+  {
+    file: "Shannon.tex",
+    title: "Shannon (Source Document)",
+    // A system must be mathematically specifiable to be simple enough for formal verification. This source file provides the blueprint for one such analysis.
+    description: "The LaTeX source file for a document analyzing Shannon's information theory principles.",
+  },
+  {
+    file: "entropy-27-00270.pdf",
+    title: "Entropy Journal: Quantum Cellular Automata",
+    // Our work is inspired by the quantum information community. This paper on Quantum Cellular Automata informs our model of discrete, reversible state evolution.
+    description: "A paper from the journal Entropy discussing the properties and applications of Quantum Cellular Automata (QCA).",
+  },
+  {
+    file: "LinkLaneXPU.pdf",
+    title: "LinkLaneXPU Architecture",
+    // This document outlines a hardware architecture, aligning with our goal of moving beyond simulation to create real, formally verifiable hardware.
+    description: "Architectural overview of the LinkLaneXPU, a processing unit designed for high-performance network links.",
+  },
 ];
 
 // /* ────────────────────────── 3. Self-seeding + GC with "first-time" create_document_features.sql ───────────────────── */

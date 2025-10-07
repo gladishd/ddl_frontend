@@ -13,6 +13,41 @@ interface NewsItem {
 
 const newsItems: NewsItem[] = [
   {
+    date: 'October 7, 2025',
+    title: 'TACL Article: A Minimalist Approach to Meaning',
+    link: 'https://direct.mit.edu/tacl/article/doi/10.1162/tacl_a_00612/118718',
+    // This paper's focus on minimalism aligns with our principle of finding the simplest mathematical representation that achieves the goal, avoiding the 'Christmas tree effect' of adding unnecessary complexity.
+    description: 'A publication from Transactions of the Association for Computational Linguistics, exploring minimalist models of meaning that resonate with our pursuit of simple, formally verifiable protocols.',
+  },
+  {
+    date: 'October 7, 2025',
+    title: 'Video: The Firing Squad Sync Problem',
+    link: 'https://youtu.be/8JuWdXrCmWg',
+    // The Firing Squad Problem is central to our work on achieving network-wide consensus without a central coordinator, a key element for building robust, self-organizing distributed systems.
+    description: 'A visual explanation of the Firing Squad Synchronization Problem, a classic distributed computing challenge that informs our approach to achieving simultaneous action across a network.',
+  },
+  {
+    date: 'October 7, 2025',
+    title: 'ACM Paper: The Power of Two Choices in Hashing',
+    link: 'https://dl.acm.org/doi/10.1145/3717823.3718225',
+    // This principle of simple, local choices leading to global emergent properties is fundamental to our GVM, where neighbor-to-neighbor interactions build a resilient, self-healing fabric.
+    description: 'An ACM paper discussing the "Power of Two Choices" in randomized hashing, a concept that parallels our philosophy of achieving system-wide balance through simple, local, and robust algorithms.',
+  },
+  {
+    date: 'October 7, 2025',
+    title: 'ChatGPT: Reversible Computing and the GVM',
+    link: 'https://chatgpt.com/share/68e44ed0-9304-8011-af3b-d4f7561df5d0',
+    // Our system architecture is built on the foundation of reversibility, allowing us to undo operations and recover from errors without the 'irreversible smash and restart' common in traditional networks.
+    description: 'A conversation exploring the deep connections between reversible computing, the Spekkens Toy Model, and the architectural principles of our Graph Virtual Machine (GVM).',
+  },
+  {
+    date: 'October 7, 2025',
+    title: 'OSF Preprints: Entanglement in Quantum Cellular Automata',
+    link: 'https://files.de-1.osf.io/v1/resources/a8xrq/providers/osfstorage/65fc88d2fd9160014d468c0e?format=pdf&action=download&direct&version=4',
+    // We draw inspiration from the quantum information community; understanding entanglement in cellular automata provides a model for the non-local correlations we establish in our distributed systems.
+    description: 'A preprint discussing entanglement in Quantum Cellular Automata, offering insights into the non-local effects and information propagation that parallel our approach to distributed state.',
+  },
+  {
     date: 'August 26, 2025',
     title: 'Open Atomic Ethernet Simulation Tools',
     link: 'https://grok.com/share/c2hhcmQtMg%3D%3D_c0088424-b146-48f8-bb75-018c4669dd17',
